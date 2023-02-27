@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cardTitles">
+        <item>Burger with Chicken</item>
+        <item>Caesar Salad</item>
+        <item>Yam Fries</item>
+        <item>Pasta Alfredo</item>
+        <item>Veggie Burger</item>
+        <item>Chicken Tacos</item>
+        <item>Jambalaya</item>
+        <item>Fish and Chips</item>
+        <item>Atlantic Salmon</item>
+        <item>Crispy Chicken Sandwich</item>
+        <item>Pulled Pork Sandwich</item>
+        <item>Poutine</item>
+        <item>Crispy Dill Pickles</item>
+        <item>Calamari</item>
+        <item>Beef Wrap</item>
+        <item>Carrots and Ginger Soup</item>
+        <item>Tuna Special</item>
+        <item>Rally Nachos</item>
+        <item>Chicken Wings</item>
+        <item>Sliders</item>
+    </string-array>
+</resources>
