@@ -1,7 +1,9 @@
 package com.example.rallyapp
 
 import android.R
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.rallyapp.databinding.ActivityUserBinding
@@ -24,6 +26,13 @@ class UserActivity : AppCompatActivity() {
         transaction.replace(binding.fragmentContainer.id, fragment)
         transaction.commit()
 
+        binding.saveChanges.setOnClickListener(){
+            var intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    fun goToUserActivity(v: View) {
 
     }
 }
