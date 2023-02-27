@@ -10,7 +10,6 @@ class SingUpActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySingUpBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sing_up)
