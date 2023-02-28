@@ -1,6 +1,5 @@
 package com.example.rallyapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,13 +15,14 @@ private const val TAG_LINE = "tag"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [Header.newInstance] factory method to
+ * Use the [HeaderFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Header : Fragment() {
+class HeaderFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var tagText: String? = null
-    private lateinit var binding: FragmentHeaderBinding
+    private var _binding: FragmentHeaderBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,19 +30,27 @@ class Header : Fragment() {
             tagText = it.getString(TAG_LINE)
             println(it.getString(TAG_LINE))
         }
-        binding = FragmentHeaderBinding.inflate(layoutInflater)
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val inflater = inflater.inflate(R.layout.fragment_header, container, false)
-        val tag = inflater.findViewById<TextView>(R.id.tag_line)
-        tag.text = tagText
-        return inflater
+    ): View {
+        /* binding */
+        _binding = FragmentHeaderBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        /* setting the text to tagLine */
+        binding.tagLine.text = tagText
+
+        // TODO: implement all the binding related stuff under here
+
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
@@ -56,7 +64,7 @@ class Header : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(text: String) =
-            Header().apply {
+            HeaderFragment().apply {
                 arguments = Bundle().apply {
                     putString(TAG_LINE, text)
                 }

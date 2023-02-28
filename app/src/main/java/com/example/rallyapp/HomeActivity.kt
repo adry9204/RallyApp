@@ -22,7 +22,7 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var fragment: Fragment = Header.newInstance("time to eat!")
+        var fragment: Fragment = HeaderFragment.newInstance("time to eat!")
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         transaction.replace(binding.fragmentContainer.id, fragment)
