@@ -1,13 +1,11 @@
 package com.example.rallyapp
 
-import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.rallyapp.databinding.ActivityUserBinding
-import com.example.rallyapp.databinding.FragmentHeaderBinding
 
 
 class UserActivity : AppCompatActivity() {
@@ -20,7 +18,7 @@ class UserActivity : AppCompatActivity() {
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var fragment: Fragment = Header.newInstance("do you want to edit your profile?")
+        var fragment: Fragment = HeaderFragment.newInstance("do you want to edit your profile?")
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         transaction.replace(binding.fragmentContainer.id, fragment)
