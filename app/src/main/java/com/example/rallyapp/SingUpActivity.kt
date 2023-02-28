@@ -3,7 +3,6 @@ package com.example.rallyapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.rallyapp.databinding.ActivityMainBinding
 import com.example.rallyapp.databinding.ActivitySingUpBinding
 
 class SingUpActivity : AppCompatActivity() {
@@ -22,7 +21,7 @@ class SingUpActivity : AppCompatActivity() {
         }
 
         binding.backToLoginButton.setOnClickListener(){
-            var intent = Intent(this, MainActivity::class.java)
+            var intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
