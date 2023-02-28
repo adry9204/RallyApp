@@ -148,6 +148,14 @@
             android:text="Save   ✔"
             android:backgroundTint="@color/green"
             android:textColor="@color/white"/>
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="56dp"
+            android:id="@+id/log_out_button"
+            android:layout_marginTop="5dp"
+            android:text="Log Out"
+            android:backgroundTint="@color/blue"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

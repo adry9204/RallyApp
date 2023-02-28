@@ -30,6 +30,12 @@ class UserActivity : AppCompatActivity() {
             var intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
+
+        binding.logOutButton.setOnClickListener(){
+            var intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     fun goToUserActivity(v: View) {
