@@ -46,7 +46,6 @@
             android:textSize="16dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/user_email"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
@@ -54,6 +53,7 @@
             app:startIconDrawable="@drawable/ic_baseline_email_24"
             >
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -63,7 +63,6 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/user_password"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -72,6 +71,7 @@
             app:endIconMode="password_toggle"
             >
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/user_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
