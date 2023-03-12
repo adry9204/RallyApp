@@ -46,4 +46,11 @@ class HomeActivity : AppCompatActivity() {
         var intent = Intent(this, UserActivity::class.java)
         startActivity(intent)
     }
+
+    fun productCardViewOnClick(v:View) {
+        if (v.id == R.id.recycler_card_view) {
+            val i = Intent(this, PlateDetailActivity::class.java)
+            startActivity(i)
+        }
+    }
 }
