@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    tools:context=".BottomNavFragment"
+    android:background="@color/background_grey"
+    android:elevation="15dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:backgroundTint="@color/background_grey"
+        >
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/home_nav_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_home_46"
+            android:backgroundTint="@color/background_grey"
+            android:layout_weight="1"
+            android:onClick="goToHome"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/search_nav_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_search_46"
+            android:backgroundTint="@color/background_grey"
+            android:layout_weight="1"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/cart_nav_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_shopping_cart_40"
+            android:backgroundTint="@color/background_grey"
+            android:layout_weight="1"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/order_nav_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_format_list_bulleted_48"
+            android:backgroundTint="@color/background_grey"
+            android:layout_weight="1"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/profile_nav_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_baseline_person_outline_48"
+            android:backgroundTint="@color/background_grey"
+            android:layout_weight="1"
+            android:onClick="goToProfile" />
+    </LinearLayout>
+</FrameLayout>

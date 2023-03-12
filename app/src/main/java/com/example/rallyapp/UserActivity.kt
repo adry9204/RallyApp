@@ -39,4 +39,15 @@ class UserActivity : AppCompatActivity() {
     fun goToUserActivity(v: View) {
 
     }
+
+    //BOTTOM NAV METHODS
+    fun goToHome(v:View){
+        var intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToProfile(v:View){
+        var intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
+    }
 }

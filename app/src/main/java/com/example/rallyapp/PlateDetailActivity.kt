@@ -1,7 +1,9 @@
 package com.example.rallyapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.example.rallyapp.databinding.ActivityLoginBinding
 import com.example.rallyapp.databinding.ActivityPlateDetailBinding
 
@@ -33,5 +35,16 @@ class PlateDetailActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    //BOTTOM NAV METHODS
+    fun goToHome(v: View){
+        var intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun goToProfile(v:View){
+        var intent = Intent(this, UserActivity::class.java)
+        startActivity(intent)
     }
 }
