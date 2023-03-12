@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 
 class SingUpActivity : AppCompatActivity() {
 
+    //a comment
     private lateinit var binding: ActivitySingUpBinding
     companion object {
         var userRepo: UserRepo? = null
