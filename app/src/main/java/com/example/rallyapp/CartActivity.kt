@@ -39,6 +39,7 @@ class CartActivity : AppCompatActivity() {
         gridViewItem.adapter = adapter
     }
 
+    //method for going to the detail view of a plate
     fun productCardViewOnClick(v:View) {
         if (v.id == R.id.recycler_card_view) {
             val i = Intent(this, PlateDetailActivity::class.java)
