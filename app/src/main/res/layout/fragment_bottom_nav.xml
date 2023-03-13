@@ -37,7 +37,8 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_shopping_cart_40"
             android:backgroundTint="@color/background_grey"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:onClick="goToCart"/>
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/order_nav_button"
             android:layout_width="0dp"

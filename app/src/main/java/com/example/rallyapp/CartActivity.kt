@@ -7,20 +7,21 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rallyapp.databinding.ActivityCartBinding
 import com.example.rallyapp.databinding.ActivitySearchBinding
 
-class SearchActivity : AppCompatActivity() {
+class CartActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySearchBinding
-    private var adapter: GridViewItemAdapter? = null
+    private lateinit var binding: ActivityCartBinding
+    private var adapter: CartAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //setting the header with the correct tagline
-        var fragment: Fragment = HeaderFragment.newInstance("what are you looking for?")
+        var fragment: Fragment = HeaderFragment.newInstance("check your products in cart!")
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         transaction.replace(binding.fragmentContainer.id, fragment)
@@ -31,14 +32,13 @@ class SearchActivity : AppCompatActivity() {
         val cardTitles: Array<String> = resources.getStringArray(R.array.cardTitles)
         val cardPrices: Array<String> = resources.getStringArray(R.array.cardPrices)
 
-        val gridViewItem = findViewById<RecyclerView>(R.id.search_menu_recyclerview)
-        gridViewItem.layoutManager = GridLayoutManager(this, 2)
-        adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
+        val gridViewItem = findViewById<RecyclerView>(R.id.shopping_cart_recyclerview)
+        gridViewItem.layoutManager = GridLayoutManager(this, 1)
+        adapter = CartAdapter(cardImages, cardTitles, cardPrices)
 
         gridViewItem.adapter = adapter
     }
 
-    //takes users to Detail Activity when tap on recycler item
     fun productCardViewOnClick(v:View) {
         if (v.id == R.id.recycler_card_view) {
             val i = Intent(this, PlateDetailActivity::class.java)
@@ -54,16 +54,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     //Bottom Nav
-    fun goToHome(v:View){
+    fun goToHome(v: View){
         var intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 
-    fun goToSearch(v:View){
-    }
-    fun goToCart(v:View){
-        var intent = Intent(this, CartActivity::class.java)
+    fun goToSearch(v: View){
+        var intent = Intent(this, SearchActivity::class.java)
         startActivity(intent)
     }
-
+    fun goToCart(v: View){
+    }
 }

@@ -62,4 +62,9 @@ class HomeActivity : AppCompatActivity() {
         var intent = Intent(this, SearchActivity::class.java)
         startActivity(intent)
     }
+
+    fun goToCart(v:View){
+        var intent = Intent(this, CartActivity::class.java)
+        startActivity(intent)
+    }
 }
