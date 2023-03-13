@@ -7,59 +7,51 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rallyapp.databinding.ActivityHomeBinding
-import com.example.rallyapp.databinding.FragmentHeaderBinding
+import com.example.rallyapp.databinding.ActivitySearchBinding
 
-class HomeActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeBinding
-    private lateinit var fragmentBinding: FragmentHeaderBinding
+    private lateinit var binding: ActivitySearchBinding
     private var adapter: GridViewItemAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var fragment: Fragment = HeaderFragment.newInstance("time to eat!")
+        //setting the header with the correct tagline
+        var fragment: Fragment = HeaderFragment.newInstance("what are you looking for?")
         val manager = supportFragmentManager
         val transaction = manager.beginTransaction()
         transaction.replace(binding.fragmentContainer.id, fragment)
         transaction.commit()
-
-        binding.pizza.bringToFront()
 
         //creating and filling the Recycler View
         val cardImages: Array<String> = resources.getStringArray(R.array.cardImages)
         val cardTitles: Array<String> = resources.getStringArray(R.array.cardTitles)
         val cardPrices: Array<String> = resources.getStringArray(R.array.cardPrices)
 
-        val gridViewItem = findViewById<RecyclerView>(R.id.home_menu_recyclerview)
+        val gridViewItem = findViewById<RecyclerView>(R.id.search_menu_recyclerview)
         gridViewItem.layoutManager = GridLayoutManager(this, 2)
         adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
 
         gridViewItem.adapter = adapter
     }
 
+    //Auxiliar Fragments Methods
+    //Header
     fun goToUserActivity(v: View) {
         var intent = Intent(this, UserActivity::class.java)
         startActivity(intent)
     }
 
-    fun productCardViewOnClick(v:View) {
-        if (v.id == R.id.recycler_card_view) {
-            val i = Intent(this, PlateDetailActivity::class.java)
-            startActivity(i)
-        }
-    }
-
-    //BOTTOM NAV METHODS
+    //Bottom Nav
     fun goToHome(v:View){
+        var intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 
     fun goToSearch(v:View){
-        var intent = Intent(this, SearchActivity::class.java)
-        startActivity(intent)
     }
+
 }

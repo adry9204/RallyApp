@@ -29,7 +29,8 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_baseline_search_46"
             android:backgroundTint="@color/background_grey"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:onClick="goToSearch"/>
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/cart_nav_button"
             android:layout_width="0dp"
@@ -51,6 +52,6 @@
             android:src="@drawable/ic_baseline_person_outline_48"
             android:backgroundTint="@color/background_grey"
             android:layout_weight="1"
-            android:onClick="goToProfile" />
+            android:onClick="goToUserActivity" />
     </LinearLayout>
 </FrameLayout>

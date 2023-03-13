@@ -36,18 +36,19 @@ class UserActivity : AppCompatActivity() {
 
     }
 
+    //Auxiliar Fragments Methods
+    //Header
     fun goToUserActivity(v: View) {
-
     }
 
-    //BOTTOM NAV METHODS
+    //Bottom Nav
     fun goToHome(v:View){
         var intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
     }
 
-    fun goToProfile(v:View){
-        var intent = Intent(this, UserActivity::class.java)
+    fun goToSearch(v:View){
+        var intent = Intent(this, SearchActivity::class.java)
         startActivity(intent)
     }
 }
