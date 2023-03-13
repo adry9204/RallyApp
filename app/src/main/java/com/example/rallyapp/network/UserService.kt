@@ -1,12 +1,11 @@
 package com.example.rallyapp.network
 
-import com.example.rallyapp.dataModel.LoginRequest
-import com.example.rallyapp.dataModel.LoginResponse
-import com.example.rallyapp.dataModel.RegisterRequest
-import com.example.rallyapp.dataModel.RegisterResponse
+import com.example.rallyapp.dataModel.*
 import retrofit2.Call
 import retrofit2.http.POST
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.Header
 
 interface UserService {
 
@@ -15,4 +14,7 @@ interface UserService {
 
         @POST("users/login")
         fun loginUser(@Body user: LoginRequest): Call<LoginResponse>
+
+        @DELETE("users/logout")
+        fun logoutUser(@Header("Authorization") token: String): Call<LogoutResponse>
 }

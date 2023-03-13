@@ -5,10 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.rallyapp.LoginActivity
 import com.example.rallyapp.SingUpActivity
-import com.example.rallyapp.dataModel.LoginRequest
-import com.example.rallyapp.dataModel.LoginResponse
-import com.example.rallyapp.dataModel.RegisterRequest
-import com.example.rallyapp.dataModel.RegisterResponse
+import com.example.rallyapp.UserActivity
+import com.example.rallyapp.dataModel.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -25,6 +23,9 @@ class MainActivityViewModel : ViewModel() {
     private var _userLoginListLiveData = MutableLiveData<List<LoginResponse>>()
     var userLoginListLiveData: MutableLiveData<List<LoginResponse>> = _userLoginListLiveData
 
+    private var _userLogoutListLiveData = MutableLiveData<List<LogoutResponse>>()
+    var userLogoutListLiveData: MutableLiveData<List<LogoutResponse>> = _userLogoutListLiveData
+
     fun registerUser(request: RegisterRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             val data = SingUpActivity.userRepo?.registerUser(request)
@@ -37,12 +38,22 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
+    fun logoutUser(token: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = UserActivity.userRepo?.logoutUser("Bearer " + token)
+        }
+    }
+
     fun setRegisterData(list: List<RegisterResponse>){
         userRegisterListLiveData.value = list
     }
 
     fun setLoginData(list: List<LoginResponse>){
         userLoginListLiveData.value = list
+    }
+
+    fun setLogoutData(list: List<LogoutResponse>){
+        userLogoutListLiveData.value = list
     }
 
 }

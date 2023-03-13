@@ -1,6 +1,8 @@
 package com.example.rallyapp
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -38,6 +40,13 @@ class LoginActivity : AppCompatActivity() {
                 it.forEach { it ->
                     if(it.message == "Login sucessful"){
                         Log.i(SingUpActivity.TAG,"User Login successful")
+                        // Save fields to sharedPreferences
+                        val sharedPreferences: SharedPreferences = this.getSharedPreferences("user_preferences",
+                            Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putString("token", it.data.get(0).token)
+                        editor.apply()
+
                         var intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                     } else {

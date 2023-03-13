@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.example.rallyapp.LoginActivity
 import com.example.rallyapp.SingUpActivity
+import com.example.rallyapp.UserActivity
 import com.example.rallyapp.dataModel.*
 import com.example.rallyapp.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,7 @@ class UserRepo (appContext: Context) {
 
         return withContext(Dispatchers.IO) {
             // call api with query here from RetrofitClient
-            val retrofit = RetrofitClient.registerRetrofit.registerUser(request)
+            val retrofit = RetrofitClient.userRetrofit.registerUser(request)
             val result = mutableListOf<RegisterResponse>()
             retrofit.enqueue(object : Callback<RegisterResponse> {
                 override fun onResponse(
@@ -58,7 +59,7 @@ class UserRepo (appContext: Context) {
 
         return withContext(Dispatchers.IO) {
             // call api with query here from RetrofitClient
-            val retrofit = RetrofitClient.loginRetrofit.loginUser(request)
+            val retrofit = RetrofitClient.userRetrofit.loginUser(request)
             val result = mutableListOf<LoginResponse>()
             retrofit.enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(
@@ -73,6 +74,31 @@ class UserRepo (appContext: Context) {
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Log.e(LoginActivity.TAG, "API login call failed message: " + t.message)
+                }
+            })
+            result
+        }
+    }
+
+    suspend fun logoutUser(token: String): List<LogoutResponse> {
+
+        return withContext(Dispatchers.IO) {
+            // call api with query here from RetrofitClient
+            val retrofit = RetrofitClient.userRetrofit.logoutUser(token)
+            val result = mutableListOf<LogoutResponse>()
+            retrofit.enqueue(object : Callback<LogoutResponse> {
+                override fun onResponse(
+                    call: Call<LogoutResponse?>,
+                    response: Response<LogoutResponse?>
+                ) {
+                    var responseBody = response.body()!!
+                    result.add(responseBody)
+                    UserActivity.viewModel.setLogoutData(result)
+
+                }
+
+                override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
+                    Log.e(UserActivity.TAG, "API logout call failed message: " + t.message)
                 }
             })
             result
