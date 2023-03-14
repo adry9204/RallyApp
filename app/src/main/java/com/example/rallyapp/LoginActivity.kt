@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.loginUser(request)
             viewModel.userLoginListLiveData.observe(this) {
                 it.forEach { it ->
-                    if(it.message == "Login sucessful"){
+                    if(it.success == 1){
                         Log.i(SingUpActivity.TAG,"User Login successful")
                         // Save fields to sharedPreferences
                         val sharedPreferences: SharedPreferences = this.getSharedPreferences("user_preferences",

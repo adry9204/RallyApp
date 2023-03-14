@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.rallyapp.dataModel.Menu
 import com.squareup.picasso.Picasso
 
 class GridViewItemAdapter(
-    private val cardImages: Array<String>,
-    private val cardTitles: Array<String>,
-    private val cardPrices: Array<String>
+    private val menuItems: List<Menu>,
 ) : RecyclerView.Adapter<GridViewItemAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,12 +27,12 @@ class GridViewItemAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Picasso.get().load(cardImages[position]).into(holder.cardImage)
-        holder.cardTitle.text = cardTitles[position]
-        holder.cardPrice.text = cardPrices[position]
+        Picasso.get().load(menuItems[position].image).into(holder.cardImage)
+        holder.cardTitle.text = menuItems[position].name
+        holder.cardPrice.text = menuItems[position].price
     }
 
     override fun getItemCount(): Int {
-        return cardImages.size
+        return menuItems.size
     }
 }

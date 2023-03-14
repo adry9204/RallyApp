@@ -3,6 +3,7 @@ package com.example.rallyapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,6 +12,11 @@ import com.example.rallyapp.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity() {
 
+    companion object {
+        private const val TAG = "SearchActivity"
+        const val SEARCH_STRING = "search_string"
+    }
+
     private lateinit var binding: ActivitySearchBinding
     private var adapter: GridViewItemAdapter? = null
 
@@ -18,6 +24,12 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val bundle = intent.extras
+        bundle?.let {
+           val searchString =  it.getString(SEARCH_STRING, "")
+           Log.i(TAG, searchString)
+        }
 
         //setting the header with the correct tagline
         var fragment: Fragment = HeaderFragment.newInstance("what are you looking for?")
@@ -33,9 +45,9 @@ class SearchActivity : AppCompatActivity() {
 
         val gridViewItem = findViewById<RecyclerView>(R.id.search_menu_recyclerview)
         gridViewItem.layoutManager = GridLayoutManager(this, 2)
-        adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
+//        adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
 
-        gridViewItem.adapter = adapter
+//        gridViewItem.adapter = adapter
     }
 
     //takes users to Detail Activity when tap on recycler item

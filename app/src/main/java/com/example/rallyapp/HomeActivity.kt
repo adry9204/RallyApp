@@ -3,24 +3,40 @@ package com.example.rallyapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.rallyapp.databinding.ActivityHomeBinding
 import com.example.rallyapp.databinding.FragmentHeaderBinding
+import com.example.rallyapp.repo.MenuRepo
+import com.example.rallyapp.viewModel.HomeActivityViewModel
 
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentBinding: FragmentHeaderBinding
     private var adapter: GridViewItemAdapter? = null
+    private lateinit var viewModel: HomeActivityViewModel
+
+    companion object {
+        private const val TAG = "HomeActivity"
+        var menuRepo: MenuRepo? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        menuRepo = MenuRepo(this)
+
+        viewModel = ViewModelProvider(this)[HomeActivityViewModel::class.java]
+        viewModel.getAllMenuItems()
+
+
 
         var fragment: Fragment = HeaderFragment.newInstance("time to eat!")
         val manager = supportFragmentManager
@@ -30,16 +46,39 @@ class HomeActivity : AppCompatActivity() {
 
         binding.pizza.bringToFront()
 
-        //creating and filling the Recycler View
-        val cardImages: Array<String> = resources.getStringArray(R.array.cardImages)
-        val cardTitles: Array<String> = resources.getStringArray(R.array.cardTitles)
-        val cardPrices: Array<String> = resources.getStringArray(R.array.cardPrices)
+        setObserverForMenuData()
 
-        val gridViewItem = findViewById<RecyclerView>(R.id.home_menu_recyclerview)
-        gridViewItem.layoutManager = GridLayoutManager(this, 2)
-        adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
+        binding.searchButton.setOnClickListener{
 
-        gridViewItem.adapter = adapter
+            Log.i(TAG, binding.searchTextField.editText?.text.toString() + " heyyyyy ")
+            val searchString = binding.searchTextField.editText?.text.toString()
+
+            val searchActivityIntent = Intent(this, SearchActivity::class.java)
+            val bundle = Bundle().apply {
+                putString(SearchActivity.SEARCH_STRING, searchString)
+            }
+            searchActivityIntent.putExtras(bundle)
+            startActivity(searchActivityIntent)
+        }
+
+//        //creating and filling the Recycler View
+//        val cardImages: Array<String> = resources.getStringArray(R.array.cardImages)
+//        val cardTitles: Array<String> = resources.getStringArray(R.array.cardTitles)
+//        val cardPrices: Array<String> = resources.getStringArray(R.array.cardPrices)
+
+//        val gridViewItem = findViewById<RecyclerView>(R.id.home_menu_recyclerview)
+//        gridViewItem.layoutManager = GridLayoutManager(this, 2)
+//        adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
+
+//        gridViewItem.adapter = adapter
+    }
+
+    private fun setObserverForMenuData(){
+        viewModel.menuLiveData.observe(this) {
+            binding.homeMenuRecyclerview.layoutManager = GridLayoutManager(this, 2)
+            adapter = GridViewItemAdapter(it)
+            binding.homeMenuRecyclerview.adapter = adapter
+        }
     }
 
     fun goToUserActivity(v: View) {
