@@ -68,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
     private fun setObserverForData(){
         viewModel.menuListLiveData.observe(this){
             binding.searchMenuRecyclerview.layoutManager = GridLayoutManager(this, 2)
-            adapter = GridViewItemAdapter(it)
+            adapter = GridViewItemAdapter(this, it)
             binding.searchMenuRecyclerview.adapter = adapter
         }
     }
