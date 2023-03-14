@@ -70,6 +70,7 @@ class PlateDetailActivity : AppCompatActivity() {
         val menuId = intent.extras?.let {
             it.getInt(MENU_ITEM_ID, 0)
         } ?: 0
+        Log.i(TAG, menuId.toString())
         return menuId
     }
 
