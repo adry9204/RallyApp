@@ -61,22 +61,12 @@ class HomeActivity : AppCompatActivity() {
             startActivity(searchActivityIntent)
         }
 
-//        //creating and filling the Recycler View
-//        val cardImages: Array<String> = resources.getStringArray(R.array.cardImages)
-//        val cardTitles: Array<String> = resources.getStringArray(R.array.cardTitles)
-//        val cardPrices: Array<String> = resources.getStringArray(R.array.cardPrices)
-
-//        val gridViewItem = findViewById<RecyclerView>(R.id.home_menu_recyclerview)
-//        gridViewItem.layoutManager = GridLayoutManager(this, 2)
-//        adapter = GridViewItemAdapter(cardImages, cardTitles, cardPrices)
-
-//        gridViewItem.adapter = adapter
     }
 
     private fun setObserverForMenuData(){
         viewModel.menuLiveData.observe(this) {
             binding.homeMenuRecyclerview.layoutManager = GridLayoutManager(this, 2)
-            adapter = GridViewItemAdapter(it)
+            adapter = GridViewItemAdapter(this, it)
             binding.homeMenuRecyclerview.adapter = adapter
         }
     }
@@ -84,13 +74,6 @@ class HomeActivity : AppCompatActivity() {
     fun goToUserActivity(v: View) {
         var intent = Intent(this, UserActivity::class.java)
         startActivity(intent)
-    }
-
-    fun productCardViewOnClick(v:View) {
-        if (v.id == R.id.recycler_card_view) {
-            val i = Intent(this, PlateDetailActivity::class.java)
-            startActivity(i)
-        }
     }
 
     //BOTTOM NAV METHODS

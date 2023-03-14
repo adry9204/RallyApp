@@ -10,6 +10,7 @@ import retrofit2.http.Query
 interface MenuService {
     companion object{
         const val SEARCH_STRING = "search_string"
+        const val MENU_ID = "menu_id"
     }
 
     @GET("menu")
@@ -17,5 +18,8 @@ interface MenuService {
 
     @GET("menu/search/{$SEARCH_STRING}")
     fun searchMenuItems(@Path(SEARCH_STRING) searchString: String): Call<ApiResponse<Menu>>
+
+    @GET("menu/{$MENU_ID}")
+    fun getMenuItemById(@Path(MENU_ID) menuId: Int): Call<ApiResponse<Menu>>
 
 }
