@@ -4,6 +4,7 @@ package com.example.rallyapp
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,9 @@ class GridViewItemAdapter(
     private val context: Context,
     private val menuItems: List<Menu>,
 ) : RecyclerView.Adapter<GridViewItemAdapter.ViewHolder>() {
+    companion object{
+        private const val TAG = "GridItemViewAdapter"
+    }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardImage: ImageView = itemView.findViewById(R.id.gridview_image)
@@ -39,6 +43,7 @@ class GridViewItemAdapter(
             val plateDetailActivityIntent = Intent(context, PlateDetailActivity::class.java)
             val bundle = Bundle().apply {
                 putInt(PlateDetailActivity.MENU_ITEM_ID, menuItems[position].id)
+                Log.i(TAG, menuItems[position].id.toString())
             }
             plateDetailActivityIntent.putExtras(bundle)
             context.startActivity(plateDetailActivityIntent)
