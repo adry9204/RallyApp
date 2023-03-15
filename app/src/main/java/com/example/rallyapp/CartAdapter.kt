@@ -6,18 +6,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rallyapp.dataModel.Cart
 import com.squareup.picasso.Picasso
 
 class CartAdapter(
-    private val cardImages: Array<String>,
-    private val cardTitles: Array<String>,
-    private val cardPrices: Array<String>,
+    private val cartItems: List<Cart>
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardImage: ImageView = itemView.findViewById(R.id.shopping_cart_cardview_image)
         val cardTitle: TextView = itemView.findViewById(R.id.gridview_image_title)
         val cardPrice: TextView = itemView.findViewById(R.id.shopping_cart_cardview_price)
+        val quantityLabel: TextView = itemView.findViewById(R.id.quantity_label)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,12 +27,13 @@ class CartAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Picasso.get().load(cardImages[position]).into(holder.cardImage)
-        holder.cardTitle.text = cardTitles[position]
-        holder.cardPrice.text = cardPrices[position]
+        Picasso.get().load(cartItems[position].menu.image).into(holder.cardImage)
+        holder.cardTitle.text = cartItems[position].menu.name
+        holder.cardPrice.text = "$${cartItems[position].price}"
+        holder.quantityLabel.text = "${cartItems[position].quantity}"
     }
 
     override fun getItemCount(): Int {
-        return cardImages.size
+        return cartItems.size
     }
 }

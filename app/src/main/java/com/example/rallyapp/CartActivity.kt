@@ -5,20 +5,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rallyapp.dataModel.Cart
 import com.example.rallyapp.databinding.ActivityCartBinding
-import com.example.rallyapp.databinding.ActivitySearchBinding
+import com.example.rallyapp.repo.CartRepo
+import com.example.rallyapp.user.UserCredentials
+import com.example.rallyapp.viewModel.CartActivityViewModel
 
 class CartActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCartBinding
     private var adapter: CartAdapter? = null
+    private lateinit var viewModel: CartActivityViewModel
+
+    companion object {
+        const val TAG = "CartActivity"
+        var cartRepo: CartRepo? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCartBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        cartRepo = CartRepo(this)
+
+        if(!UserCredentials.isUserSet()){ gotToLoginActivity() }
+        viewModel = ViewModelProvider(this)[CartActivityViewModel::class.java]
+
+        viewModel.getUserCart(UserCredentials.getUserId() ?: 0, UserCredentials.getToken() ?: "")
 
         //setting the header with the correct tagline
         var fragment: Fragment = HeaderFragment.newInstance("check your products in cart!")
@@ -27,16 +44,31 @@ class CartActivity : AppCompatActivity() {
         transaction.replace(binding.fragmentContainer.id, fragment)
         transaction.commit()
 
-        //creating and filling the Recycler View
-        val cardImages: Array<String> = resources.getStringArray(R.array.cardImages)
-        val cardTitles: Array<String> = resources.getStringArray(R.array.cardTitles)
-        val cardPrices: Array<String> = resources.getStringArray(R.array.cardPrices)
+        setObserverOnCartData()
 
-        val gridViewItem = findViewById<RecyclerView>(R.id.shopping_cart_recyclerview)
-        gridViewItem.layoutManager = GridLayoutManager(this, 1)
-        adapter = CartAdapter(cardImages, cardTitles, cardPrices)
+    }
 
-        gridViewItem.adapter = adapter
+    private fun setObserverOnCartData(){
+        viewModel.cartLiveData.observe(this){
+            binding.shoppingCartRecyclerview.layoutManager = GridLayoutManager(this, 1)
+            adapter = CartAdapter(it)
+            binding.shoppingCartRecyclerview.adapter = adapter
+            val totalCartPrice = calculateTotalFromCart(it)
+            binding.totalAmountLabelCart.text = "$$totalCartPrice"
+        }
+    }
+
+    private fun calculateTotalFromCart(cartItems: List<Cart>): Float{
+        var totalPrice = 0.0f
+        for (cartItem in cartItems){
+            totalPrice += cartItem.price.toFloat()
+        }
+        return totalPrice
+    }
+
+    private fun gotToLoginActivity(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     //method for going to the detail view of a plate
