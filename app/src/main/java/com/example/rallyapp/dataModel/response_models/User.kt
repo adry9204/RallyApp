@@ -1,4 +1,4 @@
-package com.example.rallyapp.dataModel
+package com.example.rallyapp.dataModel.response_models
 
 data class User(
     val email: String,

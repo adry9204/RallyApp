@@ -3,7 +3,7 @@ package com.example.rallyapp.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rallyapp.CartActivity
-import com.example.rallyapp.dataModel.Cart
+import com.example.rallyapp.dataModel.response_models.Cart
 
 class CartActivityViewModel: ViewModel() {
 

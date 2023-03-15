@@ -3,8 +3,8 @@ package com.example.rallyapp.repo
 import android.content.Context
 import android.util.Log
 import com.example.rallyapp.LoginActivity
-import com.example.rallyapp.dataModel.Menu
-import com.example.rallyapp.dataModel.ApiResponse
+import com.example.rallyapp.dataModel.response_models.Menu
+import com.example.rallyapp.dataModel.response_models.ApiResponse
 import com.example.rallyapp.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback

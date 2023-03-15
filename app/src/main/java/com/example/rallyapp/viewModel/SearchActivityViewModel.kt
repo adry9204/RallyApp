@@ -3,8 +3,7 @@ package com.example.rallyapp.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rallyapp.SearchActivity
-import com.example.rallyapp.dataModel.Menu
-import com.example.rallyapp.dataModel.RegisterResponse
+import com.example.rallyapp.dataModel.response_models.Menu
 
 class SearchActivityViewModel: ViewModel() {
 
