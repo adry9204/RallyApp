@@ -16,4 +16,10 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(MenuService::class.java)
+
+    val cartClient: CartService = Retrofit.Builder()
+        .baseUrl("http://192.168.2.237:8000/api/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(CartService::class.java)
 }

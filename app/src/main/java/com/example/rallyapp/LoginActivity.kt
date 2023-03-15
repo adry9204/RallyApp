@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.rallyapp.dataModel.LoginRequest
 import com.example.rallyapp.databinding.ActivityLoginBinding
 import com.example.rallyapp.repo.UserRepo
+import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.viewModel.MainActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -40,15 +41,23 @@ class LoginActivity : AppCompatActivity() {
                 it.forEach { it ->
                     if(it.success == 1){
                         Log.i(SingUpActivity.TAG,"User Login successful")
+
                         // Save fields to sharedPreferences
-                        val sharedPreferences: SharedPreferences = this.getSharedPreferences("user_preferences",
+                        val sharedPreferences: SharedPreferences = this.getSharedPreferences(UserCredentials.SHARED_PREFERENCE_NAME,
                             Context.MODE_PRIVATE)
-                        val editor = sharedPreferences.edit()
-                        editor.putString("token", it.data.get(0).token)
-                        editor.apply()
+
+                        sharedPreferences.edit().apply {
+                            putString(UserCredentials.SHARED_PREFERENCE_TOKEN_KEY, it.data[0].token)
+                            putInt(UserCredentials.SHARED_PREFERENCE_USERID_KEY, it.data[0].userId)
+                            apply()
+                        }
+
+                        UserCredentials.setToken(it.data[0].token)
+                        UserCredentials.setUserId(it.data[0].userId)
 
                         var intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
+
                     } else {
                         val view = binding.root
                         Snackbar.make(view, it.message, Snackbar.LENGTH_LONG)
