@@ -1,11 +1,9 @@
 package com.example.rallyapp.viewModel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rallyapp.HomeActivity
-import com.example.rallyapp.dataModel.Menu
-import com.example.rallyapp.dataModel.RegisterResponse
+import com.example.rallyapp.dataModel.response_models.Menu
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

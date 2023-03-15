@@ -7,8 +7,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.rallyapp.dataModel.Cart
+import com.example.rallyapp.dataModel.response_models.Cart
 import com.example.rallyapp.databinding.ActivityCartBinding
 import com.example.rallyapp.repo.CartRepo
 import com.example.rallyapp.user.UserCredentials

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.rallyapp.dataModel.Menu
+import com.example.rallyapp.dataModel.response_models.Menu
 import com.squareup.picasso.Picasso
 
 class GridViewItemAdapter(

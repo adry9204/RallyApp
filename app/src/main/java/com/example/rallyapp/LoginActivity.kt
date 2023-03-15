@@ -28,8 +28,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
-        userRepo = UserRepo(applicationContext)
+        userRepo = UserRepo(this)
 
         binding.loginButton.setOnClickListener(){
             val userName = binding.userEmail.text.toString()
@@ -55,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
                         UserCredentials.setToken(it.data[0].token)
                         UserCredentials.setUserId(it.data[0].userId)
 
-                        var intent = Intent(this, HomeActivity::class.java)
+                        val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
 
                     } else {
@@ -68,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.signupButton.setOnClickListener(){
-            var intent = Intent(this, SingUpActivity::class.java)
+            val intent = Intent(this, SingUpActivity::class.java)
             startActivity(intent)
         }
 

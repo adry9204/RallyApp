@@ -1,11 +1,10 @@
 package com.example.rallyapp.network
 
-import com.example.rallyapp.dataModel.Menu
-import com.example.rallyapp.dataModel.ApiResponse
+import com.example.rallyapp.dataModel.response_models.Menu
+import com.example.rallyapp.dataModel.response_models.ApiResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface MenuService {
     companion object{

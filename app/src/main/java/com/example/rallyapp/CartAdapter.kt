@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rallyapp.dataModel.Cart
+import com.example.rallyapp.dataModel.response_models.Cart
 import com.squareup.picasso.Picasso
 
 class CartAdapter(
