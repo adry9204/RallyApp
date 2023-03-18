@@ -84,7 +84,7 @@
 
 
         <ImageButton
-            android:id="@+id/shopping_cart_delete_buttonimage"
+            android:id="@+id/shopping_cart_delete_button_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"

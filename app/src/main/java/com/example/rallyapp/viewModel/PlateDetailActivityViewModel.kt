@@ -3,9 +3,9 @@ package com.example.rallyapp.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rallyapp.PlateDetailActivity
-import com.example.rallyapp.dataModel.response_models.ApiResponse
-import com.example.rallyapp.dataModel.response_models.Cart
-import com.example.rallyapp.dataModel.response_models.Menu
+import com.example.rallyapp.api.dataModel.response_models.ApiResponse
+import com.example.rallyapp.api.dataModel.response_models.Cart
+import com.example.rallyapp.api.dataModel.response_models.Menu
 
 class PlateDetailActivityViewModel: ViewModel() {
 
@@ -41,7 +41,5 @@ class PlateDetailActivityViewModel: ViewModel() {
             }
         }
     }
-
-
 
 }

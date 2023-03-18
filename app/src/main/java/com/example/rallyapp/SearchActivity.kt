@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
@@ -37,6 +38,7 @@ class SearchActivity : AppCompatActivity() {
         val bundle = intent.extras
         bundle?.let {
             val searchString =  it.getString(SEARCH_STRING, "")
+            binding.searchTextFieldSearchScreen.editText?.text = searchString.toEditable()
             viewModel.searchMenuItem(searchString)
         }
 
@@ -59,6 +61,8 @@ class SearchActivity : AppCompatActivity() {
        setObserverForData()
 
     }
+
+    private fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
 
     private fun hideKeyboard(view: View) {
         val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

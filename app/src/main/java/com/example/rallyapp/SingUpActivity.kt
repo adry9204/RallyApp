@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
-import com.example.rallyapp.dataModel.RegisterRequest
+import com.example.rallyapp.api.dataModel.RegisterRequest
 import com.example.rallyapp.databinding.ActivitySingUpBinding
 import com.example.rallyapp.repo.UserRepo
 import com.example.rallyapp.viewModel.MainActivityViewModel

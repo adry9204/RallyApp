@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rallyapp.LoginActivity
 import com.example.rallyapp.SingUpActivity
 import com.example.rallyapp.UserActivity
-import com.example.rallyapp.dataModel.*
+import com.example.rallyapp.api.dataModel.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

@@ -5,8 +5,8 @@ import android.util.Log
 import com.example.rallyapp.LoginActivity
 import com.example.rallyapp.SingUpActivity
 import com.example.rallyapp.UserActivity
-import com.example.rallyapp.dataModel.*
-import com.example.rallyapp.network.RetrofitClient
+import com.example.rallyapp.api.dataModel.*
+import com.example.rallyapp.api.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject

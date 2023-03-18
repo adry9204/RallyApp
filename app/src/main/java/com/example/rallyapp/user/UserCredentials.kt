@@ -9,7 +9,7 @@ object UserCredentials {
     private var token: String? = null
     private var userId: Int? = null
 
-    fun setToken(token: String){this.token = "Bearer " + token }
+    fun setToken(token: String){ this.token = "Bearer $token" }
     fun getToken(): String? { return this.token }
 
     fun setUserId(userId: Int){ this.userId = userId }

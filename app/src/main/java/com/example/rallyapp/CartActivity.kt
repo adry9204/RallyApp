@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.rallyapp.dataModel.response_models.Cart
+import com.example.rallyapp.api.dataModel.response_models.Cart
 import com.example.rallyapp.databinding.ActivityCartBinding
 import com.example.rallyapp.repo.CartRepo
 import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.viewModel.CartActivityViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class CartActivity : AppCompatActivity() {
 
@@ -44,16 +46,39 @@ class CartActivity : AppCompatActivity() {
         transaction.commit()
 
         setObserverOnCartData()
+        setObserverOnCartDeleteResponse()
+
+        binding.shoppingCartRecyclerview.layoutManager = GridLayoutManager(this, 1)
+        adapter = CartAdapter(mutableListOf<Cart>(), viewModel)
+        binding.shoppingCartRecyclerview.adapter = adapter
+        binding.shoppingCartRecyclerview.itemAnimator = DefaultItemAnimator()
 
     }
 
     private fun setObserverOnCartData(){
         viewModel.cartLiveData.observe(this){
-            binding.shoppingCartRecyclerview.layoutManager = GridLayoutManager(this, 1)
-            adapter = CartAdapter(it)
-            binding.shoppingCartRecyclerview.adapter = adapter
+            adapter?.let { adapter->
+                adapter.setData(it.toMutableList())
+                adapter.notifyDataSetChanged()
+            }
             val totalCartPrice = calculateTotalFromCart(it)
             binding.totalAmountLabelCart.text = "$$totalCartPrice"
+        }
+    }
+
+    private fun setObserverOnCartDeleteResponse() {
+        viewModel.cartResponseLiveData.observe(this){
+            if(it.success == 1){
+                makeSnackBar("deleted cart item successfully", binding.shoppingCartRecyclerview)
+                adapter?.let { adapter ->
+                    adapter.onDeleteSuccess()
+                }
+            }else{
+                adapter?.let { adapter ->
+                    adapter.onDeleteFailed()
+                }
+                makeSnackBar("failed to delete cart item ", binding.shoppingCartRecyclerview)
+            }
         }
     }
 
@@ -65,10 +90,16 @@ class CartActivity : AppCompatActivity() {
         return totalPrice
     }
 
+    private fun makeSnackBar(message: String, view: View){
+        val snack = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        snack.show()
+    }
+
     private fun gotToLoginActivity(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+
 
     //method for going to the detail view of a plate
     fun productCardViewOnClick(v:View) {
