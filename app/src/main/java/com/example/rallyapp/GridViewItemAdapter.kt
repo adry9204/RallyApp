@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.rallyapp.dataModel.response_models.Menu
+import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.squareup.picasso.Picasso
 
 class GridViewItemAdapter(
     private val context: Context,
-    private val menuItems: List<Menu>,
+    private var menuItems: List<Menu>,
 ) : RecyclerView.Adapter<GridViewItemAdapter.ViewHolder>() {
     companion object{
         private const val TAG = "GridItemViewAdapter"
@@ -48,6 +48,10 @@ class GridViewItemAdapter(
             plateDetailActivityIntent.putExtras(bundle)
             context.startActivity(plateDetailActivityIntent)
         }
+    }
+
+    fun setMenuItems(items: List<Menu>){
+        menuItems = items
     }
 
     override fun getItemCount(): Int {

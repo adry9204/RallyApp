@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import com.example.rallyapp.dataModel.response_models.Menu
+import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.example.rallyapp.databinding.ActivityPlateDetailBinding
 import com.example.rallyapp.repo.CartRepo
 import com.example.rallyapp.repo.MenuRepo

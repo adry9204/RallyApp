@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
-import com.example.rallyapp.dataModel.LoginRequest
+import com.example.rallyapp.api.dataModel.LoginRequest
 import com.example.rallyapp.databinding.ActivityLoginBinding
 import com.example.rallyapp.repo.UserRepo
 import com.example.rallyapp.user.UserCredentials

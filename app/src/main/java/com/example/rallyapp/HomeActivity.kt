@@ -46,6 +46,10 @@ class HomeActivity : AppCompatActivity() {
 
         binding.pizza.bringToFront()
 
+        binding.homeMenuRecyclerview.layoutManager = GridLayoutManager(this, 2)
+        adapter = GridViewItemAdapter(this, listOf())
+        binding.homeMenuRecyclerview.adapter = adapter
+
         setObserverForMenuData()
 
         binding.searchButton.setOnClickListener{
@@ -65,9 +69,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setObserverForMenuData(){
         viewModel.menuLiveData.observe(this) {
-            binding.homeMenuRecyclerview.layoutManager = GridLayoutManager(this, 2)
-            adapter = GridViewItemAdapter(this, it)
-            binding.homeMenuRecyclerview.adapter = adapter
+            adapter?.let{ adapter->
+                adapter.setMenuItems(it)
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 

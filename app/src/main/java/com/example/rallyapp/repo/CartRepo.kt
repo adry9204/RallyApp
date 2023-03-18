@@ -3,10 +3,10 @@ package com.example.rallyapp.repo
 import android.content.Context
 import android.util.Log
 import com.example.rallyapp.LoginActivity
-import com.example.rallyapp.dataModel.request_models.AddCartRequestBody
-import com.example.rallyapp.dataModel.response_models.ApiResponse
-import com.example.rallyapp.dataModel.response_models.Cart
-import com.example.rallyapp.network.RetrofitClient
+import com.example.rallyapp.api.dataModel.request_models.AddCartRequestBody
+import com.example.rallyapp.api.dataModel.response_models.ApiResponse
+import com.example.rallyapp.api.dataModel.response_models.Cart
+import com.example.rallyapp.api.network.RetrofitClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -72,6 +72,32 @@ class CartRepo(context: Context) {
             }
         })
 
+    }
+
+    fun removeFromCart(cartId: Int, token: String, callback: (ApiResponse<Cart>) -> Unit){
+        val retrofit = RetrofitClient.cartClient.removeFromCart(cartId, token)
+        retrofit.enqueue(object : Callback<ApiResponse<Cart>>{
+            override fun onResponse(
+                call: Call<ApiResponse<Cart>>,
+                response: Response<ApiResponse<Cart>>
+            ) {
+                if(response.body() != null){
+                    callback(response.body()!!)
+                }else{
+                    val json = response.errorBody()!!.toString()
+                    var gson = Gson()
+                    val result = gson.fromJson<ApiResponse<Cart>>(
+                        json,
+                        object : TypeToken<ApiResponse<Cart>>() {}.type
+                    )
+                    callback(result)
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Cart>>, t: Throwable) {
+                Log.e(LoginActivity.TAG, "Api register call failed message: " + t.message)
+            }
+        })
     }
 
 }
