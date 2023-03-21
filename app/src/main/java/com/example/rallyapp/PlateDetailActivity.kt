@@ -13,6 +13,7 @@ import com.example.rallyapp.repo.MenuRepo
 import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.viewModel.PlateDetailActivityViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 
 class PlateDetailActivity : AppCompatActivity() {
 
@@ -98,6 +99,7 @@ class PlateDetailActivity : AppCompatActivity() {
                 binding.plateDescription.text = it[0].description.lowercase()
                 binding.platePrice.text = "$${it[0].price}"
                 binding.plateTitle.text = it[0].name.lowercase()
+                Picasso.get().load(it[0].image).into(binding.plateImage)
                 menu = it[0]
             }
         }
