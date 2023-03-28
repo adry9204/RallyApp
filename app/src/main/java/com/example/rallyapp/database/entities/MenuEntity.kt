@@ -12,6 +12,7 @@ import androidx.room.PrimaryKey
     childColumns = arrayOf("menuCategoryId"),
     onDelete = ForeignKey.CASCADE
 )])
+
 data class MenuEntity(
     @ColumnInfo(name = "menuCategoryId") val menuCategoryId: Int,
     @ColumnInfo(name = "description") val description: String,

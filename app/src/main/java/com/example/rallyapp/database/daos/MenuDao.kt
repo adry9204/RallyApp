@@ -10,5 +10,4 @@ import retrofit2.http.Query
 interface MenuDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMenuItems(menu: MenuEntity)
-
 }

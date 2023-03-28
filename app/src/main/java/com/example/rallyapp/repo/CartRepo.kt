@@ -1,39 +1,27 @@
 package com.example.rallyapp.repo
 
 import android.content.Context
-import android.util.Log
-import com.example.rallyapp.LoginActivity
-import com.example.rallyapp.api.dataModel.request_models.AddCartRequestBody
+import com.example.rallyapp.api.api_helpers.CartApiHelper
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Cart
-import com.example.rallyapp.api.network.RetrofitClient
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.example.rallyapp.database.database_helper.CartDatabaseHelper
+import com.example.rallyapp.database.database_helper.CartQueueDatabaseHelper
 
 class CartRepo(context: Context) {
 
-    fun getUsersCart(userId: Int, authorizationToken: String, callback: (List<Cart>) -> Unit){
-        val retrofit = RetrofitClient.cartClient.getUsersCart(userId, authorizationToken)
-        retrofit.enqueue(object : Callback<ApiResponse<Cart>> {
-            override fun onResponse(
-                call: Call<ApiResponse<Cart>>,
-                response: Response<ApiResponse<Cart>>
-            ) {
-                if(response.body() != null){
-                    val result = response.body()!!.data
-                    callback(result)
-                }else{
-                    val result = listOf<Cart>()
-                    callback(result)
-                }
-            }
-            override fun onFailure(call: Call<ApiResponse<Cart>>, t: Throwable) {
-                Log.e(LoginActivity.TAG, "Api register call failed message: " + t.message)
-            }
-        })
+    private var cartApiHelper: CartApiHelper = CartApiHelper()
+    private var cartDatabaseHelper: CartDatabaseHelper
+    private var cartQueueDatabaseHelper: CartQueueDatabaseHelper
+
+    init {
+        cartDatabaseHelper = CartDatabaseHelper(context)
+        cartQueueDatabaseHelper = CartQueueDatabaseHelper(context)
+    }
+
+    fun getUsersCart(callback: (List<Cart>) -> Unit){
+        cartDatabaseHelper.AsModel().getCartWithMenu {
+            callback(it)
+        }
     }
 
     fun addCItemToCart(
@@ -41,63 +29,21 @@ class CartRepo(context: Context) {
         menuId: Int,
         quantity: Int,
         authorizationToken: String,
-        callback: (ApiResponse<Cart>) -> Unit)
-    {
-        val requestBody = AddCartRequestBody(
+        callback: (ApiResponse<Cart>) -> Unit
+    ){
+        cartApiHelper.addCItemToCart(
+            userId = userId,
             menuId = menuId,
             quantity = quantity,
-            userId = userId
-        )
-
-        val retrofit = RetrofitClient.cartClient.addCartItem(requestBody, authorizationToken)
-        retrofit.enqueue(object : Callback<ApiResponse<Cart>>{
-            override fun onResponse(
-                call: Call<ApiResponse<Cart>>,
-                response: Response<ApiResponse<Cart>>
-            ) = if(response.body() != null){
-                val result = response.body()!!
-                callback(result)
-            }else{
-                val json = response.errorBody()!!.toString()
-                var gson = Gson()
-                val result = gson.fromJson<ApiResponse<Cart>>(
-                    json,
-                    object : TypeToken<ApiResponse<Cart>>() {}.type
-                )
-                callback(result)
-            }
-
-            override fun onFailure(call: Call<ApiResponse<Cart>>, t: Throwable) {
-                Log.e(LoginActivity.TAG, "Api register call failed message: " + t.message)
-            }
-        })
-
+            authorizationToken = authorizationToken
+        ){
+            callback(it)
+        }
     }
 
     fun removeFromCart(cartId: Int, token: String, callback: (ApiResponse<Cart>) -> Unit){
-        val retrofit = RetrofitClient.cartClient.removeFromCart(cartId, token)
-        retrofit.enqueue(object : Callback<ApiResponse<Cart>>{
-            override fun onResponse(
-                call: Call<ApiResponse<Cart>>,
-                response: Response<ApiResponse<Cart>>
-            ) {
-                if(response.body() != null){
-                    callback(response.body()!!)
-                }else{
-                    val json = response.errorBody()!!.toString()
-                    var gson = Gson()
-                    val result = gson.fromJson<ApiResponse<Cart>>(
-                        json,
-                        object : TypeToken<ApiResponse<Cart>>() {}.type
-                    )
-                    callback(result)
-                }
-            }
-
-            override fun onFailure(call: Call<ApiResponse<Cart>>, t: Throwable) {
-                Log.e(LoginActivity.TAG, "Api register call failed message: " + t.message)
-            }
-        })
+        cartApiHelper.removeFromCart(cartId, token){
+            callback(it)
+        }
     }
-
 }
