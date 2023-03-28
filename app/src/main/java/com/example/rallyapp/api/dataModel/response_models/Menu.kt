@@ -1,7 +1,7 @@
 package com.example.rallyapp.api.dataModel.response_models
 
 data class Menu(
-    val category: Category,
+    val category: Category? = null,
     val description: String,
     val id: Int,
     val image: String,

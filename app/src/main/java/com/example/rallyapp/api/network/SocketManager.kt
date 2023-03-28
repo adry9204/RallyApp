@@ -6,29 +6,53 @@ import java.net.URISyntaxException
 
 object SocketManager {
 
-    lateinit var mSocket: Socket
+    private var mSocket: Socket? = null
+    var socketUser = mutableListOf<String>()
 
     @Synchronized
     fun setSocket() {
-        try {
-            mSocket = IO.socket("http://192.168.2.237:8000")
-        } catch (e: URISyntaxException) {
-
+        if(mSocket == null){
+            try {
+                mSocket = IO.socket("http://192.168.2.237:8000")
+            } catch (e: URISyntaxException) {
+                print(e.printStackTrace())
+            }
         }
     }
 
     @Synchronized
-    fun getSocket(): Socket {
+    fun getSocket(): Socket? {
+        socketUser.add("user")
         return mSocket
     }
 
     @Synchronized
+    fun establishConnectionWithUser(userId: Int){
+        mSocket?.let {
+            it.disconnect()
+        }
+        val options = IO.Options()
+        options.query = "userId=$userId"
+        mSocket = IO.socket("http://192.168.2.237:8000", options)
+        mSocket?.let {
+            it.connect()
+        }
+    }
+
+    @Synchronized
     fun establishConnection() {
-        mSocket.connect()
+        mSocket?.let {
+            it.connect()
+        }
     }
 
     @Synchronized
     fun closeConnection() {
-        mSocket.disconnect()
+        socketUser.removeLast()
+        if(socketUser.isEmpty()) {
+            mSocket?.let {
+                it.disconnect()
+            }
+        }
     }
 }

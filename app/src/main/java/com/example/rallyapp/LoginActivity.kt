@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.rallyapp.api.dataModel.LoginRequest
 import com.example.rallyapp.databinding.ActivityLoginBinding
 import com.example.rallyapp.repo.UserRepo
+import com.example.rallyapp.services.CartBackgroundService
 import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.viewModel.MainActivityViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -44,17 +45,10 @@ class LoginActivity : AppCompatActivity() {
                         Log.i(SingUpActivity.TAG,"User Login successful")
 
                         // Save fields to sharedPreferences
-                        val sharedPreferences: SharedPreferences = this.getSharedPreferences(UserCredentials.SHARED_PREFERENCE_NAME,
-                            Context.MODE_PRIVATE)
+                        setSharedPreferences(it.data[0].userId, it.data[0].token)
+                        setUserCredentials(it.data[0].userId, it.data[0].token)
 
-                        sharedPreferences.edit().apply {
-                            putString(UserCredentials.SHARED_PREFERENCE_TOKEN_KEY, it.data[0].token)
-                            putInt(UserCredentials.SHARED_PREFERENCE_USERID_KEY, it.data[0].userId)
-                            apply()
-                        }
-
-                        UserCredentials.setToken(it.data[0].token)
-                        UserCredentials.setUserId(it.data[0].userId)
+                        startCartService()
 
                         val intent = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
@@ -73,5 +67,30 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    private fun setUserCredentials(userId: Int, token: String){
+        UserCredentials.setToken(token)
+        UserCredentials.setUserId(userId)
+    }
+
+    private fun setSharedPreferences(userId: Int, token:String){
+        val sharedPreferences: SharedPreferences = this.getSharedPreferences(UserCredentials.SHARED_PREFERENCE_NAME,
+            Context.MODE_PRIVATE)
+
+        sharedPreferences.edit().apply {
+            putString(UserCredentials.SHARED_PREFERENCE_TOKEN_KEY, token)
+            putInt(UserCredentials.SHARED_PREFERENCE_USERID_KEY, userId)
+            apply()
+        }
+    }
+
+    private fun startCartService(){
+        val bundle = Bundle().apply {
+            putInt(CartBackgroundService.CMD_KEY, CartBackgroundService.CMD_USER_LOGGED_IN)
+        }
+        val cartService = Intent(this, CartBackgroundService::class.java)
+        cartService.putExtras(bundle)
+        startService(cartService)
     }
 }

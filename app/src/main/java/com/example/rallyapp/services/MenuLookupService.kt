@@ -26,7 +26,7 @@ class MenuLookupService: Service() {
         SocketManager.establishConnection()
         menuApiToDatabase = MenuApiToDatabase(this)
 
-        mSocket = SocketManager.getSocket()
+        mSocket = SocketManager.getSocket()!!
 
         mSocket.on("new_menu_item"){
             menuApiToDatabase.loadMenuFromServer()

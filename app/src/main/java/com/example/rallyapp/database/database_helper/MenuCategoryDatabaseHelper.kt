@@ -28,7 +28,7 @@ class MenuCategoryDatabaseHelper(context: Context) {
                     menuId = menu.id,
                     name = menu.name,
                     description = menu.description,
-                    menuCategoryId = menu.category.id,
+                    menuCategoryId = menu.category!!.id,
                     image = menu.image,
                     price = menu.price
                 )
@@ -50,6 +50,14 @@ class MenuCategoryDatabaseHelper(context: Context) {
                 Log.i(TAG, "after inset call")
                 if (callback != null) {
                     callback()
+                }
+            }
+        }
+
+        fun insetCategoryList(category: List<Category>, callback: (() -> Unit)? = null){
+            CoroutineScope(Dispatchers.IO).launch {
+                for(item in category){
+                    insertCategoryItem(item)
                 }
             }
         }
@@ -80,6 +88,26 @@ class MenuCategoryDatabaseHelper(context: Context) {
                 callback?.let {
                     withContext(Dispatchers.Main){
                         it(menuWithCategoryModel.toList())
+                    }
+                }
+            }
+        }
+
+        fun getAllCategoryItems(callback: ((categoryItems: List<Category>) -> Unit)? = null){
+            CoroutineScope(Dispatchers.IO).launch {
+                val categoryEntity = db.categoryDao().getAllCategoryItems()
+                val categoryModel = mutableListOf<Category>()
+
+                for(item in categoryEntity){
+                    var categoryItemModel = Category(
+                        category = item.categoryDisplayName,
+                        id = item.categoryId
+                    )
+                    categoryModel.add(categoryItemModel)
+                }
+                callback?.let {
+                    withContext(Dispatchers.Main){
+                        it(categoryModel.toList())
                     }
                 }
             }

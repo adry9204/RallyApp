@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import com.example.rallyapp.CartActivity
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Cart
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class CartActivityViewModel: ViewModel() {
 
@@ -20,10 +22,9 @@ class CartActivityViewModel: ViewModel() {
 
     fun getUserCart(userId: Int, authorizationToken: String){
         CartActivity.cartRepo?.let{ cartRepo ->
-            cartRepo.getUsersCart(userId, authorizationToken){
+            cartRepo.getUsersCart{
                 _cartListLiveData.value = it
             }
-
         }
     }
 

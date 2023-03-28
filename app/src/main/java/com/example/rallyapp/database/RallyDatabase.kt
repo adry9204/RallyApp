@@ -4,19 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.rallyapp.database.daos.CategoryDao
-import com.example.rallyapp.database.daos.MenuDao
-import com.example.rallyapp.database.daos.MenuWithCategoryDao
-import com.example.rallyapp.database.entities.CategoryEntity
-import com.example.rallyapp.database.entities.MenuEntity
-import com.example.rallyapp.database.entities.MenuWithCategory
+import com.example.rallyapp.database.daos.*
+import com.example.rallyapp.database.entities.*
 
-@Database(entities = [MenuEntity::class, CategoryEntity::class], version = 1)
+@Database(entities = [MenuEntity::class, CategoryEntity::class, CartEntity::class, CartQueueEntity::class], version = 1)
 abstract class RallyDatabase: RoomDatabase() {
 
     abstract fun menuDao(): MenuDao
     abstract fun categoryDao(): CategoryDao
     abstract fun menuWithCategoryDao(): MenuWithCategoryDao
+    abstract fun cartDao(): CartDao
+    abstract fun cartQueueDao(): CartQueueDao
 
     companion object {
         private const val DB_NAME = "rally_database"
