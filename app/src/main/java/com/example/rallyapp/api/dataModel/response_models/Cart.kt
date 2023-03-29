@@ -5,5 +5,6 @@ data class Cart(
     val menu: Menu,
     val price: String,
     val quantity: Int,
-    val user: User
+    val user: User,
+    var pending: Boolean = false
 )

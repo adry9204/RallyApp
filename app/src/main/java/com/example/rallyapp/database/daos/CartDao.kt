@@ -15,4 +15,8 @@ interface CartDao {
 
     @Query("SELECT cart.*, menu.* FROM cart INNER JOIN menu ON cart.menu_id = menu.menuId")
     fun getCartWithMenu(): List<CartWithMenuEntity>
+
+    @Query("DELETE FROM cart WHERE cart_id=:id")
+    fun deleteItemFromCart(id: Int)
+
 }

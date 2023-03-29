@@ -22,7 +22,7 @@ class CartActivityViewModel: ViewModel() {
 
     fun getUserCart(userId: Int, authorizationToken: String){
         CartActivity.cartRepo?.let{ cartRepo ->
-            cartRepo.getUsersCart{
+            cartRepo.getUsersCartAndInQueue(userId){
                 _cartListLiveData.value = it
             }
         }

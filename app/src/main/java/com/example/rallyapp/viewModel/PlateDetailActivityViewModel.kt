@@ -1,11 +1,16 @@
 package com.example.rallyapp.viewModel
 
+import android.os.Message
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.rallyapp.PlateDetailActivity
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Cart
 import com.example.rallyapp.api.dataModel.response_models.Menu
+import com.example.rallyapp.utils.AlertData
+import com.example.rallyapp.utils.AlertManager
+import com.example.rallyapp.utils.NetworkHandleCallback
 
 class PlateDetailActivityViewModel: ViewModel() {
 
@@ -15,6 +20,8 @@ class PlateDetailActivityViewModel: ViewModel() {
     private var _addCartResponseLiveData = MutableLiveData<ApiResponse<Cart>>()
     val addCartResponseLiveData: MutableLiveData<ApiResponse<Cart>> = _addCartResponseLiveData
 
+    private val _showAlert = MutableLiveData<AlertData>()
+    val showAlert: LiveData<AlertData> = _showAlert
 
     fun getMenuItemById(menuId: Int){
         PlateDetailActivity.menuRepo?.let { menuRepo ->
@@ -24,6 +31,14 @@ class PlateDetailActivityViewModel: ViewModel() {
         }
     }
 
+    fun showAlert(message: String){
+        val alertData = AlertData(
+            title = "No network",
+            message = "Added item to the cart queue"
+        )
+        _showAlert.value = alertData
+    }
+
     fun addItemToCart(
         userId: Int,
         menuId: Int,
@@ -31,14 +46,20 @@ class PlateDetailActivityViewModel: ViewModel() {
         authorizationToken: String
     ){
         PlateDetailActivity.cartRepo?.let { cartRepo ->
-            cartRepo.addCItemToCart(
+            cartRepo.addItemToCart(
                 userId = userId,
                 menuId = menuId,
                 quantity = quantity,
-                authorizationToken = authorizationToken
-            ){
-                _addCartResponseLiveData.value = it
-            }
+                authorizationToken = authorizationToken,
+                callback = object : NetworkHandleCallback<ApiResponse<Cart>>{
+                    override fun onConnected(data: ApiResponse<Cart>) {
+                        _addCartResponseLiveData.value = data
+                    }
+                    override fun onDisconnected() {
+                        showAlert("Added cart item to the queue")
+                    }
+                }
+            )
         }
     }
 
