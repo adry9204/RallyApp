@@ -24,7 +24,7 @@ class CategoryRepo(context: Context) {
             } else {
                 categoryApiHelper.getAllCategory { category ->
                     callback(category)
-                    menuCategoryDatabaseHelper.FromDataModel().insetCategoryList(category)
+                    menuCategoryDatabaseHelper.FromDataModel().insertCategoryList(category)
                 }
             }
         }

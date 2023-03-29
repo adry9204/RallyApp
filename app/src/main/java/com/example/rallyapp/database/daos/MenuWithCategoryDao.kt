@@ -13,4 +13,7 @@ interface MenuWithCategoryDao {
 
     @Query("SELECT menu.*, category.* FROM menu INNER JOIN category ON menu.menuCategoryId = category.categoryId WHERE menuId = :menuId")
     fun getMenuItem(menuId: Int): MenuWithCategory
+
+    @Query("SELECT menu.*, category.* FROM menu INNER JOIN category ON menu.menuCategoryId = category.categoryId WHERE menu.name like :pattern")
+    fun searchMenuItem(pattern: String): List<MenuWithCategory>
 }

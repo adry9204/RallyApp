@@ -33,7 +33,7 @@ class MenuRepo(context: Context) {
     }
 
     fun searchMenu(searchString: String, callback: (List<Menu>) -> Unit){
-        menuApiHelper.searchMenu(searchString){
+        menuCategoryDatabaseHelper.AsDataModel().searchMenuItem(searchString){
             callback(it)
         }
     }

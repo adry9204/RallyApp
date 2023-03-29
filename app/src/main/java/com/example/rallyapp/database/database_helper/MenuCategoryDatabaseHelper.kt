@@ -54,7 +54,7 @@ class MenuCategoryDatabaseHelper(context: Context) {
             }
         }
 
-        fun insetCategoryList(category: List<Category>, callback: (() -> Unit)? = null){
+        fun insertCategoryList(category: List<Category>){
             CoroutineScope(Dispatchers.IO).launch {
                 for(item in category){
                     insertCategoryItem(item)
@@ -99,7 +99,7 @@ class MenuCategoryDatabaseHelper(context: Context) {
                 val categoryModel = mutableListOf<Category>()
 
                 for(item in categoryEntity){
-                    var categoryItemModel = Category(
+                    val categoryItemModel = Category(
                         category = item.categoryDisplayName,
                         id = item.categoryId
                     )
@@ -145,6 +145,34 @@ class MenuCategoryDatabaseHelper(context: Context) {
                 )
                 withContext(Dispatchers.Main) {
                     callback(menu)
+                }
+            }
+        }
+
+        fun searchMenuItem(searchTerm: String, callback: (List<Menu>) -> Unit){
+            CoroutineScope(Dispatchers.IO).launch {
+                val pattern = "%${searchTerm.lowercase()}%"
+                Log.i(TAG, "searchMenuItem -> $pattern")
+                val menuItems = db.menuWithCategoryDao().searchMenuItem(pattern)
+                val menuModels = mutableListOf<Menu>()
+                for (menuItem in menuItems){
+                    val category = Category(
+                        category = menuItem.category.categoryDisplayName,
+                        id = menuItem.category.categoryId
+                    )
+                    val menu = Menu(
+                        id = menuItem.menu.menuId,
+                        description = menuItem.menu.description,
+                        image = menuItem.menu.image,
+                        name = menuItem.menu.name,
+                        price = menuItem.menu.price,
+                        category = category
+                    )
+                    menuModels.add(menu)
+                }
+                withContext(Dispatchers.Main){
+                    Log.i(TAG, menuModels.toString())
+                    callback(menuModels.toList())
                 }
             }
         }
