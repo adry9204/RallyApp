@@ -1,7 +1,7 @@
 package com.example.rallyapp.api.api_helpers
 
 import android.util.Log
-import com.example.rallyapp.LoginActivity
+import com.example.rallyapp.activities.LoginActivity
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Category
 import com.example.rallyapp.api.network.RetrofitClient

@@ -3,7 +3,7 @@ package com.example.rallyapp.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rallyapp.HomeActivity
+import com.example.rallyapp.activities.HomeActivity
 import com.example.rallyapp.api.dataModel.response_models.Menu
 import kotlinx.coroutines.launch
 

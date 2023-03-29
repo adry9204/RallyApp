@@ -1,4 +1,4 @@
-package com.example.rallyapp
+package com.example.rallyapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +11,6 @@ import com.example.rallyapp.databinding.ActivityPlateDetailBinding
 import com.example.rallyapp.repo.CartRepo
 import com.example.rallyapp.repo.MenuRepo
 import com.example.rallyapp.user.UserCredentials
-import com.example.rallyapp.utils.AlertData
 import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.PlateDetailActivityViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -65,7 +64,7 @@ class PlateDetailActivity : AppCompatActivity() {
                 userId = UserCredentials.getUserId() ?: 0,
                 menuId = menu.id,
                 quantity = cleanQuantityString(binding.quantityLabel.text.toString()),
-                authorizationToken = UserCredentials.getToken() ?: ""
+                authorizationToken = UserCredentials.getToken()!!
             )
         }
 

@@ -4,7 +4,7 @@ data class Cart(
     val id: Int,
     val menu: Menu,
     val price: String,
-    val quantity: Int,
+    var quantity: Int,
     val user: User,
     var pending: Boolean = false
 )

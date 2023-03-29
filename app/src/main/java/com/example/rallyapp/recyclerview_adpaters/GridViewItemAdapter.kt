@@ -1,4 +1,4 @@
-package com.example.rallyapp
+package com.example.rallyapp.recyclerview_adpaters
 
 
 import android.content.Context
@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.rallyapp.R
+import com.example.rallyapp.activities.PlateDetailActivity
 import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.squareup.picasso.Picasso
 

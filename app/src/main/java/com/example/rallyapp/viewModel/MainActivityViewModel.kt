@@ -3,9 +3,9 @@ package com.example.rallyapp.viewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rallyapp.LoginActivity
-import com.example.rallyapp.SingUpActivity
-import com.example.rallyapp.UserActivity
+import com.example.rallyapp.activities.LoginActivity
+import com.example.rallyapp.activities.SingUpActivity
+import com.example.rallyapp.activities.UserActivity
 import com.example.rallyapp.api.dataModel.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

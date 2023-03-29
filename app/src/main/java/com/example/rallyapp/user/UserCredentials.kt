@@ -1,5 +1,8 @@
 package com.example.rallyapp.user
 
+import android.content.Context
+import android.content.SharedPreferences
+
 object UserCredentials {
 
     const val SHARED_PREFERENCE_NAME = "user_preferences"
@@ -8,6 +11,7 @@ object UserCredentials {
 
     private var token: String? = null
     private var userId: Int? = null
+    private var userName: String? = null
 
     fun setToken(token: String){ this.token = "Bearer $token" }
     fun getToken(): String? { return this.token }
@@ -20,6 +24,26 @@ object UserCredentials {
             return false
         }
         return true
+    }
+
+    fun setUserCredentials(
+        context: Context,
+        userId: Int,
+        token: String,
+        userName: String
+    ){
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME,
+            Context.MODE_PRIVATE)
+
+        sharedPreferences.edit().apply {
+            putString(SHARED_PREFERENCE_TOKEN_KEY, token)
+            putInt(SHARED_PREFERENCE_USERID_KEY, userId)
+            apply()
+        }
+
+        setUserId(userId)
+        setToken(token)
+
     }
 
 }
