@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import com.example.rallyapp.R
 import com.example.rallyapp.activities.CartActivity
 import com.example.rallyapp.activities.HomeActivity
+import com.example.rallyapp.activities.SearchActivity
+import com.example.rallyapp.activities.UserActivity
 import com.example.rallyapp.databinding.FragmentBottomNavBinding
 import com.example.rallyapp.databinding.FragmentHeaderBinding
 
@@ -45,6 +47,16 @@ class BottomNavFragment : Fragment() {
         binding.cartNavButton.setOnClickListener{
             val cartActivity = Intent(context, CartActivity::class.java)
             startActivity(cartActivity)
+        }
+
+        binding.profileNavButton.setOnClickListener{
+            val userActivityIntent = Intent(context, UserActivity::class.java)
+            startActivity(userActivityIntent)
+        }
+
+        binding.searchNavButton.setOnClickListener{
+            val searchActivityIntent = Intent(context, SearchActivity::class.java)
+            startActivity(searchActivityIntent)
         }
 
         return view

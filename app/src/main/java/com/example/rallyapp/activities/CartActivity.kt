@@ -122,18 +122,4 @@ class CartActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    //Auxiliary Fragments Methods
-    //Header
-    fun goToUserActivity(v: View) {
-        var intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun goToSearch(v: View){
-        var intent = Intent(this, SearchActivity::class.java)
-        startActivity(intent)
-    }
-    fun goToCart(v: View){
-    }
 }

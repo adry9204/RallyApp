@@ -88,24 +88,4 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    //Auxiliar Fragments Methods
-    //Header
-    fun goToUserActivity(v: View) {
-        var intent = Intent(this, UserActivity::class.java)
-        startActivity(intent)
-    }
-
-    //Bottom Nav
-    fun goToHome(v:View){
-        var intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun goToSearch(v:View){
-    }
-    fun goToCart(v:View){
-        var intent = Intent(this, CartActivity::class.java)
-        startActivity(intent)
-    }
-
 }
