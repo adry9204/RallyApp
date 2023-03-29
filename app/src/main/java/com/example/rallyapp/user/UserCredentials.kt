@@ -19,6 +19,9 @@ object UserCredentials {
     fun setUserId(userId: Int){ this.userId = userId }
     fun getUserId(): Int? { return this.userId }
 
+    fun setUserName(userName: String){ this.userName = userName }
+    fun getUserName(): String? { return this.userName }
+
     fun isUserSet(): Boolean{
         if(this.token == null || this.userId == null){
             return false
@@ -32,18 +35,20 @@ object UserCredentials {
         token: String,
         userName: String
     ){
+        val bearerToken = "Bearer $token"
+
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME,
             Context.MODE_PRIVATE)
 
         sharedPreferences.edit().apply {
-            putString(SHARED_PREFERENCE_TOKEN_KEY, token)
+            putString(SHARED_PREFERENCE_TOKEN_KEY, bearerToken)
             putInt(SHARED_PREFERENCE_USERID_KEY, userId)
             apply()
         }
 
         setUserId(userId)
         setToken(token)
-
+        setUserName(userName)
     }
 
 }
