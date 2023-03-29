@@ -1,10 +1,11 @@
-package com.example.rallyapp
+package com.example.rallyapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.RegisterRequest
 import com.example.rallyapp.databinding.ActivitySingUpBinding
 import com.example.rallyapp.repo.UserRepo

@@ -1,11 +1,10 @@
-package com.example.rallyapp
+package com.example.rallyapp.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.rallyapp.databinding.FragmentHeaderBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,8 +41,6 @@ class HeaderFragment : Fragment() {
 
         /* setting the text to tagLine */
         binding.tagLine.text = tagText
-
-        // TODO: implement all the binding related stuff under here
 
         return view
     }

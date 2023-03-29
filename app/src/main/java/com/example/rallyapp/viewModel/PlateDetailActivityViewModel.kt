@@ -1,15 +1,13 @@
 package com.example.rallyapp.viewModel
 
-import android.os.Message
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.rallyapp.PlateDetailActivity
+import com.example.rallyapp.activities.PlateDetailActivity
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Cart
 import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.example.rallyapp.utils.AlertData
-import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.utils.NetworkHandleCallback
 
 class PlateDetailActivityViewModel: ViewModel() {

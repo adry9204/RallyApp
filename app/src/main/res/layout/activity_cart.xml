@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CartActivity">
+    tools:context=".activities.CartActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
-        android:name="com.example.rallyapp.HeaderFragment"
+        android:name="com.example.rallyapp.fragments.HeaderFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -68,7 +68,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottom_nav_container"
-        android:name="com.example.rallyapp.BottomNavFragment"
+        android:name="com.example.rallyapp.fragments.BottomNavFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

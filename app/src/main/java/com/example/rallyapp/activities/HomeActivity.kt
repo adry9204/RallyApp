@@ -1,4 +1,4 @@
-package com.example.rallyapp
+package com.example.rallyapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.rallyapp.recyclerview_adpaters.GridViewItemAdapter
+import com.example.rallyapp.fragments.HeaderFragment
 import com.example.rallyapp.databinding.ActivityHomeBinding
 import com.example.rallyapp.databinding.FragmentHeaderBinding
 import com.example.rallyapp.repo.MenuRepo

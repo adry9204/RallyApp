@@ -1,4 +1,4 @@
-package com.example.rallyapp
+package com.example.rallyapp.activities
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.rallyapp.fragments.HeaderFragment
 import com.example.rallyapp.databinding.ActivityUserBinding
 import com.example.rallyapp.repo.UserRepo
 import com.example.rallyapp.viewModel.MainActivityViewModel

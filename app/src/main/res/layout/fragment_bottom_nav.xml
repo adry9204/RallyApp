@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    tools:context=".BottomNavFragment"
+    tools:context=".fragments.BottomNavFragment"
     android:background="@color/background_grey"
     android:elevation="15dp"
     >

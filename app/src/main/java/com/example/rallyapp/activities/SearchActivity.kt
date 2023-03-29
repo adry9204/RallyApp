@@ -1,4 +1,4 @@
-package com.example.rallyapp
+package com.example.rallyapp.activities
 
 import android.content.Context
 import android.content.Intent
@@ -10,6 +10,9 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.rallyapp.recyclerview_adpaters.GridViewItemAdapter
+import com.example.rallyapp.fragments.HeaderFragment
+import com.example.rallyapp.R
 import com.example.rallyapp.databinding.ActivitySearchBinding
 import com.example.rallyapp.repo.MenuRepo
 import com.example.rallyapp.viewModel.SearchActivityViewModel

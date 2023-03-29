@@ -1,8 +1,6 @@
 package com.example.rallyapp.repo
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.util.Log
 import com.example.rallyapp.api.api_helpers.CartApiHelper
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
@@ -58,7 +56,7 @@ class CartRepo(private var context: Context) {
     ){
         val networkHelper = NetworkHelper(context)
         if(networkHelper.isConnectedToNetwork()){
-            cartApiHelper.addCItemToCart(
+            cartApiHelper.addItemToCart(
                 userId = userId,
                 menuId = menuId,
                 quantity = quantity,
@@ -87,7 +85,7 @@ class CartRepo(private var context: Context) {
         cartQueueDatabaseHelper.getUsersCartQueue(userId){ cartQueue ->
             CoroutineScope(Dispatchers.IO).launch {
                 for (item in cartQueue) {
-                    cartApiHelper.addCItemToCart(
+                    cartApiHelper.addItemToCart(
                         userId = item.userId,
                         menuId = item.menuId,
                         quantity = item.quantity,
@@ -105,4 +103,19 @@ class CartRepo(private var context: Context) {
         }
     }
 
+    fun updateCartQuantity(
+        cartId: Int,
+        quantity: Int,
+        token: String,
+        callback: NetworkHandleCallback<ApiResponse<Cart>>
+    ){
+        val networkHelper = NetworkHelper(context)
+        if(networkHelper.isConnectedToNetwork()){
+            cartApiHelper.updateCartItemQuantity(cartId, quantity, token){
+                callback.onConnected(it)
+            }
+        }else{
+            callback.onDisconnected()
+        }
+    }
 }
