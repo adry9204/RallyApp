@@ -105,10 +105,46 @@ class MenuCategoryDatabaseHelper(context: Context) {
                     )
                     categoryModel.add(categoryItemModel)
                 }
+
                 callback?.let {
                     withContext(Dispatchers.Main){
                         it(categoryModel.toList())
                     }
+                }
+            }
+        }
+
+        fun getMenuItem(menuId: Int, callback: (menuItem: Menu) -> Unit){
+            CoroutineScope(Dispatchers.IO).launch {
+                val menuItem = db.menuDao().getMenuItem(menuId = menuId)
+                val menu = Menu(
+                    id = menuItem.menuId,
+                    description = menuItem.description,
+                    image = menuItem.image,
+                    name = menuItem.name,
+                    price = menuItem.price
+                )
+                callback(menu)
+            }
+        }
+
+        fun getMenuItemWithCategory(menuId: Int, callback: (menuItem: Menu) -> Unit){
+            CoroutineScope(Dispatchers.IO).launch {
+                val menuItem = db.menuWithCategoryDao().getMenuItem(menuId = menuId)
+                val category = Category(
+                    category = menuItem.category.categoryDisplayName,
+                    id = menuItem.category.categoryId
+                )
+                val menu = Menu(
+                    id = menuItem.menu.menuId,
+                    description = menuItem.menu.description,
+                    image = menuItem.menu.image,
+                    name = menuItem.menu.name,
+                    price = menuItem.menu.price,
+                    category = category
+                )
+                withContext(Dispatchers.Main) {
+                    callback(menu)
                 }
             }
         }

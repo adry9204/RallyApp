@@ -11,6 +11,8 @@ import com.example.rallyapp.databinding.ActivityPlateDetailBinding
 import com.example.rallyapp.repo.CartRepo
 import com.example.rallyapp.repo.MenuRepo
 import com.example.rallyapp.user.UserCredentials
+import com.example.rallyapp.utils.AlertData
+import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.PlateDetailActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
@@ -67,6 +69,7 @@ class PlateDetailActivity : AppCompatActivity() {
             )
         }
 
+        listenForAlertFromViewModel()
         listenForAddToCartResponse()
         setObserverOnMenuData()
 
@@ -102,6 +105,13 @@ class PlateDetailActivity : AppCompatActivity() {
                 Picasso.get().load(it[0].image).into(binding.plateImage)
                 menu = it[0]
             }
+        }
+    }
+
+    private fun listenForAlertFromViewModel(){
+        viewModel.showAlert.observe(this){
+            val alertHelper = AlertManager(this)
+            alertHelper.showAlertWithOkButton(it)
         }
     }
 

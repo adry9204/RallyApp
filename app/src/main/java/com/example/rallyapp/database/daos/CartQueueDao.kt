@@ -12,6 +12,9 @@ interface CartQueueDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addItemToCartQueue(cartItem: CartQueueEntity)
 
-    @Query("SELECT * FROM cart_queue")
-    fun getItemsFormQueue(): List<CartQueueEntity>
+    @Query("SELECT * FROM cart_queue WHERE cart_userid=:userId")
+    fun getItemsFormQueue(userId: Int): List<CartQueueEntity>
+
+    @Query("DELETE FROM cart_queue WHERE id=:id")
+    fun removeItemFromQueue(id: Int)
 }

@@ -6,10 +6,7 @@ import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.database.RallyDatabase
 import com.example.rallyapp.database.entities.CartEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class CartDatabaseHelper(context: Context) {
     companion object {
@@ -20,6 +17,12 @@ class CartDatabaseHelper(context: Context) {
 
     init {
         db = RallyDatabase.getInstance(context)
+    }
+
+    fun deleteItemFromCart(cartId: Int){
+        CoroutineScope(Dispatchers.IO).launch {
+            db.cartDao().deleteItemFromCart(cartId)
+        }
     }
 
     inner class fromDataModel{

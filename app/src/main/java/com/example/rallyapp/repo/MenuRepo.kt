@@ -46,8 +46,8 @@ class MenuRepo(context: Context) {
     }
 
     fun getMenuItemById(menuId: Int, callback: (List<Menu>) -> Unit){
-        menuApiHelper.getMenuItemById(menuId){
-            callback(it)
+        menuCategoryDatabaseHelper.AsDataModel().getMenuItemWithCategory(menuId){
+            callback(listOf(it))
         }
     }
 }

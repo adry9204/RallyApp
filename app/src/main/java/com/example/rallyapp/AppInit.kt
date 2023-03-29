@@ -5,14 +5,10 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.rallyapp.api.api_helpers.CategoryApiHelper
-import com.example.rallyapp.api.api_helpers.MenuApiHelper
 import com.example.rallyapp.api_to_database.MenuApiToDatabase
-import com.example.rallyapp.database.database_helper.MenuCategoryDatabaseHelper
-import com.example.rallyapp.repo.CategoryRepo
-import com.example.rallyapp.repo.MenuRepo
 import com.example.rallyapp.services.MenuLookupService
-import kotlinx.coroutines.*
+import com.example.rallyapp.utils.NotificationHelper
+
 
 class AppInit : Application() {
     companion object{
@@ -30,6 +26,8 @@ class AppInit : Application() {
         menuApiToDatabase.loadCategoryFromServer()
         menuApiToDatabase.loadMenuFromServer()
 
+        val notificationHelper = NotificationHelper(this)
+        notificationHelper.createNotificationChannel()
     }
 
     private fun startMenuLookUpService(){
