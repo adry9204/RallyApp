@@ -13,7 +13,7 @@ object SocketManager {
     fun setSocket() {
         if(mSocket == null){
             try {
-                mSocket = IO.socket("http://192.168.2.237:8000")
+                mSocket = IO.socket("https://still-brushlands-66800.herokuapp.com")
             } catch (e: URISyntaxException) {
                 print(e.printStackTrace())
             }
@@ -33,7 +33,7 @@ object SocketManager {
         }
         val options = IO.Options()
         options.query = "userId=$userId"
-        mSocket = IO.socket("http://192.168.2.237:8000", options)
+        mSocket = IO.socket("https://still-brushlands-66800.herokuapp.com", options)
         mSocket?.let {
             it.connect()
         }
