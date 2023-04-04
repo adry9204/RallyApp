@@ -121,5 +121,9 @@ class CartActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
+    fun goToOrders(v:View) {
+        var intent = Intent(this, OrdersActivity::class.java)
+        startActivity(intent)
+    }
 
 }

@@ -82,4 +82,9 @@ class HomeActivity : AppCompatActivity() {
         var intent = Intent(this, UserActivity::class.java)
         startActivity(intent)
     }
+
+    fun goToOrders(v:View) {
+        var intent = Intent(this, OrdersActivity::class.java)
+        startActivity(intent)
+    }
 }

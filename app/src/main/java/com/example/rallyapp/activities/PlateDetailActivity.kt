@@ -122,4 +122,8 @@ class PlateDetailActivity : AppCompatActivity() {
         return menuId
     }
 
+    fun goToOrders(v:View) {
+        var intent = Intent(this, OrdersActivity::class.java)
+        startActivity(intent)
+    }
 }

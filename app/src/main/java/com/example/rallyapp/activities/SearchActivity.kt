@@ -88,4 +88,9 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    fun goToOrders(v:View) {
+        var intent = Intent(this, OrdersActivity::class.java)
+        startActivity(intent)
+    }
+
 }
