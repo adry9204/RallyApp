@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val server = "https://still-brushlands-66800.herokuapp.com"
+    private const val server = "http://192.168.2.237:8000"
 
     val userRetrofit: UserService = Retrofit.Builder()
         .baseUrl("$server/api/")

@@ -23,9 +23,6 @@ class MainActivityViewModel : ViewModel() {
     private var _userLoginListLiveData = MutableLiveData<List<LoginResponse>>()
     var userLoginListLiveData: MutableLiveData<List<LoginResponse>> = _userLoginListLiveData
 
-    private var _userLogoutListLiveData = MutableLiveData<List<LogoutResponse>>()
-    var userLogoutListLiveData: MutableLiveData<List<LogoutResponse>> = _userLogoutListLiveData
-
     fun registerUser(request: RegisterRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             val data = SingUpActivity.userRepo?.registerUser(request)
@@ -38,11 +35,6 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
-    fun logoutUser(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val data = UserActivity.userRepo?.logoutUser("Bearer " + token)
-        }
-    }
 
     fun setRegisterData(list: List<RegisterResponse>){
         userRegisterListLiveData.value = list
@@ -52,8 +44,5 @@ class MainActivityViewModel : ViewModel() {
         userLoginListLiveData.value = list
     }
 
-    fun setLogoutData(list: List<LogoutResponse>){
-        userLogoutListLiveData.value = list
-    }
 
 }
