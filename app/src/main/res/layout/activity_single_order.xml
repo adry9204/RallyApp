@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.OrdersActivity">
+    tools:context=".activities.SingleOrderActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
@@ -14,16 +14,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <EditText
+        android:id="@+id/date_single_order_label"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container"
+        android:text="Saturday, 24th March - $24 CAD"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:background="@color/orange"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shopping_cart_recyclerview"
+        android:id="@+id/single_order_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="480dp"
         android:scrollbars="vertical"
         android:padding="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_container"
-        tools:listitem="@layout/single_order_item" />
+        app:layout_constraintTop_toBottomOf="@id/date_single_order_label"
+        tools:listitem="@layout/recycler_item_layout" />
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="56dp"
+        android:id="@+id/login_button"
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="50dp"
+        android:text="Reorder"
+        android:backgroundTint="@color/orange"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav_container"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"/>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottom_nav_container"
