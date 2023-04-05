@@ -176,5 +176,33 @@ class MenuCategoryDatabaseHelper(context: Context) {
                 }
             }
         }
+
+        fun getMenuByCategory(categoryId: Int, callback: ((List<Menu>) -> Unit)?){
+            CoroutineScope(Dispatchers.IO).launch {
+                val menuItems = db.menuWithCategoryDao().getMenuByCategory(categoryId)
+                val menuModels = mutableListOf<Menu>()
+                for (menuItem in menuItems){
+                    val category = Category(
+                        category = menuItem.category.categoryDisplayName,
+                        id = menuItem.category.categoryId
+                    )
+                    val menu = Menu(
+                        id = menuItem.menu.menuId,
+                        description = menuItem.menu.description,
+                        image = menuItem.menu.image,
+                        name = menuItem.menu.name,
+                        price = menuItem.menu.price,
+                        category = category
+                    )
+                    menuModels.add(menu)
+                }
+                withContext(Dispatchers.Main){
+                    Log.i(TAG, menuModels.toString())
+                    callback?.let { callback->
+                        callback(menuModels.toList())
+                    }
+                }
+            }
+        }
     }
 }

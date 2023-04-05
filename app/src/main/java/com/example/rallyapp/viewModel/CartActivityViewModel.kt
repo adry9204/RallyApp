@@ -1,5 +1,7 @@
 package com.example.rallyapp.viewModel
 
+import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,11 +11,12 @@ import com.example.rallyapp.api.dataModel.response_models.Cart
 import com.example.rallyapp.utils.AlertData
 import com.example.rallyapp.utils.NetworkHandleCallback
 
-class CartActivityViewModel: ViewModel() {
+class CartActivityViewModel(): ViewModel() {
 
     companion object{
         private const val TAG = "CartActivityViewModel"
     }
+
 
     private var _cartListLiveData = MutableLiveData<List<Cart>>()
     val cartLiveData: MutableLiveData<List<Cart>> = _cartListLiveData
