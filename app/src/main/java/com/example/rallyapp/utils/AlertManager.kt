@@ -9,7 +9,7 @@ data class AlertData(
 )
 
 class AlertManager(val context: Context) {
-    fun showAlertWithOkButton(alertData: AlertData, onClickOk: (()-> Void) ?= null){
+    fun showAlertWithOkButton(alertData: AlertData, onClickOk: (()-> Unit) ?= null){
         val alertDialogBuilder = AlertDialog.Builder(context)
         alertDialogBuilder.setTitle(alertData.title)
         alertDialogBuilder.setMessage(alertData.message)

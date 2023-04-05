@@ -33,7 +33,7 @@ class MenuLookupService: Service() {
         }
 
         mSocket.on("new_category_item"){
-            menuApiToDatabase.loadCategoryFromServer()
+            menuApiToDatabase.loadCategoryAndMenuFromServer()
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.rallyapp.repo
 
 import android.content.Context
 import com.example.rallyapp.api.api_helpers.MenuApiHelper
+import com.example.rallyapp.api.dataModel.response_models.Category
 import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.example.rallyapp.api_to_database.MenuApiToDatabase
 import com.example.rallyapp.database.database_helper.MenuCategoryDatabaseHelper
@@ -41,6 +42,12 @@ class MenuRepo(context: Context) {
     fun getMenuItemById(menuId: Int, callback: (List<Menu>) -> Unit){
         menuCategoryDatabaseHelper.AsDataModel().getMenuItemWithCategory(menuId){
             callback(listOf(it))
+        }
+    }
+
+    fun getMenuByCategory(categoryId: Int, callback: (List<Menu>) -> Unit){
+        menuCategoryDatabaseHelper.AsDataModel().getMenuByCategory(categoryId){
+            callback(it)
         }
     }
 }

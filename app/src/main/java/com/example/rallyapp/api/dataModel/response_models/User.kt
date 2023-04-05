@@ -7,4 +7,5 @@ data class User(
     val password: String ?= null,
     val userName: String ?= null,
     val verified: Boolean ?= null,
+    val stripeCustomerId: String ?= null
 )

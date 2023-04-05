@@ -5,8 +5,13 @@ import android.util.Log
 import com.example.rallyapp.activities.LoginActivity
 import com.example.rallyapp.activities.SingUpActivity
 import com.example.rallyapp.activities.UserActivity
+import com.example.rallyapp.api.api_helpers.UserApiHelper
 import com.example.rallyapp.api.dataModel.*
+import com.example.rallyapp.api.dataModel.request_models.UpdateUserRequest
+import com.example.rallyapp.api.dataModel.response_models.ApiResponse
+import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.api.network.RetrofitClient
+import com.example.rallyapp.utils.NetworkHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -19,7 +24,7 @@ import retrofit2.Response
  * Repository to save and get user info
  * author: Satender Yadav
  */
-class UserRepo (appContext: Context) {
+class UserRepo (private val appContext: Context) {
 
     suspend fun registerUser(request: RegisterRequest): List<RegisterResponse> {
 
@@ -102,6 +107,57 @@ class UserRepo (appContext: Context) {
                 }
             })
             result
+        }
+    }
+
+    suspend fun getUserById(
+        userId: Int,
+        token: String,
+        callback: (response: ApiResponse<User>) -> Unit
+    ){
+
+        val networkHelper = NetworkHelper(appContext)
+        if(networkHelper.isConnectedToNetwork()){
+            withContext(Dispatchers.IO){
+                val userApiHelper = UserApiHelper()
+                userApiHelper.getUserById(userId, token){
+                    callback(it)
+                }
+            }
+        }else{
+            withContext(Dispatchers.Main){
+                callback(ApiResponse(
+                    success = 0,
+                    message = "No internet connection",
+                    data = listOf()
+                ))
+            }
+        }
+
+    }
+
+    suspend fun updateUser(
+        userRequest: UpdateUserRequest,
+        token: String,
+        callback: (response: ApiResponse<User>) -> Unit
+    ){
+
+        val networkHelper = NetworkHelper(appContext)
+        if(networkHelper.isConnectedToNetwork()){
+            withContext(Dispatchers.IO){
+                val userApiHelper = UserApiHelper()
+                userApiHelper.updateUserById(userRequest, token){
+                    callback(it)
+                }
+            }
+        }else{
+            withContext(Dispatchers.Main){
+                callback(ApiResponse(
+                    success = 0,
+                    message = "No internet connection",
+                    data = listOf()
+                ))
+            }
         }
     }
 

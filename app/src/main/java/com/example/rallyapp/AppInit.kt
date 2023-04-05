@@ -23,8 +23,7 @@ class AppInit : Application() {
         }
 
         val menuApiToDatabase = MenuApiToDatabase(this)
-        menuApiToDatabase.loadCategoryFromServer()
-        menuApiToDatabase.loadMenuFromServer()
+        menuApiToDatabase.loadCategoryAndMenuFromServer()
 
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()

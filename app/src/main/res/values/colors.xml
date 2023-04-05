@@ -13,5 +13,5 @@
     <color name="background_grey">#FAFAFA</color>
     <color name="orange">#FD9A1F</color>
     <color name="warning_yellow">#EED202</color>
-
+    <color name="warning_red">#B33A3A</color>
 </resources>

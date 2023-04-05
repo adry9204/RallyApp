@@ -22,7 +22,7 @@ class MenuApiToDatabase(private var context: Context) {
         }
     }
 
-    fun loadCategoryFromServer(){
+    fun loadCategoryAndMenuFromServer(){
         CoroutineScope(Dispatchers.IO).launch{
             val categoryApiHelper = CategoryApiHelper()
             val menuCategoryDatabaseHelper = MenuCategoryDatabaseHelper(context)
@@ -32,6 +32,7 @@ class MenuApiToDatabase(private var context: Context) {
                 for (categoryItem in it){
                     menuCategoryDatabaseHelper.FromDataModel().insertCategoryItem(categoryItem)
                 }
+                loadMenuFromServer()
             }
         }
     }
