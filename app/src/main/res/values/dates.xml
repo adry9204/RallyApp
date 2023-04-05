@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cardSummary">
+        <item>Saturday, 25th March, $24CAD</item>
+        <item>Friday, 20th March, $32CAD</item>
+        <item>Monday, 8th March, $58CAD</item>
+        <item>Tuesday, 10th March, $78CAD</item>
+        <item>Wednesday, 25th April, $150CAD</item>
+        <item>Saturday, 25th March, $24CAD</item>
+        <item>Friday, 20th March, $32CAD</item>
+        <item>Monday, 8th March, $58CAD</item>
+        <item>Tuesday, 10th March, $78CAD</item>
+        <item>Wednesday, 25th April, $150CAD9</item>
+        <item>Saturday, 25th March, $24CAD</item>
+        <item>Friday, 20th March, $32CAD</item>
+        <item>Monday, 8th March, $58CAD</item>
+        <item>Tuesday, 10th March, $78CAD</item>
+        <item>Wednesday, 25th April, $150CAD</item>
+        <item>Saturday, 25th March, $24CAD</item>
+        <item>Friday, 20th March, $32CAD</item>
+        <item>Monday, 8th March, $58CAD</item>
+        <item>Tuesday, 10th March, $78CAD</item>
+        <item>Wednesday, 25th April, $150CAD9</item>
+    </string-array>
+</resources>

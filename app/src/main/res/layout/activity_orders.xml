@@ -15,9 +15,9 @@
         app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shopping_cart_recyclerview"
+        android:id="@+id/orders_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical"
         android:padding="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
+            android:paddingBottom="10dp"
             android:text="Sunday, 25 March - $24 CAD"
             android:textAlignment="textStart"
             android:textColor="@color/grey"
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
+            android:paddingBottom="10dp"
             android:text="Chicken burger, salad and onion rings"
             android:textAlignment="textStart"
             android:textColor="@color/black"
@@ -59,6 +61,7 @@
             android:background="@drawable/round_button_shape"
             android:textSize="12sp"
             android:layout_marginRight="20dp"
+            android:backgroundTint="@color/grey"
             />
         <Button
             android:id="@+id/reorder_button"
@@ -71,7 +74,8 @@
             android:text="Reorder"
             android:textSize="12sp"
             android:layout_marginRight="20dp"
-            android:backgroundTint="@color/grey"
+            android:backgroundTint="@color/green"
+            android:onClick="goToSingleOrder"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

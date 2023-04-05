@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cardDates">
+        <item>Chicken Burger, Caesar Salad, Fries </item>
+        <item>Onion rings, Rally Burger, Poutine</item>
+        <item>Beet Root salad, Nachos with pulled pork</item>
+        <item>Calamari, Veggie burger, Yams</item>
+        <item>Cod Fish Tacos, Pulled Pork Sandwich</item>
+        <item>Chicken Burger, Caesar Salad, Fries </item>
+        <item>Onion rings, Rally Burger, Poutine</item>
+        <item>Beet Root salad, Nachos with pulled pork</item>
+        <item>Calamari, Veggie burger, Yams</item>
+        <item>Cod Fish Tacos, Pulled Pork Sandwich</item>
+        <item>Chicken Burger, Caesar Salad, Fries </item>
+        <item>Onion rings, Rally Burger, Poutine</item>
+        <item>Beet Root salad, Nachos with pulled pork</item>
+        <item>Calamari, Veggie burger, Yams</item>
+        <item>Cod Fish Tacos, Pulled Pork Sandwich</item>
+        <item>Chicken Burger, Caesar Salad, Fries </item>
+        <item>Onion rings, Rally Burger, Poutine</item>
+        <item>Beet Root salad, Nachos with pulled pork</item>
+        <item>Calamari, Veggie burger, Yams</item>
+        <item>Cod Fish Tacos, Pulled Pork Sandwich</item>
+    </string-array>
+</resources>

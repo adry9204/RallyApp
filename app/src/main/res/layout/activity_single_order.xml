@@ -30,7 +30,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/single_order_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="460dp"
         android:scrollbars="vertical"
         android:padding="5dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -41,7 +41,7 @@
     <Button
         android:layout_width="300dp"
         android:layout_height="56dp"
-        android:id="@+id/login_button"
+        android:id="@+id/reorder_detail_button"
         android:layout_marginTop="60dp"
         android:layout_marginLeft="50dp"
         android:text="Reorder"
