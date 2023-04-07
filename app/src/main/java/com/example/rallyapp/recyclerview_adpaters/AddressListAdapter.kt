@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class AddressListAdapter(
     private val context: Context,
-    private var addressData: MutableList<Address<Int>>
+    private var addressData: MutableList<Address<User>>
 ) : RecyclerView.Adapter<AddressListAdapter.ViewHolder>() {
 
     companion object {
@@ -24,6 +24,22 @@ class AddressListAdapter(
     inner class ViewHolder(val binding: AdrressListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
+                if(adapterPosition != RecyclerView.NO_POSITION){
+                    val position = adapterPosition
+                    selectedIndex = position
+                    notifyItemChanged(selectedIndex!!)
+
+                    lastAddressSelectedIndex?.let { it1 ->
+                        Log.i(TAG, it1.toString())
+                        notifyItemChanged(it1)
+                    }
+
+                    lastAddressSelectedIndex = position
+                    selectedAddressId = addressData[position].id
+                }
+            }
+
+            binding.addressListAddressSelectRadioButton.setOnClickListener {
                 if(adapterPosition != RecyclerView.NO_POSITION){
                     val position = adapterPosition
                     selectedIndex = position
@@ -86,7 +102,7 @@ class AddressListAdapter(
 
     }
 
-    fun setData(newData: List<Address<Int>>) {
+    fun setData(newData: List<Address<User>>) {
         addressData = newData.toMutableList()
         notifyDataSetChanged()
     }

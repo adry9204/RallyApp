@@ -5,20 +5,22 @@ import com.example.rallyapp.api.dataModel.request_models.MakeOrderFromCartReques
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.example.rallyapp.api.dataModel.response_models.Order
+import com.example.rallyapp.api.dataModel.response_models.User
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface OrderService {
     companion object{
-        const val SEARCH_STRING = "search_string"
-        const val MENU_ID = "menu_id"
+        const val ORDER_ID = "order_id"
     }
 
     @POST("orders")
-    fun makeOrderFromUsersCart(@Body makeOrderFromCartRequestBody: MakeOrderFromCartRequestBody): Call<ApiResponse<Order>>
+    fun makeOrderFromUsersCart(
+        @Body makeOrderFromCartRequestBody: MakeOrderFromCartRequestBody,
+        @Header(CartService.AUTH_HEADER) token: String
+    ): Call<ApiResponse<Order<Int>>>
 
+    @GET("orders/{${ORDER_ID}}")
+    fun getOrderById(@Path(ORDER_ID) orderId: Int,  @Header(CartService.AUTH_HEADER) token: String): Call<ApiResponse<Order<User>>>
 
 }
