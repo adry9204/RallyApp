@@ -2,6 +2,7 @@ package com.example.rallyapp.api.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object RetrofitClient {
 
@@ -30,4 +31,17 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(CategoryService::class.java)
+
+    val orderClient: OrderService = Retrofit.Builder()
+        .baseUrl("$server/api/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(OrderService::class.java)
+
+    val addressClient: AddressService = Retrofit.Builder()
+        .baseUrl("$server/api/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(AddressService::class.java)
+
 }

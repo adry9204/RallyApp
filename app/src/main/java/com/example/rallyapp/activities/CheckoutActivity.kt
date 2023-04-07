@@ -1,58 +1,86 @@
 package com.example.rallyapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rallyapp.api.dataModel.response_models.Address
 import com.example.rallyapp.api.dataModel.response_models.Menu
+import com.example.rallyapp.api.dataModel.response_models.Order
 import com.example.rallyapp.api.dataModel.response_models.OrderDetail
 import com.example.rallyapp.databinding.ActivityCheckoutBinding
 import com.example.rallyapp.recyclerview_adpaters.AddressListAdapter
 import com.example.rallyapp.recyclerview_adpaters.OrderDetailsListAdapter
+import com.example.rallyapp.user.UserCredentials
+import com.example.rallyapp.utils.AlertData
+import com.example.rallyapp.utils.AlertManager
+import com.example.rallyapp.viewModel.CheckoutActivityViewModel
 
 
 class CheckoutActivity : AppCompatActivity() {
 
+    companion object{
+        const val TAG = "CheckoutActivity"
+        const val ORDER_ID_KEY = "order_data"
+    }
+
+
     private lateinit var binding: ActivityCheckoutBinding
     private lateinit var orderItemsAdapter: OrderDetailsListAdapter
     private lateinit var addressListAdapter: AddressListAdapter
+
+    private lateinit var viewModel: CheckoutActivityViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCheckoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this)[CheckoutActivityViewModel::class.java]
+
         setOrderItemsRecyclerView()
-        setFakeDataOnOrderItemsList()
+        setObserverOnGetOrderByItemResponse()
+
+        intent.extras?.let {
+            it.getInt(ORDER_ID_KEY)?.let {
+                doIfUserLoggedIn {
+                    viewModel.getOrderById(orderId = it, UserCredentials.getToken()!!)
+                }
+            }
+        }
 
         setAddressListRecyclerView()
-        setFakeDataOnAddressItemsList()
+        setObserverOnUsersAddressResponse()
+
+       doIfUserLoggedIn {
+           viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
+       }
     }
 
     private fun setAddressListRecyclerView(){
         binding.orderActivityAddressRecyclerView.layoutManager = LinearLayoutManager(this)
         addressListAdapter = AddressListAdapter(this, mutableListOf())
         binding.orderActivityAddressRecyclerView.adapter = addressListAdapter
-
     }
 
-    private fun setFakeDataOnAddressItemsList(){
-        val data = mutableListOf<Address<Int>>()
-        val address = Address(
-            id = 1,
-            name = "Abraham Alfred Babu",
-            line1 = "48 Scarboro Ave",
-            line2 = "Basement",
-            country = "Canada",
-            province = "Ontario",
-            postalCode = "M1C 1M3",
-            userId = 1
-        )
-        for (i in 0..2){
-            data.add(address)
+    private fun setObserverOnUsersAddressResponse(){
+        viewModel.userAddressResponse.observe(this){
+            if(it.success == 1){
+                addressListAdapter.setData(it.data)
+            }else{
+                val alertManager = AlertManager(this)
+                alertManager.showAlertWithOkButton(AlertData(
+                    title = "Failed to make order",
+                    message = "Failed to fetch users address"
+                )){
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
-        addressListAdapter.setData(data.toList())
     }
 
     private fun setOrderItemsRecyclerView(){
@@ -61,23 +89,38 @@ class CheckoutActivity : AppCompatActivity() {
         binding.orderActivityOrderItemsRecyclerView.adapter = orderItemsAdapter
     }
 
-    private fun setFakeDataOnOrderItemsList(){
-        val data = mutableListOf<OrderDetail>()
-        val order = OrderDetail(
-            id = 1,
-            menu = Menu(
-                id = 1,
-                name = "Name of item in this",
-                description = "description",
-                image = "https://images.ctfassets.net/odk340ad2lwh/ZAY43Mmno5pEM3UE77pBK/cab80a7cbbe081dd7507a7fb2a89d5af/WFC_2543_NB_ValueAdd_PizzaDominoAffect_Lifestyle_1x1.jpg",
-                price = "20"
-            ),
-            price = "30",
-            quantity = 3
-        )
-        for (i in 0..3){
-            data.add(order)
+    private fun setObserverOnGetOrderByItemResponse(){
+        viewModel.getOrderByIdResponse.observe(this){
+            if(it.success == 1){
+                orderItemsAdapter.setData(it.data[0].orderDetails)
+                binding.orderActivityOrderSummaryTotalPriceValue.text = "$${it.data[0].beforeTaxPrice}"
+                binding.orderActivityOrderSummaryTaxPriceValue.text = "$${it.data[0].taxPrice}"
+                binding.orderActivityOrderSummaryGrandTotalValue.text = "$${it.data[0].totalPrice}"
+            }else{
+                val alertManager = AlertManager(this)
+                alertManager.showAlertWithOkButton(AlertData(
+                    title = "Failed to make order",
+                    message = "Failed to fetch order"
+                )){
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
-        orderItemsAdapter.setData(data.toList())
+    }
+
+    fun doIfUserLoggedIn(task: ()->Unit){
+        if(UserCredentials.isUserSet()){
+            task()
+        }else{
+            val alertManager = AlertManager(this)
+            alertManager.showAlertWithOkButton(AlertData(
+                title = "Please Login",
+                message = "Please login before checking out"
+            )){
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 }
