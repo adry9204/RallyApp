@@ -10,12 +10,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.rallyapp.recyclerview_adpaters.CartAdapter
 import com.example.rallyapp.fragments.HeaderFragment
-import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.response_models.Cart
 import com.example.rallyapp.databinding.ActivityCartBinding
 import com.example.rallyapp.repo.CartRepo
 import com.example.rallyapp.user.UserCredentials
-import com.example.rallyapp.utils.AlertData
 import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.CartActivityViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -54,6 +52,11 @@ class CartActivity : AppCompatActivity() {
         setObserverOnCartDeleteResponse()
         setObserverOnCartQuantityResponse()
         setObserverOnAlertMessages()
+
+        binding.checkoutButton.setOnClickListener {
+            val intent = Intent(this, CheckoutActivity::class.java)
+            startActivity(intent)
+        }
 
         binding.shoppingCartRecyclerview.layoutManager = GridLayoutManager(this, 1)
         adapter = CartAdapter(mutableListOf<Cart>(), viewModel, this)

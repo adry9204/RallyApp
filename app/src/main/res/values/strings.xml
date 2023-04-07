@@ -12,5 +12,15 @@
     <string name="user_activity_save_button_text">Save ✔</string>
     <string name="user_activity_logout_button_text">Log Out</string>
     <string name="user_activity_password_warning_text">* Keep the password empty if you don\'t want to update</string>
+    <string name="checkout_activity_title">Order Checkout</string>
+    <string name="order_activity_order_items_title">Order Items</string>
+    <string name="order_activity_voucher_edit_text_hint">Code</string>
+    <string name="order_activity_voucher_title">Voucher</string>
+    <string name="order_activity_voucher_apply_button_text">Apply</string>
+    <string name="order_activity_order_summary_title">Order Summary</string>
+    <string name="order_activity_order_summary_total_price_label">Total Price:</string>
+    <string name="order_activity_order_summary_tax_price_label">Tax Price:</string>
+    <string name="order_activity_order_summary_grand_total_label">Grand Total:</string>
+    <string name="order_activity_address_title">Choose an address</string>
 
 </resources>

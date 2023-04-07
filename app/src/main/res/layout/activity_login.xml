@@ -93,7 +93,7 @@
             android:layout_height="56dp"
             android:id="@+id/signup_button"
             android:layout_marginTop="10dp"
-            android:text="Sign In instead"
+            android:text="Sign up instead"
             android:backgroundTint="@color/blue"
             android:textColor="@color/white"
             />

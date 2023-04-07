@@ -130,7 +130,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setScrollListenerOnMenu(){
         binding.homeMenuRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            var atTop = false
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as GridLayoutManager
@@ -141,16 +140,10 @@ class HomeActivity : AppCompatActivity() {
                     moveMenuUp()
                 }
 
-                if (!recyclerView.canScrollVertically(-1) && dy < 0) {
+                if(!recyclerView.canScrollVertically(-1) && dy < -5){
                     setVisibilityForHomeActivityHeader(View.VISIBLE)
                     moveMenuDown()
-                    atTop = true
                 }
-//                if(!recyclerView.canScrollVertically(-1) && dy < 0 && atTop){
-//                    setVisibilityForHomeActivityHeader(View.VISIBLE)
-//                    moveMenuDown()
-//                }
-
             }
         })
     }
