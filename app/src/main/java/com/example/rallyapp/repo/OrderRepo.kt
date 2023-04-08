@@ -61,4 +61,24 @@ class OrderRepo {
             callback(it)
         }
     }
+
+    fun getUsersOrder(
+        userId: Int,
+        token: String,
+        callback:(response: ApiResponse<Order<User>>) -> Unit
+    ){
+        orderApiHelper.getUsersOrder(userId, token){
+            callback(it)
+        }
+    }
+
+    fun reorderById(
+        orderId: Int,
+        token: String,
+        callback:(response: ApiResponse<Order<User>>) -> Unit
+    ){
+        orderApiHelper.reorderByOrderId(orderId, token){
+            callback(it)
+        }
+    }
 }

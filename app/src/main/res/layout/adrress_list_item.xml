@@ -46,7 +46,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="10dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/background_grey"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

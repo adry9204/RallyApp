@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/curved_top_white_sheet"
+    android:paddingBottom="30dp">
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:id="@+id/add_address_fragment_title_icon"
+        android:src="@drawable/ic_baseline_house_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:gravity="center"
+        android:text="@string/add_address_fragment_title_text"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:id="@+id/add_address_fragment_title"
+        android:src="@drawable/ic_baseline_house_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/add_address_fragment_title_icon"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/add_address_fragment_title_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/add_address_fragment_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp"
+        android:hint="@string/add_address_fragment_full_name_hint">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/add_address_fragment_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/add_address_fragment_line_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp"
+        android:hint="@string/add_address_fragment_address_line_1_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:boxBackgroundColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/add_address_fragment_line_one"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/add_address_fragment_line_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp"
+        android:hint="@string/add_address_fragment_address_line_2_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/add_address_city_postal_section"
+        app:layout_constraintTop_toBottomOf="@id/add_address_fragment_line_two"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_address_fragment_city"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:boxBackgroundColor="@color/white"
+            android:hint="@string/add_address_fragment_city_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:scrollHorizontally="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_address_fragment_postal_code"
+            android:layout_weight="1"
+            app:boxBackgroundColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/add_address_fragment_postal_code_hint">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="textPostalAddress"
+                android:scrollHorizontally="true"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/add_address_fragment_save_button"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="15dp"
+        app:layout_constraintTop_toBottomOf="@id/add_address_city_postal_section"
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/add_address_fragment_save_button_text"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+
+    <Button
+        android:id="@+id/add_address_fragment_cancel_button"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="15dp"
+        app:layout_constraintTop_toBottomOf="@id/add_address_fragment_save_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:backgroundTint="@color/minimal_grey"
+        android:text="@string/add_address_fragment_save_cancel_text"
+        android:textSize="20sp"
+        android:layout_height="60dp" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

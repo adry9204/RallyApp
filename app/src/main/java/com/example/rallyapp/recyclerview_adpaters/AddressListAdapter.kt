@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.response_models.Address
 import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.databinding.AdrressListItemBinding
+import com.example.rallyapp.databinding.FragmentAddAddressBottomSheetBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -24,8 +27,8 @@ class AddressListAdapter(
     inner class ViewHolder(val binding: AdrressListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                if(adapterPosition != RecyclerView.NO_POSITION){
-                    val position = adapterPosition
+                if(absoluteAdapterPosition != RecyclerView.NO_POSITION){
+                    val position = absoluteAdapterPosition
                     selectedIndex = position
                     notifyItemChanged(selectedIndex!!)
 
@@ -40,8 +43,8 @@ class AddressListAdapter(
             }
 
             binding.addressListAddressSelectRadioButton.setOnClickListener {
-                if(adapterPosition != RecyclerView.NO_POSITION){
-                    val position = adapterPosition
+                if(absoluteAdapterPosition != RecyclerView.NO_POSITION){
+                    val position = absoluteAdapterPosition
                     selectedIndex = position
                     notifyItemChanged(selectedIndex!!)
 
@@ -56,7 +59,7 @@ class AddressListAdapter(
             }
 
             binding.addressListAddressExpandButton.setOnClickListener{
-                val position = adapterPosition
+                val position = absoluteAdapterPosition
                 addressData[position].expanded = !addressData[position].expanded
                 notifyItemChanged(position)
             }
@@ -77,9 +80,12 @@ class AddressListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.addressListAddressLineOne.text = addressData[position].line1
         holder.binding.addressListAddressName.text = addressData[position].name
+
+        if(addressData[position].line2 == null) hideAddressLine2(holder.binding)
         addressData[position].line2?.let {
             holder.binding.addressListAddressLineTwo.text = it
         }
+
         holder.binding.addressListAddressExpandableName.text = addressData[position].name
         holder.binding.addressListAddressProvinceCountry.text =
             "${addressData[position].province}, ${addressData[position].country}"
@@ -102,6 +108,16 @@ class AddressListAdapter(
 
     }
 
+
+    private fun hideAddressLine2(binding: AdrressListItemBinding){
+        binding.apply {
+            addressListAddressLineTwo.visibility = View.GONE
+            val params = addressListAddressExpandableName.layoutParams as ConstraintLayout.LayoutParams
+            params.topToBottom = addressListAddressLineOne.id
+            addressListAddressExpandableName.requestLayout()
+        }
+    }
+
     fun setData(newData: List<Address<User>>) {
         addressData = newData.toMutableList()
         notifyDataSetChanged()
@@ -110,11 +126,13 @@ class AddressListAdapter(
     private fun expandAddressDetails(binding: AdrressListItemBinding) {
         binding.addressListAddressName.visibility = View.INVISIBLE
         binding.addressListAddressExpandable.visibility = View.VISIBLE
+        binding.addressListAddressExpandButton.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
     }
 
     private fun contractAddressDetails(binding: AdrressListItemBinding) {
         binding.addressListAddressName.visibility = View.VISIBLE
         binding.addressListAddressExpandable.visibility = View.GONE
+        binding.addressListAddressExpandButton.setImageResource(R.drawable.ic_baseline_keyboard_arrow_down_24)
     }
 
     override fun getItemCount(): Int {

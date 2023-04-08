@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.rallyapp.api.dataModel.request_models.AddAddressRequest
 import com.example.rallyapp.api.dataModel.response_models.*
 import com.example.rallyapp.repo.AddressRepo
 import com.example.rallyapp.repo.OrderRepo
@@ -28,6 +29,9 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
 
     private var _confirmOrderResponse = MutableLiveData<ApiResponse<Order<Int>>>()
     val confirmOrderResponses: MutableLiveData<ApiResponse<Order<Int>>> = _confirmOrderResponse
+
+    private var _addAddressResponse = MutableLiveData<ApiResponse<Address<Int>>>()
+    val addAddressResponse: MutableLiveData<ApiResponse<Address<Int>>> = _addAddressResponse
 
 
     fun getOrderById(orderId: Int, token: String){
@@ -67,6 +71,15 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
     ){
         orderRepo.deleteOrder(orderId, token){
             Log.i(TAG, "DeleteOrder Response -> $it")
+        }
+    }
+
+    fun addNewAddress(
+        addAddressRequest: AddAddressRequest,
+        token: String
+    ){
+        addressRepo.addNewAddress(addAddressRequest, token){
+            _addAddressResponse.value = it
         }
     }
 }

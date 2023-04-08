@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rallyapp.api.dataModel.response_models.*
 import com.example.rallyapp.databinding.ActivityCheckoutBinding
+import com.example.rallyapp.fragments.AddAddressBottomSheetFragment
 import com.example.rallyapp.recyclerview_adpaters.AddressListAdapter
 import com.example.rallyapp.recyclerview_adpaters.OrderDetailsListAdapter
 import com.example.rallyapp.user.UserCredentials
@@ -94,8 +95,16 @@ class CheckoutActivity : AppCompatActivity() {
             }
         }
 
-        setObserverOnConfirmOrderResponse()
+        binding.checkoutActivityCancelCheckoutButton.setOnClickListener {
+            finish()
+        }
 
+        binding.checkoutActivityAddAddressButton.setOnClickListener{
+            showAddAddressBottomSheet()
+        }
+
+        setObserverOnConfirmOrderResponse()
+        setObserverOnAddAddress()
     }
 
     override fun onDestroy() {
@@ -103,6 +112,11 @@ class CheckoutActivity : AppCompatActivity() {
         if(this::order.isInitialized && !orderConfirmed){
             viewModel.deleteOrder(orderId = order.id, UserCredentials.getToken()!!)
         }
+    }
+
+    private fun showAddAddressBottomSheet(){
+        val addAddressBottomSheetFragment = AddAddressBottomSheetFragment(viewModel)
+        addAddressBottomSheetFragment.show(supportFragmentManager, addAddressBottomSheetFragment.tag)
     }
 
     private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult){
@@ -142,6 +156,18 @@ class CheckoutActivity : AppCompatActivity() {
                         presentPaymentSheet()
                     }
                 }
+            }
+        }
+    }
+
+    private fun setObserverOnAddAddress(){
+        viewModel.addAddressResponse.observe(this){
+            handleResponseIfSuccess(
+                response = it,
+                message = ""
+            ){
+                Log.i(TAG, "success")
+                viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
             }
         }
     }

@@ -5,6 +5,7 @@ data class Address<UserType>(
     val country: String,
     val line1: String,
     var line2: String? = null,
+    var city: String,
     val name: String,
     val postalCode: String,
     val province: String,
