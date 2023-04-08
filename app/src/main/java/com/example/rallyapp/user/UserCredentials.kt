@@ -2,6 +2,7 @@ package com.example.rallyapp.user
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.rallyapp.api.dataModel.response_models.Voucher
 
 object UserCredentials {
 
@@ -12,6 +13,7 @@ object UserCredentials {
     private var token: String? = null
     private var userId: Int? = null
     private var userName: String? = null
+    private var claimedVoucher: Voucher? = null
 
     fun setToken(token: String){ this.token = "Bearer $token" }
     fun getToken(): String? { return this.token }
@@ -28,6 +30,10 @@ object UserCredentials {
         }
         return true
     }
+
+    fun hasVoucher(): Boolean {  return claimedVoucher != null }
+    fun setVoucher(voucher: Voucher){ claimedVoucher = voucher }
+    fun getVoucher(): Voucher? { return claimedVoucher }
 
     fun setUserCredentials(
         context: Context,

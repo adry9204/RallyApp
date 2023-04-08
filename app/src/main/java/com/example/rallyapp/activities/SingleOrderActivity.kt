@@ -23,6 +23,8 @@ import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.HomeActivityViewModel
 import com.example.rallyapp.viewModel.OrderActivityViewModel
 import com.example.rallyapp.viewModel.SingleOrderActivityViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SingleOrderActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySingleOrderBinding
@@ -54,14 +56,42 @@ class SingleOrderActivity : AppCompatActivity() {
             }
         }
         setObserverOnOrderData()
+
+        binding.reorderDetailButton.setOnClickListener {
+            ifUserLoggedIn {
+                viewModel.reorderByOrderId(order.id, UserCredentials.getToken()!!)
+            }
+        }
+
+        setObserverOnReorderResponse()
     }
 
     private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
+    private fun setObserverOnReorderResponse(){
+        viewModel.reorderResponseLiveData.observe(this){
+            if(it.success == 1){
+                val bundle = Bundle().apply {
+                    putInt(CheckoutActivity.ORDER_ID_KEY, it.data[0].id)
+                }
+                val intent = Intent(this, CheckoutActivity::class.java).apply {
+                    putExtras(bundle)
+                }
+                startActivity(intent)
+            }else{
+                val alertManager = AlertManager(this)
+                alertManager.showAlertWithOkButton(AlertData(
+                    title = "Failed to Reorder",
+                    message = "Failed to reorder the order"
+                ))
+            }
+        }
+    }
+
     private fun setObserverOnOrderData(){
         viewModel.orderLiveData.observe(this){
             adapter.setData(it.orderDetails)
-            binding.dateSingleOrderLabel.text = it.orderPlacedDate.toString().toEditable()
+            binding.dateSingleOrderLabel.text = makeDatePriceString(it.orderPlacedDate!!, it.totalPrice).toEditable()
             order = it
         }
     }
@@ -99,5 +129,14 @@ class SingleOrderActivity : AppCompatActivity() {
         }
     }
 
+    private fun makeDatePriceString(date: Date, price: String): String{
+        val dateString = formatDate(date)
+        return "$dateString - $$price"
+    }
+
+    private fun formatDate(date: Date): String {
+        val format = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        return format.format(date)
+    }
 
 }

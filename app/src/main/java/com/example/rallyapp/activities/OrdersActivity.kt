@@ -59,7 +59,7 @@ class OrdersActivity : AppCompatActivity() {
     private fun setOrdersListRecyclerView(){
         val gridViewItem = findViewById<RecyclerView>(R.id.orders_recyclerview)
         gridViewItem.layoutManager = GridLayoutManager(this, 1)
-        ordersAdapter = OrdersAdapter(this, listOf(), viewModel)
+        ordersAdapter = OrdersAdapter(this, listOf(), viewModel, supportFragmentManager)
         gridViewItem.adapter = ordersAdapter
     }
 

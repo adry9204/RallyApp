@@ -12,13 +12,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rallyapp.api.dataModel.response_models.Voucher
 import com.example.rallyapp.recyclerview_adpaters.GridViewItemAdapter
 import com.example.rallyapp.fragments.HeaderFragment
 import com.example.rallyapp.databinding.ActivityHomeBinding
 import com.example.rallyapp.databinding.FragmentHeaderBinding
 import com.example.rallyapp.recyclerview_adpaters.CategoryListAdapter
 import com.example.rallyapp.repo.MenuRepo
+import com.example.rallyapp.user.UserCredentials
+import com.example.rallyapp.utils.AlertData
+import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.HomeActivityViewModel
+import kotlin.random.Random
 
 class HomeActivity : AppCompatActivity() {
 
@@ -27,6 +32,8 @@ class HomeActivity : AppCompatActivity() {
     private var adapter: GridViewItemAdapter? = null
     private var categoryListAdapter: CategoryListAdapter ?= null
     private lateinit var viewModel: HomeActivityViewModel
+
+    private var voucher: Voucher? = null
 
     companion object {
         private const val TAG = "HomeActivity"
@@ -68,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.searchButton.setOnClickListener{
 
-            Log.i(TAG, binding.searchTextField.editText?.text.toString() + " heyyyyy ")
+            Log.i(TAG, binding.searchTextField.editText?.text.toString() )
             val searchString = binding.searchTextField.editText?.text.toString()
 
             val searchActivityIntent = Intent(this, SearchActivity::class.java)
@@ -79,6 +86,56 @@ class HomeActivity : AppCompatActivity() {
             startActivity(searchActivityIntent)
         }
 
+        if(UserCredentials.isUserSet() && !UserCredentials.hasVoucher()){
+            viewModel.getUsersVouchers(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
+        }else{
+            setVisibilityForHomeActivityHeader(View.INVISIBLE)
+        }
+
+        binding.homeActivityClaimVoucherButton.setOnClickListener {
+            if(voucher != null){
+                val alertManager = AlertManager(this)
+                if(UserCredentials.hasVoucher()){
+                    alertManager.showAlertWithOkButton(AlertData(
+                        title = "You have a voucher",
+                        message = "Your exisisting voucher will be replaced"
+                    )){
+                       claimVoucher()
+                    }
+                }else{
+                   claimVoucher()
+                }
+            }
+        }
+        setListenerOnVoucherList()
+    }
+
+    private fun claimVoucher(){
+        val alertManager = AlertManager(this)
+        UserCredentials.setVoucher(voucher!!)
+        alertManager.showAlertWithOkButton(AlertData(
+            title = "Voucher added",
+            message = "voucher will be applied on checkout"
+        ))
+        voucher = null
+        setVisibilityForHomeActivityHeader(View.INVISIBLE)
+    }
+
+    private fun setListenerOnVoucherList(){
+        viewModel.voucherListLiveData.observe(this){
+            if(it.isNotEmpty()){
+                val random = Random.nextInt(0, it.size)
+                voucher = it[random]
+                setVoucherSection()
+            }else{
+                setVisibilityForHomeActivityHeader(View.INVISIBLE)
+            }
+        }
+    }
+
+    private fun setVoucherSection(){
+        binding.homeActivityVoucherDiscountText.text = "${voucher!!.offerPercent}% of on code ${voucher!!.code}"
+        setVisibilityForHomeActivityHeader(View.VISIBLE)
     }
 
     private fun setupCategoryListRecyclerView(){
@@ -110,10 +167,19 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setVisibilityForHomeActivityHeader(visibility: Int){
+        if(voucher == null && visibility == View.VISIBLE){
+            return
+        }
         binding.searchButton.visibility = visibility
         binding.searchTextField.visibility = visibility
         binding.pizza.visibility = visibility
         binding.voucherSection.visibility = visibility
+
+        if(visibility == View.VISIBLE){
+            moveMenuDown()
+        }else{
+            moveMenuUp()
+        }
     }
 
     private fun moveMenuUp(){
@@ -137,12 +203,10 @@ class HomeActivity : AppCompatActivity() {
 
                 if (firstVisibleItemPosition > 0) {
                     setVisibilityForHomeActivityHeader(View.INVISIBLE)
-                    moveMenuUp()
                 }
 
                 if(!recyclerView.canScrollVertically(-1) && dy < -5){
                     setVisibilityForHomeActivityHeader(View.VISIBLE)
-                    moveMenuDown()
                 }
             }
         })

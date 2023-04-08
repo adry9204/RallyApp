@@ -33,6 +33,9 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
     private var _addAddressResponse = MutableLiveData<ApiResponse<Address<Int>>>()
     val addAddressResponse: MutableLiveData<ApiResponse<Address<Int>>> = _addAddressResponse
 
+    private var _deleteAddressResponse = MutableLiveData<ApiResponse<Address<Int>>>()
+    val deleteAddressResponse: MutableLiveData<ApiResponse<Address<Int>>> = _deleteAddressResponse
+
 
     fun getOrderById(orderId: Int, token: String){
         orderRepo.getOrderById(orderId, token){
@@ -80,6 +83,15 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
     ){
         addressRepo.addNewAddress(addAddressRequest, token){
             _addAddressResponse.value = it
+        }
+    }
+
+    fun deleteAddress(
+        addressId: Int,
+        token: String
+    ){
+        addressRepo.deleteAddress(addressId, token){
+            _deleteAddressResponse.value = it
         }
     }
 }
