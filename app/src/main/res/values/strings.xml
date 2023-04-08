@@ -23,5 +23,14 @@
     <string name="order_activity_order_summary_grand_total_label">Grand Total:</string>
     <string name="order_activity_address_title">Choose an address</string>
     <string name="checkout_activity_proceed_to_pay_button_text">PROCEED TO PAY</string>
+    <string name="add_address_fragment_save_button_text">SAVE</string>
+    <string name="add_address_fragment_save_cancel_text">CANCEL</string>
+    <string name="add_address_fragment_address_line_1_hint">Address Line 1</string>
+    <string name="add_address_fragment_address_line_2_hint">Address Line 2 (Optional)</string>
+    <string name="add_address_fragment_city_hint">City</string>
+    <string name="add_address_fragment_postal_code_hint">Postal Code</string>
+    <string name="checkout_activity_cancel_button_text">CANCEL</string>
+    <string name="add_address_fragment_title_text">New Address</string>
+    <string name="add_address_fragment_full_name_hint">full name</string>
 
 </resources>

@@ -12,6 +12,7 @@ import retrofit2.http.*
 interface OrderService {
     companion object{
         const val ORDER_ID = "order_id"
+        const val USER_ID  = "user_Id"
     }
 
     @POST("orders")
@@ -43,4 +44,17 @@ interface OrderService {
         @Path(ORDER_ID) orderId: Int,
         @Header(CartService.AUTH_HEADER) token: String
     ): Call<ApiResponse<Order<Int>>>
+
+    @GET("orders/user/{$USER_ID}")
+    fun getUsersOrders(
+        @Path(USER_ID) userId: Int,
+        @Header(CartService.AUTH_HEADER) token: String
+    ): Call<ApiResponse<Order<User>>>
+
+    @POST("orders/reorder")
+    fun reorderByOrderId(
+        @Body makePaymentRequestBody: MakePaymentRequestBody,
+        @Header(CartService.AUTH_HEADER) token: String
+    ): Call<ApiResponse<Order<User>>>
+
 }

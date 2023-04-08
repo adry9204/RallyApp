@@ -7,12 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rallyapp.R
+import com.example.rallyapp.api.dataModel.response_models.OrderDetail
 import com.squareup.picasso.Picasso
 
 class SingleOrderAdapter(
-    private val cardImages: Array<String>,
-    private val cardTitles: Array<String>,
-    private val cardPrices: Array<String>,
+    private var orderDetails: List<OrderDetail>,
 ) : RecyclerView.Adapter<SingleOrderAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -28,12 +27,22 @@ class SingleOrderAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Picasso.get().load(cardImages[position]).into(holder.cardImage)
-        holder.cardTitle.text = cardTitles[position]
-        holder.cardPrice.text = cardPrices[position]
+        with(holder) {
+            with(orderDetails[position]){
+                Picasso.get().load(menu.image).into(cardImage)
+                cardTitle.text = menu.name
+                cardPrice.text = "$${menu.price}"
+            }
+        }
+    }
+
+
+    fun setData(newData: List<OrderDetail>){
+        orderDetails = newData
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return cardImages.size
+        return orderDetails.size
     }
 }
