@@ -25,4 +25,14 @@ class AddressRepo {
             callback(it)
         }
     }
+
+    fun deleteAddress(
+        addressId: Int,
+        token: String,
+        callback: (ApiResponse<Address<Int>>) -> Unit
+    ){
+        addressApiHelper.deleteAddress(addressId, token){
+            callback(it)
+        }
+    }
 }

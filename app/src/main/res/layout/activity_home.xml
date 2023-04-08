@@ -5,23 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.HomeActivity">
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:name="com.example.rallyapp.fragments.HeaderFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/search_button"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        app:layout_constraintTop_toBottomOf="@id/fragment_container"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/search_icon"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"/>
+        android:background="@drawable/search_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_text_field"
@@ -30,76 +31,76 @@
         android:layout_marginLeft="10dp"
         android:hint="What would you like to eat?"
         app:layout_constraintStart_toEndOf="@id/search_button"
-        app:layout_constraintTop_toBottomOf="@id/fragment_container"
-        >
+        app:layout_constraintTop_toBottomOf="@id/fragment_container">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            />
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageView
         android:id="@+id/pizza"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:layout_constraintTop_toBottomOf="@id/search_button"
-        app:layout_constraintEnd_toEndOf="parent"
         android:paddingRight="40dp"
-        android:src="@drawable/pizza"/>
+        android:src="@drawable/pizza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_button" />
 
     <LinearLayout
         android:id="@+id/voucher_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/pizza"
-        app:layout_constraintStart_toStartOf="parent"
-        android:gravity="left"
-        android:padding="16dp"
-        android:layout_marginTop="-54dp"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="-54dp"
         android:background="@drawable/round_shape"
         android:backgroundTint="@color/green"
-        >
+        android:gravity="left"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pizza">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get special discount!"
-            android:textColor="@color/white"/>
+            android:text="@string/home_activity_discount_title"
+            android:textColor="@color/white" />
+
         <TextView
+            android:id="@+id/home_activity_voucher_discount_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="up to 35%"
-            android:textSize="28dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
+            android:text="@string/home_activity_discount_text"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
         <Button
+            android:id="@+id/home_activity_claim_voucher_button"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
-            android:text="Claim Voucher"
-            android:textSize="16dp"
             android:layout_marginTop="10dp"
+            android:background="@drawable/round_button_shape"
+            android:text="@string/home_activity_claim_voucher_button_text"
             android:textAllCaps="false"
             android:textColor="@color/green"
-            android:background="@drawable/round_button_shape"
-
-            />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_activity_category_recycler_view"
-        app:layout_constraintTop_toBottomOf="@id/voucher_section"
-        app:layout_constraintStart_toStartOf="parent"
-        android:scrollbars="horizontal"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="15dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
-
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/voucher_section" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -107,14 +108,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_activity_category_recycler_view"
         app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/recycler_item_layout"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"/>
+        tools:listitem="@layout/recycler_item_layout" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/bottom_nav_container"
@@ -122,5 +123,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

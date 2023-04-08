@@ -80,4 +80,39 @@ class AddressApiHelper {
             }
         })
     }
+
+    fun deleteAddress(
+        addressId: Int,
+        token: String,
+        callback: (ApiResponse<Address<Int>>) -> Unit
+    ){
+        val retrofit = RetrofitClient.addressClient.deleteAddress(addressId, token)
+        retrofit.enqueue(object : Callback<ApiResponse<Address<Int>>> {
+            override fun onResponse(
+                call: Call<ApiResponse<Address<Int>>>,
+                response: Response<ApiResponse<Address<Int>>>
+            ) {
+                if(response.body() != null){
+                    val result = response.body()!!
+                    callback(result)
+                }else{
+                    val errorBodyString = response.errorBody()?.string() ?: ""
+                    val errorMessage = JSONObject(errorBodyString).getString("message")
+                    callback(ApiResponse(
+                        success = 0,
+                        message = errorMessage,
+                        data = listOf()
+                    ))
+                }
+            }
+            override fun onFailure(call: Call<ApiResponse<Address<Int>>>, t: Throwable) {
+                Log.e(LoginActivity.TAG, "Api register call failed message: " + t.message)
+                callback(ApiResponse(
+                    success = 0,
+                    message = t.message.toString(),
+                    data = listOf()
+                ))
+            }
+        })
+    }
 }

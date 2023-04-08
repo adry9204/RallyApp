@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.rallyapp.api.dataModel.response_models.ApiResponse
 import com.example.rallyapp.api.dataModel.response_models.Cart
 import com.example.rallyapp.api.dataModel.response_models.Order
 import com.example.rallyapp.api.dataModel.response_models.User
@@ -16,6 +17,10 @@ class SingleOrderActivityViewModel(application: Application): AndroidViewModel(a
 
     private var _orderLiveData = MutableLiveData<Order<User>>()
     val orderLiveData: MutableLiveData<Order<User>> = _orderLiveData
+
+    private var _reorderResponseLiveData = MutableLiveData<ApiResponse<Order<User>>>()
+    val reorderResponseLiveData: MutableLiveData<ApiResponse<Order<User>>> = _reorderResponseLiveData
+
 
 
     private val _showAlert = MutableLiveData<AlertData>()
@@ -36,6 +41,12 @@ class SingleOrderActivityViewModel(application: Application): AndroidViewModel(a
             }else{
                 showAlert(title = "Failed", message = "Failed to fetch order")
             }
+        }
+    }
+
+    fun reorderByOrderId(orderId: Int, token: String){
+        orderRepo.reorderById(orderId, token){
+            _reorderResponseLiveData.value = it
         }
     }
 }

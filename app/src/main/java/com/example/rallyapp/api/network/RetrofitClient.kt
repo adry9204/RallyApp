@@ -44,4 +44,10 @@ object RetrofitClient {
         .build()
         .create(AddressService::class.java)
 
+    val voucherClient: VoucherService = Retrofit.Builder()
+        .baseUrl("$server/api/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(VoucherService::class.java)
+
 }
