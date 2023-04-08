@@ -14,5 +14,7 @@ data class Order<UserType>(
     val taxPrice: String,
     val totalPrice: String,
     val user: UserType,
-    var orderPlacedDate: Date? = null
-): Serializable
+    var afterOfferPrice: String? = null,
+    var orderPlacedDate: Date? = null,
+    var voucher: Voucher? = null
+)

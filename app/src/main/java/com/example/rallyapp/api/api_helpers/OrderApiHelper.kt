@@ -14,10 +14,14 @@ class OrderApiHelper {
 
     fun makeOrderFormCart(
         userId: Int,
+        voucherId: Int? = null,
         token: String,
         callback: (response: ApiResponse<Order<Int>>) -> Unit
     ){
         val makeOrderFromCartRequestBody = MakeOrderFromCartRequestBody(userId=userId)
+        voucherId.let {
+            makeOrderFromCartRequestBody.voucherId = it
+        }
         val retrofit = RetrofitClient.orderClient.makeOrderFromUsersCart(makeOrderFromCartRequestBody, token)
         retrofit.enqueue(object : retrofit2.Callback<ApiResponse<Order<Int>>> {
             override fun onResponse(

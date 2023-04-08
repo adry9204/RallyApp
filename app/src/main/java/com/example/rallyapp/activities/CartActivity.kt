@@ -58,7 +58,16 @@ class CartActivity : AppCompatActivity() {
 
         binding.checkoutButton.setOnClickListener {
             if(UserCredentials.isUserSet()){
-                viewModel.makeOrderFromCart(userId = UserCredentials.getUserId()!!, token = UserCredentials.getToken()!!)
+                if(UserCredentials.hasVoucher()){
+                    viewModel.makeOrderFromCart(
+                        userId = UserCredentials.getUserId()!!,
+                        voucherId = UserCredentials.getVoucher()!!.id,
+                        token = UserCredentials.getToken()!!)
+                }else {
+                    viewModel.makeOrderFromCart(
+                        userId = UserCredentials.getUserId()!!,
+                        token = UserCredentials.getToken()!!)
+                }
             }else{
                 val alertManager = AlertManager(this)
                 alertManager.showAlertWithOkButton(AlertData(
