@@ -75,9 +75,9 @@ class CartActivityViewModel(application: Application): AndroidViewModel(applicat
         }
     }
 
-    fun makeOrderFromCart(userId: Int, token: String){
+    fun makeOrderFromCart(userId: Int, voucherId: Int? = null, token: String){
         if(networkHelper.isConnectedToNetwork()){
-            orderRepo.makeOrderFromCart(userId, token){
+            orderRepo.makeOrderFromCart(userId, voucherId, token){
                 _makeOrderFromCartResponse.value = it
             }
         }else{

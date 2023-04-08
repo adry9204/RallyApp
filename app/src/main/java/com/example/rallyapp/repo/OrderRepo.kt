@@ -13,10 +13,11 @@ class OrderRepo {
 
     fun makeOrderFromCart(
         userId: Int,
+        voucherId: Int? = null,
         token: String,
         callback: (response: ApiResponse<Order<Int>>) -> Unit
     ){
-        orderApiHelper.makeOrderFormCart(userId, token){
+        orderApiHelper.makeOrderFormCart(userId,voucherId, token){
             callback(it)
         }
     }
