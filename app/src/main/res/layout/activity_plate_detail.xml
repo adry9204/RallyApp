@@ -23,7 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:onClick="productCardViewOnClick"
         android:orientation="vertical"
         app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="10dp"
@@ -129,9 +128,11 @@
         android:layout_height="56dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav_container"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="20dp"
         android:id="@+id/add_to_cart_button"
         android:layout_marginTop="60dp"
-        android:text="Add to Cart"
+        android:text="@string/plate_detail_activity_add_to_cart"
         android:backgroundTint="@color/orange"
         android:textColor="@color/white"/>
 

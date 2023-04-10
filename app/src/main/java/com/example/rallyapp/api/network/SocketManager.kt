@@ -4,7 +4,7 @@ import io.socket.client.IO
 import io.socket.client.Socket
 import java.net.URISyntaxException
 
-object SocketManager {
+class SocketManager {
 
     private var mSocket: Socket? = null
     var socketUser = mutableListOf<String>()
@@ -13,7 +13,8 @@ object SocketManager {
     fun setSocket() {
         if(mSocket == null){
             try {
-                mSocket = IO.socket("https://still-brushlands-66800.herokuapp.com")
+//                mSocket = IO.socket("https://still-brushlands-66800.herokuapp.com")
+                mSocket = IO.socket("http://192.168.2.237:8000")
             } catch (e: URISyntaxException) {
                 print(e.printStackTrace())
             }
@@ -33,7 +34,7 @@ object SocketManager {
         }
         val options = IO.Options()
         options.query = "userId=$userId"
-        mSocket = IO.socket("https://still-brushlands-66800.herokuapp.com", options)
+        mSocket = IO.socket("http://192.168.2.237:8000", options)
         mSocket?.let {
             it.connect()
         }

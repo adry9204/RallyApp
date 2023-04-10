@@ -11,6 +11,7 @@ import com.example.rallyapp.api.dataModel.LoginRequest
 import com.example.rallyapp.databinding.ActivityLoginBinding
 import com.example.rallyapp.repo.UserRepo
 import com.example.rallyapp.services.CartBackgroundService
+import com.example.rallyapp.services.OrderBackgroundService
 import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.utils.AlertData
 import com.example.rallyapp.utils.AlertManager
@@ -77,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
                         userName = it.data[0].userName
                     )
                     startCartService()
+                    startOrderService()
                     goToHomeScreen()
                 } else {
                     val alertManager = AlertManager(this)
@@ -90,6 +92,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun startOrderService(){
+        val bundle = Bundle().apply {
+            putInt(OrderBackgroundService.CMD_KEY, OrderBackgroundService.CMD_USER_LOGGED_IN)
+        }
+        val orderService = Intent(this, OrderBackgroundService::class.java)
+        orderService.putExtras(bundle)
+        startService(orderService)
+    }
 
     private fun startCartService(){
         val bundle = Bundle().apply {

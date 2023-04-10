@@ -2,9 +2,17 @@ package com.example.rallyapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StrikethroughSpan
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rallyapp.api.dataModel.response_models.*
@@ -15,12 +23,14 @@ import com.example.rallyapp.recyclerview_adpaters.OrderDetailsListAdapter
 import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.utils.AlertData
 import com.example.rallyapp.utils.AlertManager
+import com.example.rallyapp.utils.OrderMethodSelector
+import com.example.rallyapp.utils.OrderMethodSelectorBuilder
 import com.example.rallyapp.viewModel.CheckoutActivityViewModel
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import kotlinx.coroutines.*
-
+import java.lang.Float
 
 
 class CheckoutActivity : AppCompatActivity() {
@@ -40,9 +50,11 @@ class CheckoutActivity : AppCompatActivity() {
     private lateinit var order: Order<User>
 
     //stripe variables
-    lateinit var paymentSheet: PaymentSheet
-    lateinit var customerConfig: PaymentSheet.CustomerConfiguration
-    lateinit var paymentIntentClientSecret: String
+    private lateinit var paymentSheet: PaymentSheet
+    private lateinit var customerConfig: PaymentSheet.CustomerConfiguration
+    private lateinit var paymentIntentClientSecret: String
+
+    private lateinit var orderMethodSelector: OrderMethodSelector
 
     var orderConfirmed = false
 
@@ -68,6 +80,23 @@ class CheckoutActivity : AppCompatActivity() {
 
         setAddressListRecyclerView()
         setObserverOnUsersAddressResponse()
+
+        orderMethodSelector = OrderMethodSelectorBuilder(
+            this,
+            binding.checkoutActivityMethodSelection,
+            binding.checkoutActivityMethodSelectionDelivery,
+            binding.checkoutActivityMethodSelectionPickup
+        ).build()
+
+        orderMethodSelector.setOnTapListener {
+            if(it == OrderMethodSelector.DELIVERY){
+                binding.checkoutActivityMethodAddressSection.visibility = View.VISIBLE
+                binding.checkoutActivityMethodMapSection.visibility = View.GONE
+            }else{
+                binding.checkoutActivityMethodAddressSection.visibility = View.GONE
+                binding.checkoutActivityMethodMapSection.visibility = View.VISIBLE
+            }
+        }
 
         doIfUserLoggedIn {
             viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
@@ -113,6 +142,8 @@ class CheckoutActivity : AppCompatActivity() {
             viewModel.deleteOrder(orderId = order.id, UserCredentials.getToken()!!)
         }
     }
+
+    private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
     private fun showAddAddressBottomSheet(){
         val addAddressBottomSheetFragment = AddAddressBottomSheetFragment(viewModel)
@@ -231,8 +262,39 @@ class CheckoutActivity : AppCompatActivity() {
                     "$${it.data[0].beforeTaxPrice}"
                 binding.orderActivityOrderSummaryTaxPriceValue.text = "$${it.data[0].taxPrice}"
                 binding.orderActivityOrderSummaryGrandTotalValue.text = "$${it.data[0].totalPrice}"
+                setVoucher()
             }
         }
+    }
+
+    private fun setVoucher(){
+        order.voucher?.let {
+            binding.orderActivityVoucherTextBox.text = it.code.toEditable()
+            binding.orderActivityVoucherResponse.text = "voucher applied ${it.offerPercent}% off"
+            binding.orderActivityVoucherResponse.visibility = View.VISIBLE
+            binding.checkoutActivityVoucherLineBottom.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = binding.orderActivityVoucherResponse.id
+            }
+            binding.checkoutActivityOrderSummaryDiscount.visibility = View.VISIBLE
+
+            addStrikeTexOnTextView(
+                binding.orderActivityOrderSummaryTotalPriceValue,
+                "$${order.beforeTaxPrice} $${order.afterOfferPrice}",
+                "$${order.beforeTaxPrice}"
+            )
+            binding.orderActivityOrderSummaryDiscountLabel.text = "${it.offerPercent}% off saved $${Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice)}"
+        }
+    }
+
+    private fun addStrikeTexOnTextView(tv: TextView, fullText: String, strokedSubText: String){
+        val spannable = SpannableString(fullText)
+        val strikeThroughSpan = StrikethroughSpan()
+
+        val startIndex = fullText.indexOf(strokedSubText)
+        val endIndex = startIndex + strokedSubText.length
+
+        spannable.setSpan(strikeThroughSpan, startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        tv.text = spannable
     }
 
     private fun doIfUserLoggedIn(task: () -> Unit) {

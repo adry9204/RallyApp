@@ -37,11 +37,13 @@ class CartBackgroundService: Service() {
     }
 
     private lateinit var mSocket: Socket
+    private lateinit var socketManager: SocketManager
     private lateinit var connectivityManager: ConnectivityManager
 
     override fun onCreate() {
         super.onCreate()
         handleNetworkConnectDisconnect()
+        socketManager = SocketManager()
     }
 
     private fun handleNetworkConnectDisconnect(){
@@ -106,8 +108,8 @@ class CartBackgroundService: Service() {
     private fun handleCommands(bundle: Bundle){
         when(bundle.getInt(CMD_KEY, 0)){
             CMD_USER_LOGGED_IN -> {
-                SocketManager.establishConnectionWithUser(UserCredentials.getUserId()!!)
-                mSocket = SocketManager.getSocket()!!
+                socketManager.establishConnectionWithUser(UserCredentials.getUserId()!!)
+                mSocket = socketManager.getSocket()!!
                 setSocket()
                 migrateCartFromApiToDatabase()
             }
@@ -128,6 +130,7 @@ class CartBackgroundService: Service() {
             val gson = Gson()
             var cart = gson.fromJson(it[0].toString(), Cart::class.java)
             val cartDatabaseHelper = CartDatabaseHelper(this)
+            Log.i(TAG, cart.toString())
             cartDatabaseHelper.deleteItemFromCart(cart.id)
         }
     }
@@ -147,7 +150,7 @@ class CartBackgroundService: Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        SocketManager.closeConnection()
+        socketManager.closeConnection()
     }
 
 }

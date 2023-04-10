@@ -111,6 +111,7 @@
 
         <service android:name=".services.MenuLookupService" />
         <service android:name=".services.CartBackgroundService" />
+        <service android:name=".services.OrderBackgroundService" />
     </application>
 
 </manifest>
