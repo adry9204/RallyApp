@@ -71,8 +71,10 @@ class UserRepo (private val appContext: Context) {
                     call: Call<LoginResponse?>,
                     response: Response<LoginResponse?>
                 ) {
+                    Log.i("TAG", response.toString())
                     var responseBody = response.body()!!
                     result.add(responseBody)
+                    Log.i("TAG", responseBody.toString())
                     LoginActivity.viewModel.setLoginData(result)
 
                 }

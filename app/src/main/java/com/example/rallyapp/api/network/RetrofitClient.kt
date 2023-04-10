@@ -6,7 +6,7 @@ import retrofit2.create
 
 object RetrofitClient {
 
-    private const val server = "http://192.168.2.237:8000"
+    private const val server = ServerConfigs.HEROKU_SERVER
     private const val mapsBaseUrl = "https://maps.googleapis.com/"
 
     val userRetrofit: UserService = Retrofit.Builder()

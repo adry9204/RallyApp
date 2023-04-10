@@ -8,13 +8,14 @@ class SocketManager {
 
     private var mSocket: Socket? = null
     var socketUser = mutableListOf<String>()
+    var server = ServerConfigs.HEROKU_SERVER
 
     @Synchronized
     fun setSocket() {
         if(mSocket == null){
             try {
 //                mSocket = IO.socket("https://still-brushlands-66800.herokuapp.com")
-                mSocket = IO.socket("http://192.168.2.237:8000")
+                mSocket = IO.socket(server)
             } catch (e: URISyntaxException) {
                 print(e.printStackTrace())
             }
@@ -34,7 +35,7 @@ class SocketManager {
         }
         val options = IO.Options()
         options.query = "userId=$userId"
-        mSocket = IO.socket("http://192.168.2.237:8000", options)
+        mSocket = IO.socket(server, options)
         mSocket?.let {
             it.connect()
         }
