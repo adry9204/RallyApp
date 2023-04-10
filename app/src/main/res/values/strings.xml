@@ -36,5 +36,7 @@
     <string name="home_activity_discount_title">Get special discount!</string>
     <string name="home_activity_discount_text">up to 35%</string>
     <string name="home_activity_claim_voucher_button_text">Claim Voucher</string>
+    <string name="plate_detail_activity_add_to_cart">Add to Cart</string>
+    <string name="new_address">new address</string>
 
 </resources>

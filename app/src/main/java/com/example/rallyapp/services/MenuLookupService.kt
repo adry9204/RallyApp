@@ -16,17 +16,18 @@ class MenuLookupService: Service() {
     }
 
     private lateinit var mSocket: Socket
+    private lateinit var socketManager: SocketManager
     private lateinit var menuApiToDatabase: MenuApiToDatabase
 
     override fun onCreate() {
         super.onCreate()
         Log.i(TAG, "service has been started")
-
-        SocketManager.setSocket()
-        SocketManager.establishConnection()
+        socketManager = SocketManager()
+        socketManager.setSocket()
+        socketManager.establishConnection()
         menuApiToDatabase = MenuApiToDatabase(this)
 
-        mSocket = SocketManager.getSocket()!!
+        mSocket = socketManager.getSocket()!!
 
         mSocket.on("new_menu_item"){
             menuApiToDatabase.loadMenuFromServer()
@@ -48,6 +49,6 @@ class MenuLookupService: Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        SocketManager.closeConnection()
+        socketManager.closeConnection()
     }
 }
