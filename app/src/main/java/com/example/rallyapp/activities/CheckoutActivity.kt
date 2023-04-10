@@ -1,6 +1,11 @@
 package com.example.rallyapp.activities
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.SpannableString
@@ -9,23 +14,32 @@ import android.text.style.StrikethroughSpan
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.rallyapp.R
+import com.example.rallyapp.api.api_helpers.DirectionsApiHelper
+import com.example.rallyapp.api.dataModel.maps_api.DirectionsApiResult
 import com.example.rallyapp.api.dataModel.response_models.*
 import com.example.rallyapp.databinding.ActivityCheckoutBinding
 import com.example.rallyapp.fragments.AddAddressBottomSheetFragment
 import com.example.rallyapp.recyclerview_adpaters.AddressListAdapter
 import com.example.rallyapp.recyclerview_adpaters.OrderDetailsListAdapter
 import com.example.rallyapp.user.UserCredentials
-import com.example.rallyapp.utils.AlertData
-import com.example.rallyapp.utils.AlertManager
-import com.example.rallyapp.utils.OrderMethodSelector
-import com.example.rallyapp.utils.OrderMethodSelectorBuilder
+import com.example.rallyapp.utils.*
 import com.example.rallyapp.viewModel.CheckoutActivityViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
@@ -56,6 +70,13 @@ class CheckoutActivity : AppCompatActivity() {
 
     private lateinit var orderMethodSelector: OrderMethodSelector
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private lateinit var mMap: GoogleMap
+    private lateinit var mapsManager: CheckoutActivityMapsManager
+
+    private lateinit var locationPermissionRequest: ActivityResultLauncher<Array<String>>
+
     var orderConfirmed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +87,22 @@ class CheckoutActivity : AppCompatActivity() {
         paymentSheet = PaymentSheet(this, this::onPaymentSheetResult)
 
         viewModel = ViewModelProvider(this)[CheckoutActivityViewModel::class.java]
+
+        locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    getDirectionFromMyLocation()
+                }
+                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                    getDirectionFromMyLocation()
+                }
+                else -> {
+
+                }
+            }
+        }
 
         setOrderItemsRecyclerView()
         setObserverOnGetOrderByItemResponse()
@@ -80,23 +117,6 @@ class CheckoutActivity : AppCompatActivity() {
 
         setAddressListRecyclerView()
         setObserverOnUsersAddressResponse()
-
-        orderMethodSelector = OrderMethodSelectorBuilder(
-            this,
-            binding.checkoutActivityMethodSelection,
-            binding.checkoutActivityMethodSelectionDelivery,
-            binding.checkoutActivityMethodSelectionPickup
-        ).build()
-
-        orderMethodSelector.setOnTapListener {
-            if(it == OrderMethodSelector.DELIVERY){
-                binding.checkoutActivityMethodAddressSection.visibility = View.VISIBLE
-                binding.checkoutActivityMethodMapSection.visibility = View.GONE
-            }else{
-                binding.checkoutActivityMethodAddressSection.visibility = View.GONE
-                binding.checkoutActivityMethodMapSection.visibility = View.VISIBLE
-            }
-        }
 
         doIfUserLoggedIn {
             viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
@@ -128,39 +148,111 @@ class CheckoutActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.checkoutActivityAddAddressButton.setOnClickListener{
+        binding.checkoutActivityAddAddressButton.setOnClickListener {
             showAddAddressBottomSheet()
         }
 
+        setOrderMethodSelector()
         setObserverOnConfirmOrderResponse()
         setObserverOnAddAddress()
     }
 
+    private fun setOrderMethodSelector() {
+        orderMethodSelector = OrderMethodSelectorBuilder(
+            this,
+            binding.checkoutActivityMethodSelection,
+            binding.checkoutActivityMethodSelectionDelivery,
+            binding.checkoutActivityMethodSelectionPickup
+        ).build()
+
+        orderMethodSelector.setOnTapListener {
+            if (it == OrderMethodSelector.DELIVERY) {
+                binding.checkoutActivityMethodAddressSection.visibility = View.VISIBLE
+                binding.checkoutActivityMethodMapSection.visibility = View.GONE
+            } else {
+                if(!::mMap.isInitialized){
+                    setMap()
+                    handleLocationPermission {  }
+                }
+                binding.checkoutActivityMethodAddressSection.visibility = View.GONE
+                binding.checkoutActivityMethodMapSection.visibility = View.VISIBLE
+            }
+        }
+
+        setObserverOnDirectionsLiveData()
+    }
+
+    private fun setObserverOnDirectionsLiveData(){
+        viewModel.directionLiveData.observe(this){
+            showDirection(it)
+        }
+    }
+
+    private fun showDirection(direction: DirectionsApiResult){
+        Log.i(TAG, direction.toString())
+        var path = mutableListOf<List<LatLng>>()
+        for (steps in direction.routes[0].legs[0].steps){
+            val point = steps.polyline.points
+            path.add(PolyLineUtil.decodePolyLines(point)!!)
+        }
+
+        for (points in path){
+            mMap.addPolyline(PolylineOptions().addAll(points).color(Color.RED))
+        }
+    }
+
+    private fun setMap() {
+        if (!::mMap.isInitialized) {
+            val mapFragment =
+                supportFragmentManager.findFragmentById(R.id.checkout_activity_maps_fragment) as SupportMapFragment
+            mapFragment.getMapAsync { googleMap ->
+                mMap = googleMap
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(43.7173112591, -79.3055932409))
+                        .title("Rally Restaurant & Map")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                )
+                mMap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(43.7174, -79.3054),
+                        12.0f
+                    )
+                )
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        if(this::order.isInitialized && !orderConfirmed){
+        if (this::order.isInitialized && !orderConfirmed) {
             viewModel.deleteOrder(orderId = order.id, UserCredentials.getToken()!!)
         }
     }
 
     private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
-    private fun showAddAddressBottomSheet(){
+    private fun showAddAddressBottomSheet() {
         val addAddressBottomSheetFragment = AddAddressBottomSheetFragment(viewModel)
-        addAddressBottomSheetFragment.show(supportFragmentManager, addAddressBottomSheetFragment.tag)
+        addAddressBottomSheetFragment.show(
+            supportFragmentManager,
+            addAddressBottomSheetFragment.tag
+        )
     }
 
-    private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult){
+    private fun onPaymentSheetResult(paymentSheetResult: PaymentSheetResult) {
         val alertManager = AlertManager(this)
-        when(paymentSheetResult) {
+        when (paymentSheetResult) {
             is PaymentSheetResult.Canceled -> {
                 Log.i(TAG, "Canceled payment")
             }
             is PaymentSheetResult.Failed -> {
-                alertManager.showAlertWithOkButton(AlertData(
-                   title = "Error",
-                   message = paymentSheetResult.error.message.toString()
-               ))
+                alertManager.showAlertWithOkButton(
+                    AlertData(
+                        title = "Error",
+                        message = paymentSheetResult.error.message.toString()
+                    )
+                )
             }
             is PaymentSheetResult.Completed -> {
                 viewModel.orderConfirmed(orderId = order.id, UserCredentials.getToken()!!)
@@ -183,7 +275,7 @@ class CheckoutActivity : AppCompatActivity() {
                         paymentData.ephemeralKey
                     )
                     PaymentConfiguration.init(this@CheckoutActivity, paymentData.publishableKey)
-                    withContext(Dispatchers.Main){
+                    withContext(Dispatchers.Main) {
                         presentPaymentSheet()
                     }
                 }
@@ -191,21 +283,24 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun setObserverOnAddAddress(){
-        viewModel.addAddressResponse.observe(this){
+    private fun setObserverOnAddAddress() {
+        viewModel.addAddressResponse.observe(this) {
             handleResponseIfSuccess(
                 response = it,
                 message = ""
-            ){
+            ) {
                 Log.i(TAG, "success")
-                viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
+                viewModel.getUsersAddress(
+                    UserCredentials.getUserId()!!,
+                    UserCredentials.getToken()!!
+                )
             }
         }
     }
 
-    private fun setObserverOnConfirmOrderResponse(){
-        viewModel.confirmOrderResponses.observe(this){
-            handleResponseIfSuccess(message = "", response = it){
+    private fun setObserverOnConfirmOrderResponse() {
+        viewModel.confirmOrderResponses.observe(this) {
+            handleResponseIfSuccess(message = "", response = it) {
                 val intent = Intent(this, OrdersActivity::class.java)
                 startActivity(intent)
                 orderConfirmed = true
@@ -214,7 +309,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun presentPaymentSheet(){
+    private fun presentPaymentSheet() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         paymentSheet.presentWithPaymentIntent(
             paymentIntentClientSecret,
@@ -267,7 +362,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    private fun setVoucher(){
+    private fun setVoucher() {
         order.voucher?.let {
             binding.orderActivityVoucherTextBox.text = it.code.toEditable()
             binding.orderActivityVoucherResponse.text = "voucher applied ${it.offerPercent}% off"
@@ -282,11 +377,13 @@ class CheckoutActivity : AppCompatActivity() {
                 "$${order.beforeTaxPrice} $${order.afterOfferPrice}",
                 "$${order.beforeTaxPrice}"
             )
-            binding.orderActivityOrderSummaryDiscountLabel.text = "${it.offerPercent}% off saved $${Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice)}"
+            binding.orderActivityOrderSummaryDiscountLabel.text = "${it.offerPercent}% off saved $${
+                Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice)
+            }"
         }
     }
 
-    private fun addStrikeTexOnTextView(tv: TextView, fullText: String, strokedSubText: String){
+    private fun addStrikeTexOnTextView(tv: TextView, fullText: String, strokedSubText: String) {
         val spannable = SpannableString(fullText)
         val strikeThroughSpan = StrikethroughSpan()
 
@@ -300,18 +397,16 @@ class CheckoutActivity : AppCompatActivity() {
     private fun doIfUserLoggedIn(task: () -> Unit) {
         if (UserCredentials.isUserSet()) {
             task()
-        } else {
-            val alertManager = AlertManager(this)
-            alertManager.showAlertWithOkButton(
-                AlertData(
-                    title = "Please Login",
-                    message = "Please login before checking out"
-                )
-            ) {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+            return
+        }
+        val alertManager = AlertManager(this)
+        alertManager.showAlertWithOkButton(AlertData(
+            title = "Please Login",
+            message = "Please login before checking out"
+        )) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -322,18 +417,55 @@ class CheckoutActivity : AppCompatActivity() {
     ) {
         if (response.success == 1) {
             task()
-        } else {
-            val alertManager = AlertManager(this)
-            alertManager.showAlertWithOkButton(
-                AlertData(
-                    title = "Failed",
-                    message = response.message
-                )
-            ) {
-                if (navigateBack) {
-                    finish()
-                }
+            return
+        }
+        val alertManager = AlertManager(this)
+        alertManager.showAlertWithOkButton(AlertData(
+            title = "Failed",
+            message = response.message
+        )) {
+            if (navigateBack) {
+                finish()
             }
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getDirectionFromMyLocation() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+            location?.let {
+                val usersLocation = LatLng(location.latitude, location.longitude)
+                mMap.addMarker(MarkerOptions()
+                    .position(usersLocation)
+                    .title("Rally Restaurant & Map")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                )
+                viewModel.getDirections(usersLocation, LatLng(43.7173112591, -79.3055932409))
+            }
+        }
+    }
+
+    private fun handleLocationPermission(task: () -> Unit) {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                getDirectionFromMyLocation()
+            }
+            shouldShowRequestPermissionRationale(
+                Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                requestPermission()
+            }
+            else -> { requestPermission() }
+        }
+    }
+
+    private fun requestPermission() {
+        locationPermissionRequest.launch(arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ))
     }
 }

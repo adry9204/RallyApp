@@ -7,6 +7,7 @@ import retrofit2.create
 object RetrofitClient {
 
     private const val server = "http://192.168.2.237:8000"
+    private const val mapsBaseUrl = "https://maps.googleapis.com/"
 
     val userRetrofit: UserService = Retrofit.Builder()
         .baseUrl("$server/api/")
@@ -50,4 +51,9 @@ object RetrofitClient {
         .build()
         .create(VoucherService::class.java)
 
+    val directionsClient: DirectionsClient = Retrofit.Builder()
+        .baseUrl("$mapsBaseUrl")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(DirectionsClient::class.java)
 }

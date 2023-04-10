@@ -4,10 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.example.rallyapp.api.api_helpers.DirectionsApiHelper
+import com.example.rallyapp.api.dataModel.maps_api.DirectionsApiResult
 import com.example.rallyapp.api.dataModel.request_models.AddAddressRequest
 import com.example.rallyapp.api.dataModel.response_models.*
 import com.example.rallyapp.repo.AddressRepo
 import com.example.rallyapp.repo.OrderRepo
+import com.google.android.gms.maps.model.LatLng
 
 class CheckoutActivityViewModel(application: Application): AndroidViewModel(application){
 
@@ -17,6 +20,7 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
 
     private val orderRepo = OrderRepo()
     private val addressRepo = AddressRepo()
+    private val directionsApiHelper = DirectionsApiHelper()
 
     private var _getOrderByIdResponse = MutableLiveData<ApiResponse<Order<User>>>()
     val getOrderByIdResponse: MutableLiveData<ApiResponse<Order<User>>> = _getOrderByIdResponse
@@ -36,6 +40,8 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
     private var _deleteAddressResponse = MutableLiveData<ApiResponse<Address<Int>>>()
     val deleteAddressResponse: MutableLiveData<ApiResponse<Address<Int>>> = _deleteAddressResponse
 
+    private var _directionLiveData = MutableLiveData<DirectionsApiResult>()
+    val directionLiveData: MutableLiveData<DirectionsApiResult> = _directionLiveData
 
     fun getOrderById(orderId: Int, token: String){
         orderRepo.getOrderById(orderId, token){
@@ -93,5 +99,19 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
         addressRepo.deleteAddress(addressId, token){
             _deleteAddressResponse.value = it
         }
+    }
+
+    fun getDirections(origin: LatLng, destination: LatLng){
+        val originString = makeLatLngToString(origin)
+        val destinationString = makeLatLngToString(destination)
+        directionsApiHelper.getDirections(originString, destinationString){
+            it?.let {
+               directionLiveData.value = it
+            }
+        }
+    }
+
+    fun makeLatLngToString(latLng: LatLng): String{
+        return ("${latLng.latitude},${latLng.longitude}")
     }
 }
