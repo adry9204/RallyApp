@@ -19,7 +19,7 @@
         android:id="@+id/plate_summary_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf = "@id/header_container"
+        app:layout_constraintTop_toBottomOf="@id/header_container"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -35,18 +35,26 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/plate_image"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/plate_detail_activity_plate_image_holder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="5dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/pizza"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:cardCornerRadius="10dp">
+                <ImageView
+                    android:id="@+id/plate_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/pizza" />
+            </androidx.cardview.widget.CardView>
+
 
             <TextView
                 android:id="@+id/plate_title"
@@ -61,21 +69,21 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/plate_image"/>
+                app:layout_constraintTop_toBottomOf="@id/plate_detail_activity_plate_image_holder"/>
 
             <TextView
                 android:id="@+id/plate_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginStart="15dp"
                 android:gravity="center"
                 android:text="$14.5"
                 android:textColor="@color/orange"
                 android:textSize="22sp"
                 android:paddingBottom="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/plate_image" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/plate_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
