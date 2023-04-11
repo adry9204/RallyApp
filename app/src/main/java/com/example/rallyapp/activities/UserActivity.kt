@@ -10,6 +10,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.request_models.UpdateUserRequest
 import com.example.rallyapp.fragments.HeaderFragment
 import com.example.rallyapp.databinding.ActivityUserBinding
@@ -80,6 +81,37 @@ class UserActivity : AppCompatActivity() {
         binding.saveChanges.setOnClickListener {
             if(verifyInputs()){
                 updateUser()
+            }
+        }
+
+        //setting bottom nav listeners
+        binding.newBottomNav.selectedItemId = R.id.user_menu_item
+        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.home_menu_item -> {
+                    var intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.search_menu_item -> {
+                    var intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.carts_menu_item -> {
+                    var intent = Intent(this, CartActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.orders_menu_item -> {
+                    var intent = Intent(this, OrdersActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.user_menu_item -> {
+                    true
+                }
+                else -> false
             }
         }
     }

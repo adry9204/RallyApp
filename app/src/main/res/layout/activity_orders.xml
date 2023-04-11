@@ -24,16 +24,19 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_container"
-        app:layout_constraintBottom_toBottomOf="@id/bottom_nav_container"
+        app:layout_constraintBottom_toBottomOf="@id/new_bottom_nav"
         tools:listitem="@layout/single_order_item" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/bottom_nav_container"
-        android:name="com.example.rallyapp.fragments.BottomNavFragment"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/new_bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu"
+        android:background="@color/background_grey"
+        android:foregroundTint="@color/white">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/orders_activity_loading_screen"

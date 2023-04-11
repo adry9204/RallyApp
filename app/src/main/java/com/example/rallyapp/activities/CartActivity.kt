@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.rallyapp.R
 import com.example.rallyapp.recyclerview_adpaters.CartAdapter
 import com.example.rallyapp.fragments.HeaderFragment
 import com.example.rallyapp.api.dataModel.response_models.Cart
@@ -88,6 +89,36 @@ class CartActivity : AppCompatActivity() {
         binding.shoppingCartRecyclerview.adapter = adapter
         binding.shoppingCartRecyclerview.itemAnimator = DefaultItemAnimator()
 
+        //setting bottom nav listeners
+        binding.newBottomNav.selectedItemId = R.id.carts_menu_item
+        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
+            when(item.itemId) {
+                R.id.home_menu_item -> {
+                    var intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.search_menu_item -> {
+                    var intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.carts_menu_item -> {
+                    true
+                }
+                R.id.orders_menu_item -> {
+                    var intent = Intent(this, OrdersActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.user_menu_item -> {
+                    var intent = Intent(this, UserActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setObserverOnMakeOrderFromCartResponse(){
