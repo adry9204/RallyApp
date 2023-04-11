@@ -160,6 +160,7 @@ class CartActivity : AppCompatActivity() {
 
     private fun setObserverOnAlertMessages(){
         viewModel.showAlert.observe(this){
+            hideLoading()
             val alertManager = AlertManager(this)
             alertManager.showAlertWithOkButton(it)
         }
