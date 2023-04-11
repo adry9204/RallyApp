@@ -41,5 +41,8 @@
     <string name="status_placeholder">status : waiting for pickup</string>
     <string name="checkout_activity_map_duration_placeholder">12min</string>
     <string name="checkout_activity_map_distance">12Km</string>
+    <string name="your_order_is_ready_for_pickup">Your order is ready for pickup</string>
+    <string name="notification_title_placeholder">PULLED PORK SA.. +3 items</string>
+    <string name="notification_time_placeholder">12:30 AM 20th January</string>
 
 </resources>
