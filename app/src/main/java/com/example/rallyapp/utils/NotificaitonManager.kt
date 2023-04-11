@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.response_models.Order
+import com.example.rallyapp.api.dataModel.response_models.OrdersHelper
 import com.example.rallyapp.api.dataModel.response_models.User
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
@@ -67,11 +68,11 @@ class NotificationHelper(val context: Context) {
         val notificationLayout = RemoteViews(packageName, R.layout.order_status_notification)
         notificationLayout.setTextViewText(
             R.id.order_status_notification_title,
-            "your order is ${order.status}"
+            "your order is ${OrdersHelper.getStatusFromOrder(order)}"
         )
         notificationLayout.setTextViewText(
             R.id.order_status_notification_item_list,
-            "${order.orderDetails[0].menu.name}..+${order.orderDetails.size - 1}"
+            "${order.orderDetails[0].menu.name.lowercase()}..+${order.orderDetails.size - 1} items"
         )
         notificationLayout.setTextViewText(R.id.order_status_notification_time, getCurrentDateTimeInFormat())
 
