@@ -60,10 +60,7 @@ class OrderBackgroundService: Service() {
             val gson = Gson()
             class Token : TypeToken<Order<User>>()
             val order = gson.fromJson<Order<User>>(it[0].toString(), Token().type)
-            notificationHelper.displaySimpleNotification(
-                title = "Order Status updated",
-                message = "You order is ${order.status}"
-            )
+            notificationHelper.displayOrderStatusNotification(order, packageName)
         }
     }
 
