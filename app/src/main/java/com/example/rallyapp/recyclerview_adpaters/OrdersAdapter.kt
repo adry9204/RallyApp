@@ -14,6 +14,7 @@ import com.example.rallyapp.R
 import com.example.rallyapp.activities.SingleOrderActivity
 import com.example.rallyapp.api.dataModel.response_models.Order
 import com.example.rallyapp.api.dataModel.response_models.OrderDetail
+import com.example.rallyapp.api.dataModel.response_models.OrdersHelper
 import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.fragments.OrderReceiptBottomSheetFragment
 import com.example.rallyapp.user.UserCredentials
@@ -140,6 +141,6 @@ class OrdersAdapter (
     }
 
     private fun getOrderStatusString(order: Order<User>): String{
-        return "status: ${order.status}"
+        return "status: ${OrdersHelper.getStatusFromOrder(order)}"
     }
 }

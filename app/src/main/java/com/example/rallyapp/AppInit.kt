@@ -4,7 +4,10 @@ import android.app.ActivityManager
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.rallyapp.api_to_database.MenuApiToDatabase
 import com.example.rallyapp.services.MenuLookupService
 import com.example.rallyapp.utils.NotificationHelper
@@ -27,6 +30,7 @@ class AppInit : Application() {
 
         val notificationHelper = NotificationHelper(this)
         notificationHelper.createNotificationChannel()
+
     }
 
     private fun startMenuLookUpService(){

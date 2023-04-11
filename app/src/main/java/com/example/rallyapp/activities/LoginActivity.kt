@@ -1,13 +1,18 @@
 package com.example.rallyapp.activities
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.rallyapp.AppInit
 import com.example.rallyapp.api.dataModel.LoginRequest
 import com.example.rallyapp.databinding.ActivityLoginBinding
 import com.example.rallyapp.repo.UserRepo
@@ -28,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         var userRepo: UserRepo? = null
         const val TAG = "LoginActivity"
         lateinit var viewModel: MainActivityViewModel
+        const val PERMISSION_REQUEST_CODE = 10
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +79,6 @@ class LoginActivity : AppCompatActivity() {
             it.forEach { it ->
                 if(it.success == 1){
                     Log.i(SingUpActivity.TAG,"User Login successful")
-
                     UserCredentials.setUserCredentials(
                         this,
                         userId = it.data[0].userId,

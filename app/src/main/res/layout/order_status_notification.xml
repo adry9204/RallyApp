@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp">
+    android:layout_height="110dp">
 
     <ImageView
         android:background= "@drawable/capsule_background"
-        android:backgroundTint="@color/minimal_grey"
+        android:backgroundTint="@color/black"
         android:id="@+id/order_status_notification_image_icon"
         android:src="@drawable/top_bar_logo"
         android:layout_marginStart="10dp"
@@ -30,7 +30,7 @@
         android:layout_toRightOf="@id/order_status_notification_image_icon"
         android:layout_below="@id/order_status_notification_title"
         android:text="@string/notification_title_placeholder"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:layout_width="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_below="@id/order_status_notification_item_list"
         android:text="@string/notification_time_placeholder"
         android:textColor="@color/green"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:layout_marginTop="5dp"
         android:layout_marginStart="10dp"
         android:layout_width="wrap_content"

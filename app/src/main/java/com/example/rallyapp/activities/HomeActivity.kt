@@ -1,12 +1,16 @@
 package com.example.rallyapp.activities
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,6 +43,7 @@ class HomeActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "HomeActivity"
         var menuRepo: MenuRepo? = null
+        const val PERMISSION_REQUEST_CODE = 10
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +53,14 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         menuRepo = MenuRepo(this)
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                PERMISSION_REQUEST_CODE
+            )
+        }
 
         viewModel = ViewModelProvider(this)[HomeActivityViewModel::class.java]
         viewModel.getAllMenuItems()
