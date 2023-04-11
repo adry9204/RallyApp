@@ -122,6 +122,11 @@ class CheckoutActivity : AppCompatActivity() {
             showAddAddressBottomSheet()
         }
 
+        binding.orderActivityVoucherApplyButton.setOnClickListener{
+            val voucherCode = binding.orderActivityVoucherTextBox.text.toString()
+            viewModel.applyVoucherToOrder(order.id, voucherCode, UserCredentials.getToken()!!)
+        }
+
         setOrderMethodSelector()
     }
 

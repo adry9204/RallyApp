@@ -2,6 +2,11 @@ package com.example.rallyapp.utils
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
+import com.example.rallyapp.R
 import com.example.rallyapp.activities.CheckoutActivity
 import com.example.rallyapp.activities.OrdersActivity
 import com.example.rallyapp.user.UserCredentials
@@ -91,6 +96,32 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
             binding.orderActivityOrderSummaryTaxPriceValue.text = "$${it.data[0].taxPrice}"
             binding.orderActivityOrderSummaryGrandTotalValue.text = "$${it.data[0].totalPrice}"
             setVoucher()
+        }
+    }
+
+    //applyVoucher
+    viewModel.applyVoucherResponse.observe(this){
+        Log.i("Test", it.toString())
+        if(it.success == 1){
+            orderItemsAdapter.setData(it.data[0].orderDetails)
+            order = it.data[0]
+            binding.orderActivityOrderSummaryTotalPriceValue.text =
+                "$${it.data[0].beforeTaxPrice}"
+            binding.orderActivityOrderSummaryTaxPriceValue.text = "$${it.data[0].taxPrice}"
+            binding.orderActivityOrderSummaryGrandTotalValue.text = "$${it.data[0].totalPrice}"
+            binding.orderActivityVoucherResponse.setTextColor(
+                ContextCompat.getColor(this, R.color.emerald_green)
+            )
+            setVoucher()
+        }else{
+            binding.orderActivityVoucherResponse.text = it.message
+            binding.orderActivityVoucherResponse.visibility = View.VISIBLE
+            binding.orderActivityVoucherResponse.setTextColor(
+                ContextCompat.getColor(this, R.color.warning_red)
+            )
+            binding.checkoutActivityVoucherLineBottom.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = binding.orderActivityVoucherResponse.id
+            }
         }
     }
 }

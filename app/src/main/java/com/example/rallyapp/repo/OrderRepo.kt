@@ -82,4 +82,15 @@ class OrderRepo {
             callback(it)
         }
     }
+
+    fun applyVoucherToOrder(
+        orderId: Int,
+        voucherCode: String,
+        token: String,
+        callback: (response: ApiResponse<Order<User>>) -> Unit
+    ){
+        orderApiHelper.applyVoucherToOrder(orderId, voucherCode, token){
+            callback(it)
+        }
+    }
 }

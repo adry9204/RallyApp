@@ -8,7 +8,7 @@ class SocketManager {
 
     private var mSocket: Socket? = null
     var socketUser = mutableListOf<String>()
-    var server = ServerConfigs.HEROKU_SERVER
+    var server = ServerConfigs.LOCAL_SERVER
 
     @Synchronized
     fun setSocket() {

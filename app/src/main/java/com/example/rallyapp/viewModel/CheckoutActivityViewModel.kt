@@ -25,6 +25,9 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
     private var _getOrderByIdResponse = MutableLiveData<ApiResponse<Order<User>>>()
     val getOrderByIdResponse: MutableLiveData<ApiResponse<Order<User>>> = _getOrderByIdResponse
 
+    private var _applyVoucherResponse = MutableLiveData<ApiResponse<Order<User>>>()
+    val applyVoucherResponse: MutableLiveData<ApiResponse<Order<User>>> = _applyVoucherResponse
+
     private var _userAddressResponse = MutableLiveData<ApiResponse<Address<User>>>()
     val userAddressResponse: MutableLiveData<ApiResponse<Address<User>>> = _userAddressResponse
 
@@ -108,6 +111,16 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
             it?.let {
                directionLiveData.value = it
             }
+        }
+    }
+
+    fun applyVoucherToOrder(
+        orderId: Int,
+        voucherCode: String,
+        token: String
+    ){
+        orderRepo.applyVoucherToOrder(orderId, voucherCode, token){
+            _applyVoucherResponse.value = it
         }
     }
 

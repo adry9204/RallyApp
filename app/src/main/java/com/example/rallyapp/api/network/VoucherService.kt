@@ -19,5 +19,4 @@ interface VoucherService {
         @Path(USER_ID) userId: Int,
         @Header("Authorization") token: String
     ): Call<ApiResponse<Voucher>>
-
 }

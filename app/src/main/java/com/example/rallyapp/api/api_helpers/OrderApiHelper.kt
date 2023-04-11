@@ -2,6 +2,7 @@ package com.example.rallyapp.api.api_helpers
 
 import android.util.Log
 import com.example.rallyapp.activities.LoginActivity
+import com.example.rallyapp.api.dataModel.request_models.ApplyVoucherToOrderRequest
 import com.example.rallyapp.api.dataModel.request_models.MakeOrderFromCartRequestBody
 import com.example.rallyapp.api.dataModel.request_models.MakePaymentRequestBody
 import com.example.rallyapp.api.dataModel.response_models.*
@@ -250,6 +251,47 @@ class OrderApiHelper {
                     callback(ApiResponse(
                         success = 0,
                         message = "Failed to find order",
+                        data = listOf()
+                    ))
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Order<User>>>, t: Throwable) {
+                Log.e(LoginActivity.TAG, "Api register call failed message: " + t.message)
+                callback(ApiResponse(
+                    success = 0,
+                    message = t.message.toString(),
+                    data = listOf()
+                ))
+            }
+        })
+    }
+
+    fun applyVoucherToOrder(
+        orderId: Int,
+        voucherCode: String,
+        token: String,
+        callback: (response: ApiResponse<Order<User>>) -> Unit
+    ){
+        val applyVoucherToOrderRequest = ApplyVoucherToOrderRequest(
+            orderId = orderId,
+            voucherCode = voucherCode
+        )
+        val retrofit = RetrofitClient.orderClient.applyVoucherToOrder(applyVoucherToOrderRequest, token)
+        retrofit.enqueue(object : retrofit2.Callback<ApiResponse<Order<User>>> {
+            override fun onResponse(
+                call: Call<ApiResponse<Order<User>>>,
+                response: Response<ApiResponse<Order<User>>>
+            ) {
+                if(response.body() != null){
+                    val result = response.body()!!
+                    callback(result)
+                }else{
+                    val errorBodyString = response.errorBody()?.string() ?: ""
+                    val errorMessage = JSONObject(errorBodyString).getString("message")
+                    callback(ApiResponse(
+                        success = 0,
+                        message = errorMessage,
                         data = listOf()
                     ))
                 }

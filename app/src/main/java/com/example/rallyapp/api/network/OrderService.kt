@@ -1,5 +1,6 @@
 package com.example.rallyapp.api.network
 
+import com.example.rallyapp.api.dataModel.request_models.ApplyVoucherToOrderRequest
 import com.example.rallyapp.api.dataModel.request_models.MakeOrderFromCartRequestBody
 import com.example.rallyapp.api.dataModel.request_models.MakePaymentRequestBody
 import com.example.rallyapp.api.dataModel.response_models.ApiResponse
@@ -54,6 +55,12 @@ interface OrderService {
     @POST("orders/reorder")
     fun reorderByOrderId(
         @Body makePaymentRequestBody: MakePaymentRequestBody,
+        @Header(CartService.AUTH_HEADER) token: String
+    ): Call<ApiResponse<Order<User>>>
+
+    @PATCH("orders/voucher")
+    fun applyVoucherToOrder(
+        @Body applyVoucherToOrderRequest: ApplyVoucherToOrderRequest,
         @Header(CartService.AUTH_HEADER) token: String
     ): Call<ApiResponse<Order<User>>>
 
