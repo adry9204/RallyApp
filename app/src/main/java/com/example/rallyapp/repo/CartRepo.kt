@@ -26,14 +26,14 @@ class CartRepo(private var context: Context) {
         const val TAG = "CartRepo"
     }
 
-    fun getUsersCart(callback: (List<Cart>) -> Unit){
-        cartDatabaseHelper.AsModel().getCartWithMenu {
+    fun getUsersCart(userId: Int, callback: (List<Cart>) -> Unit){
+        cartDatabaseHelper.AsModel().getCartWithMenu(userId) {
             callback(it)
         }
     }
 
     fun getUsersCartAndInQueue(userId: Int, callback: (List<Cart>) -> Unit){
-        getUsersCart { cartItems ->
+        getUsersCart(userId) { cartItems ->
             cartQueueDatabaseHelper.getUsersCartQueueAsModel(userId){ cartQueue ->
                 CoroutineScope(Dispatchers.IO).launch{
                     Log.i(TAG, "Inside the getUsersCartQueueAsModel")

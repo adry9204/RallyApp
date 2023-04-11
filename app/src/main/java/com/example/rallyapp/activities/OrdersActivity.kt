@@ -81,6 +81,7 @@ class OrdersActivity : AppCompatActivity() {
 
     private fun setListenerOnReorderResponse(){
         viewModel.reorderResponseLiveData.observe(this){
+            hideLoadingScreen()
             if(it.success == 0){
                 val alertManager = AlertManager(this)
                 alertManager.showAlertWithOkButton(AlertData(
