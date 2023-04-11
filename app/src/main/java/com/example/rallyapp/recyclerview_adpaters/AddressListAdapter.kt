@@ -12,11 +12,14 @@ import com.example.rallyapp.api.dataModel.response_models.Address
 import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.databinding.AdrressListItemBinding
 import com.example.rallyapp.databinding.FragmentAddAddressBottomSheetBinding
+import com.example.rallyapp.user.UserCredentials
+import com.example.rallyapp.viewModel.CheckoutActivityViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AddressListAdapter(
     private val context: Context,
+    private val viewModel: CheckoutActivityViewModel,
     private var addressData: MutableList<Address<User>>
 ) : RecyclerView.Adapter<AddressListAdapter.ViewHolder>() {
 
@@ -63,6 +66,12 @@ class AddressListAdapter(
                 addressData[position].expanded = !addressData[position].expanded
                 notifyItemChanged(position)
             }
+
+            binding.addressListDeleteAddressButton.setOnClickListener{
+                val position = absoluteAdapterPosition
+                viewModel.deleteAddress(addressData[position].id!!, UserCredentials.getToken()!!)
+            }
+
         }
     }
 

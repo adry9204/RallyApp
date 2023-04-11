@@ -41,6 +41,7 @@ class OrdersActivity : AppCompatActivity() {
         setOrdersListRecyclerView()
 
         ifUserLoggedIn {
+            showLoadingScreen()
             viewModel.getUsersOrder(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
         }
         setObserverOnOrdersList()
@@ -59,18 +60,20 @@ class OrdersActivity : AppCompatActivity() {
     private fun setOrdersListRecyclerView(){
         val gridViewItem = findViewById<RecyclerView>(R.id.orders_recyclerview)
         gridViewItem.layoutManager = GridLayoutManager(this, 1)
-        ordersAdapter = OrdersAdapter(this, listOf(), viewModel, supportFragmentManager)
+        ordersAdapter = OrdersAdapter(this, listOf(), viewModel, supportFragmentManager, ::showLoadingScreen)
         gridViewItem.adapter = ordersAdapter
     }
 
     private fun setObserverOnOrdersList(){
         viewModel.orderListLiveData.observe(this){
+            hideLoadingScreen()
             ordersAdapter.setData(it)
         }
     }
 
     private fun listenForAlertsFromViewModel(){
         viewModel.showAlert.observe(this){ alertData ->
+            hideLoadingScreen()
             val alertManager = AlertManager(this)
             alertManager.showAlertWithOkButton(alertData)
         }
@@ -78,6 +81,7 @@ class OrdersActivity : AppCompatActivity() {
 
     private fun setListenerOnReorderResponse(){
         viewModel.reorderResponseLiveData.observe(this){
+            hideLoadingScreen()
             if(it.success == 0){
                 val alertManager = AlertManager(this)
                 alertManager.showAlertWithOkButton(AlertData(
@@ -111,6 +115,14 @@ class OrdersActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    fun showLoadingScreen(){
+        binding.ordersActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoadingScreen(){
+        binding.ordersActivityLoadingScreen.visibility = View.GONE
     }
 
     fun goToOrders(v: View) {

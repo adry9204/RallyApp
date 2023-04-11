@@ -97,6 +97,7 @@ class CheckoutActivity : AppCompatActivity() {
         intent.extras?.let {
             it.getInt(ORDER_ID_KEY)?.let {
                 doIfUserLoggedIn {
+                    showLoading()
                     viewModel.getOrderById(orderId = it, UserCredentials.getToken()!!)
                 }
             }
@@ -105,6 +106,7 @@ class CheckoutActivity : AppCompatActivity() {
         setAddressListRecyclerView()
 
         doIfUserLoggedIn {
+            showLoading()
             viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
         }
 
@@ -122,27 +124,48 @@ class CheckoutActivity : AppCompatActivity() {
             showAddAddressBottomSheet()
         }
 
+        binding.orderActivityVoucherApplyButton.setOnClickListener{
+            showLoading()
+            val voucherCode = binding.orderActivityVoucherTextBox.text.toString()
+            viewModel.applyVoucherToOrder(order.id, voucherCode, UserCredentials.getToken()!!)
+        }
+
         setOrderMethodSelector()
     }
 
     private fun proceedToPay(){
-        if (addressListAdapter.selectedAddressId != null) {
+        if(orderMethodSelector.getSelected() == OrderMethodSelector.PICK_UP){
             doIfUserLoggedIn {
+                showLoading()
                 viewModel.makePaymentIntent(
                     orderId = order.id,
-                    addressId = addressListAdapter.selectedAddressId!!,
                     token = UserCredentials.getToken()!!
                 )
             }
-        } else {
-            val alertManager = AlertManager(this)
-            alertManager.showAlertWithOkButton(
-                AlertData(
-                    title = "Missing Address",
-                    message = "Please select a delivery location"
+        }else{
+            if (addressListAdapter.selectedAddressId != null) {
+                doIfUserLoggedIn {
+                    showLoading()
+                    viewModel.makePaymentIntent(
+                        orderId = order.id,
+                        addressId = addressListAdapter.selectedAddressId!!,
+                        token = UserCredentials.getToken()!!
+                    )
+                }
+            } else {
+                val alertManager = AlertManager(this)
+                alertManager.showAlertWithOkButton(
+                    AlertData(
+                        title = "Missing Address",
+                        message = "Please select a delivery location"
+                    )
                 )
-            )
+            }
         }
+
+
+
+
     }
 
     private fun setOrderMethodSelector() {
@@ -179,8 +202,8 @@ class CheckoutActivity : AppCompatActivity() {
             mapFragment.getMapAsync { googleMap ->
                 mMap = googleMap
                 mapsManager = CheckoutActivityMapsManager(mMap)
-                mapsManager.addMarker(LocationController.RALLY_LOCATION)
-                mapsManager.animateCameraToLocation(LocationController.RALLY_LOCATION, 10.0f)
+                mapsManager.addMarker(LocationController.RALLY_LOCATION, "Rally Restaurant & Bar", CheckoutActivityMapsManager.MARKER_TYPE_RESTAURANT)
+                mapsManager.animateCameraToLocation(LocationController.RALLY_LOCATION, 11.0f)
             }
         }
     }
@@ -188,6 +211,7 @@ class CheckoutActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (this::order.isInitialized && !orderConfirmed) {
+            showLoading()
             viewModel.deleteOrder(orderId = order.id, UserCredentials.getToken()!!)
         }
     }
@@ -217,6 +241,7 @@ class CheckoutActivity : AppCompatActivity() {
                 )
             }
             is PaymentSheetResult.Completed -> {
+                showLoading()
                 viewModel.orderConfirmed(orderId = order.id, UserCredentials.getToken()!!)
             }
         }
@@ -236,7 +261,7 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun setAddressListRecyclerView() {
         binding.orderActivityAddressRecyclerView.layoutManager = LinearLayoutManager(this)
-        addressListAdapter = AddressListAdapter(this, mutableListOf())
+        addressListAdapter = AddressListAdapter(this, viewModel, mutableListOf())
         binding.orderActivityAddressRecyclerView.adapter = addressListAdapter
     }
 
@@ -261,9 +286,9 @@ class CheckoutActivity : AppCompatActivity() {
                 "$${order.beforeTaxPrice} $${order.afterOfferPrice}",
                 "$${order.beforeTaxPrice}"
             )
-            binding.orderActivityOrderSummaryDiscountLabel.text = "${it.offerPercent}% off saved $${
-                Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice)
-            }"
+            val savings = Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice!!)
+            val discountLabel =  "${it.offerPercent}% off saved $${savings}"
+            binding.orderActivityOrderSummaryDiscountLabel.text = discountLabel
         }
     }
 
@@ -317,9 +342,17 @@ class CheckoutActivity : AppCompatActivity() {
     private fun getDirectionFromMyLocation() {
         val locationController = LocationController(this)
         locationController.getCurrentLocation {
-            mapsManager.addMarker(it)
+            mapsManager.addMarker(it, "Your location", CheckoutActivityMapsManager.MARKER_TYPE_MY_LOCATION)
             viewModel.getDirections(it, LocationController.RALLY_LOCATION)
         }
+    }
+
+    fun showLoading(){
+        binding.checkoutActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoading(){
+        binding.checkoutActivityLoadingScreen.visibility = View.GONE
     }
 
 }

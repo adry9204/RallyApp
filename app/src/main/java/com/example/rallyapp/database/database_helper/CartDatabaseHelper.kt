@@ -43,9 +43,9 @@ class CartDatabaseHelper(context: Context) {
     }
 
     inner class AsModel{
-        fun getCartWithMenu(callback: (cartItems: List<Cart>) -> Unit){
+        fun getCartWithMenu(userId: Int, callback: (cartItems: List<Cart>) -> Unit){
             CoroutineScope(Dispatchers.IO).launch {
-                val cartWithMenuEntity = db.cartDao().getCartWithMenu()
+                val cartWithMenuEntity = db.cartDao().getCartWithMenu(userId)
                 val cartDataModel = mutableListOf<Cart>()
                 for(item in cartWithMenuEntity){
                     val menu = Menu(

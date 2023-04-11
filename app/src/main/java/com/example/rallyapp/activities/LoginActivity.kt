@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.rallyapp.api.dataModel.LoginRequest
 import com.example.rallyapp.databinding.ActivityLoginBinding
@@ -44,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
                 val password = binding.userPassword.text.toString()
 
                 val request = LoginRequest(userName, password)
+                showLoadingScreen()
                 viewModel.loginUser(request)
 
             }else{
@@ -67,6 +69,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setObserverForLoginResponse(){
         viewModel.userLoginListLiveData.observe(this) {
+            hideLoadingScreen()
             it.forEach { it ->
                 if(it.success == 1){
                     Log.i(SingUpActivity.TAG,"User Login successful")
@@ -108,6 +111,14 @@ class LoginActivity : AppCompatActivity() {
         val cartService = Intent(this, CartBackgroundService::class.java)
         cartService.putExtras(bundle)
         startService(cartService)
+    }
+
+    fun showLoadingScreen(){
+        binding.loginActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoadingScreen(){
+        binding.loginActivityLoadingScreen.visibility = View.GONE
     }
 
     private fun goToHomeScreen(){

@@ -2,6 +2,11 @@ package com.example.rallyapp.utils
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.updateLayoutParams
+import com.example.rallyapp.R
 import com.example.rallyapp.activities.CheckoutActivity
 import com.example.rallyapp.activities.OrdersActivity
 import com.example.rallyapp.user.UserCredentials
@@ -31,6 +36,7 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
                 )
                 PaymentConfiguration.init(this@addLiveDataObservers, paymentData.publishableKey)
                 withContext(Dispatchers.Main) {
+                    hideLoading()
                     presentPaymentSheet()
                 }
             }
@@ -40,6 +46,8 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
     // directions
     viewModel.directionLiveData.observe(this){
         mapsManager.showDirection(it)
+        binding.checkoutActivityDirectionDuration.text = it.routes[0].legs[0].duration.text
+        binding.checkoutActivityDirectionDistance.text =  it.routes[0].legs[0].distance.text
     }
 
     // add address response
@@ -59,6 +67,7 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
     // order confirmation
     viewModel.confirmOrderResponses.observe(this) {
         handleResponseIfSuccess(message = "", response = it) {
+            hideLoading()
             val intent = Intent(this, OrdersActivity::class.java)
             startActivity(intent)
             orderConfirmed = true
@@ -68,6 +77,7 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
 
     // address fetch response
     viewModel.userAddressResponse.observe(this) {
+        hideLoading()
         handleResponseIfSuccess(
             response = it,
             message = "Failed to fetch users address",
@@ -79,6 +89,7 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
 
     //order by id response
     viewModel.getOrderByIdResponse.observe(this) {
+        hideLoading()
         handleResponseIfSuccess(
             response = it,
             message = "Failed to fetch order",
@@ -92,5 +103,37 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
             binding.orderActivityOrderSummaryGrandTotalValue.text = "$${it.data[0].totalPrice}"
             setVoucher()
         }
+    }
+
+    //applyVoucher
+    viewModel.applyVoucherResponse.observe(this){
+        Log.i("Test", it.toString())
+        hideLoading()
+        if(it.success == 1){
+            orderItemsAdapter.setData(it.data[0].orderDetails)
+            order = it.data[0]
+            binding.orderActivityOrderSummaryTotalPriceValue.text =
+                "$${it.data[0].beforeTaxPrice}"
+            binding.orderActivityOrderSummaryTaxPriceValue.text = "$${it.data[0].taxPrice}"
+            binding.orderActivityOrderSummaryGrandTotalValue.text = "$${it.data[0].totalPrice}"
+            binding.orderActivityVoucherResponse.setTextColor(
+                ContextCompat.getColor(this, R.color.emerald_green)
+            )
+            setVoucher()
+        }else{
+            binding.orderActivityVoucherResponse.text = it.message
+            binding.orderActivityVoucherResponse.visibility = View.VISIBLE
+            binding.orderActivityVoucherResponse.setTextColor(
+                ContextCompat.getColor(this, R.color.warning_red)
+            )
+            binding.checkoutActivityVoucherLineBottom.updateLayoutParams<ConstraintLayout.LayoutParams> {
+                topToBottom = binding.orderActivityVoucherResponse.id
+            }
+        }
+    }
+
+    viewModel.deleteAddressResponse.observe(this){
+        hideLoading()
+        viewModel.getUsersAddress(UserCredentials.getUserId()!!, UserCredentials.getToken() !!)
     }
 }

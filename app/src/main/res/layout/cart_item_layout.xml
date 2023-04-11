@@ -11,8 +11,7 @@
     app:cardCornerRadius="10dp"
     app:cardElevation="4dp"
     app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true"
-    android:onClick="productCardViewOnClick">
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

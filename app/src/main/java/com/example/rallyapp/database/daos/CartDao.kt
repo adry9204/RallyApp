@@ -13,8 +13,8 @@ interface CartDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addItemToCart(cartItem: CartEntity)
 
-    @Query("SELECT cart.*, menu.* FROM cart INNER JOIN menu ON cart.menu_id = menu.menuId")
-    fun getCartWithMenu(): List<CartWithMenuEntity>
+    @Query("SELECT cart.*, menu.* FROM cart INNER JOIN menu ON cart.menu_id = menu.menuId WHERE cart_userid=:userId")
+    fun getCartWithMenu(userId: Int): List<CartWithMenuEntity>
 
     @Query("DELETE FROM cart WHERE cart_id=:id")
     fun deleteItemFromCart(id: Int)

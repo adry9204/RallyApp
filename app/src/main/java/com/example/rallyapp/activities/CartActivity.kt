@@ -41,6 +41,7 @@ class CartActivity : AppCompatActivity() {
         if(!UserCredentials.isUserSet()){ gotToLoginActivity() }
         viewModel = ViewModelProvider(this)[CartActivityViewModel::class.java]
 
+        showLoading()
         viewModel.getUserCart(UserCredentials.getUserId() ?: 0, UserCredentials.getToken() ?: "")
 
         //setting the header with the correct tagline
@@ -59,11 +60,13 @@ class CartActivity : AppCompatActivity() {
         binding.checkoutButton.setOnClickListener {
             if(UserCredentials.isUserSet()){
                 if(UserCredentials.hasVoucher()){
+                    showLoading()
                     viewModel.makeOrderFromCart(
                         userId = UserCredentials.getUserId()!!,
                         voucherId = UserCredentials.getVoucher()!!.id,
                         token = UserCredentials.getToken()!!)
                 }else {
+                    showLoading()
                     viewModel.makeOrderFromCart(
                         userId = UserCredentials.getUserId()!!,
                         token = UserCredentials.getToken()!!)
@@ -81,7 +84,7 @@ class CartActivity : AppCompatActivity() {
         }
 
         binding.shoppingCartRecyclerview.layoutManager = GridLayoutManager(this, 1)
-        adapter = CartAdapter(mutableListOf<Cart>(), viewModel, this)
+        adapter = CartAdapter(mutableListOf(), viewModel, this, ::showLoading)
         binding.shoppingCartRecyclerview.adapter = adapter
         binding.shoppingCartRecyclerview.itemAnimator = DefaultItemAnimator()
 
@@ -97,20 +100,22 @@ class CartActivity : AppCompatActivity() {
                 }
                 intent.putExtras(bundle)
                 startActivity(intent)
+                hideLoading()
             }else{
+                hideLoading()
                 val alertManager = AlertManager(this)
                 alertManager.showAlertWithOkButton(
                     AlertData(
                     title = "Failed to make order",
                     message = it.message
-                )
-                )
+                ))
             }
         }
     }
 
     private fun setObserverOnCartData(){
         viewModel.cartLiveData.observe(this){
+            hideLoading()
             adapter?.let { adapter->
                 adapter.setData(it.toMutableList())
                 adapter.notifyDataSetChanged()
@@ -122,6 +127,7 @@ class CartActivity : AppCompatActivity() {
 
     private fun setObserverOnCartDeleteResponse() {
         viewModel.cartResponseLiveData.observe(this){
+            hideLoading()
             if(it.success == 1){
                 makeSnackBar("deleted cart item successfully", binding.shoppingCartRecyclerview)
                 adapter?.let { adapter ->
@@ -171,6 +177,14 @@ class CartActivity : AppCompatActivity() {
     fun goToOrders(v:View) {
         var intent = Intent(this, OrdersActivity::class.java)
         startActivity(intent)
+    }
+
+    fun showLoading(){
+        binding.cartActivityActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoading(){
+        binding.cartActivityActivityLoadingScreen.visibility = View.GONE
     }
 
 }

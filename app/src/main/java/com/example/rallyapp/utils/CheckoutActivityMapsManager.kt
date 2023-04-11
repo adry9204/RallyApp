@@ -5,23 +5,30 @@ import android.util.Log
 import androidx.fragment.app.FragmentManager
 import com.example.rallyapp.R
 import com.example.rallyapp.activities.CheckoutActivity
+import com.example.rallyapp.api.dataModel.maps_api.Bounds
 import com.example.rallyapp.api.dataModel.maps_api.DirectionsApiResult
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
 class CheckoutActivityMapsManager(private val mMap: GoogleMap) {
 
-    fun addMarker(latLng: LatLng){
+    companion object {
+        const val MARKER_TYPE_RESTAURANT = R.drawable.hotel_icon
+        const val MARKER_TYPE_MY_LOCATION = R.drawable.user
+    }
+
+    fun addMarker(latLng: LatLng, title: String, type: Int){
        mMap.addMarker(
             MarkerOptions()
                 .position(latLng)
-                .title("Rally Restaurant & Map")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
+                .title(title)
+                .icon(BitmapDescriptorFactory.fromResource(type))
         )
     }
 
@@ -32,6 +39,11 @@ class CheckoutActivityMapsManager(private val mMap: GoogleMap) {
                 zoom
             )
         )
+    }
+
+    fun animateCameraToLocation(swBounds: LatLng, neBounds: LatLng){
+        val bound = LatLngBounds(swBounds, neBounds)
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bound, 20))
     }
 
     fun showDirection(direction: DirectionsApiResult){
@@ -45,5 +57,14 @@ class CheckoutActivityMapsManager(private val mMap: GoogleMap) {
         for (points in path){
             mMap.addPolyline(PolylineOptions().addAll(points).color(Color.RED))
         }
+        val swBound = LatLng(
+            direction.routes[0].bounds.southwest.lat,
+            direction.routes[0].bounds.southwest.lng
+        )
+        val neBound = LatLng(
+            direction.routes[0].bounds.northeast.lat,
+            direction.routes[0].bounds.northeast.lng
+        )
+        animateCameraToLocation(swBound, neBound)
     }
 }

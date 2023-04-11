@@ -16,5 +16,6 @@ data class Order<UserType>(
     val user: UserType,
     var afterOfferPrice: String? = null,
     var orderPlacedDate: Date? = null,
-    var voucher: Voucher? = null
+    var voucher: Voucher? = null,
+    var orderMethod: String? = null
 )

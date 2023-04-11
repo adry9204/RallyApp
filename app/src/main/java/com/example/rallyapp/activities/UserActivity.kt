@@ -56,9 +56,11 @@ class UserActivity : AppCompatActivity() {
             )
             val token = sharedPreferences.getString("token", "defaultToken")
             if (token != null) {
+                showLoadingScreen()
                 viewModel.logoutUser(token)
             }
             viewModel.userLogoutListLiveData.observe(this) {
+                hideLoadingScreen()
                 it.forEach { it ->
                     if (it.message == "Logged out successfully") {
                         Log.i(SingUpActivity.TAG, "User Logout successful")
@@ -86,8 +88,10 @@ class UserActivity : AppCompatActivity() {
 
     private fun getUserData() {
         if (UserCredentials.isUserSet()) {
+            showLoadingScreen()
             viewModel.getUserById(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
             viewModel.userData.observe(this) {
+                hideLoadingScreen()
                 binding.userName.editText!!.text = it.fullName!!.toEditable()
                 binding.userEmail.editText!!.text = it.email!!.toEditable()
                 binding.userUsername.editText!!.text = it.userName!!.toEditable()
@@ -99,6 +103,7 @@ class UserActivity : AppCompatActivity() {
 
     private fun listenForAlertFromViewModel(){
         viewModel.showAlert.observe(this){
+            hideLoadingScreen()
             val alertManager = AlertManager(this)
             alertManager.showAlertWithOkButton(it){}
         }
@@ -165,7 +170,17 @@ class UserActivity : AppCompatActivity() {
             password = password,
             userId = UserCredentials.getUserId()!!
         )
+
+        showLoadingScreen()
         viewModel.updateUser(updateRequest, UserCredentials.getToken()!!)
+    }
+
+    fun showLoadingScreen(){
+        binding.userActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoadingScreen(){
+        binding.userActivityLoadingScreen.visibility = View.GONE
     }
 
     fun goToOrders(v:View) {

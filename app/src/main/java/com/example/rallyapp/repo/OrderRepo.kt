@@ -34,7 +34,7 @@ class OrderRepo {
 
     fun makePaymentIntent(
         orderId: Int,
-        addressId: Int,
+        addressId: Int? = null,
         token: String,
         callback: (response: ApiResponse<StripePaymentDetails>) -> Unit
     ){
@@ -79,6 +79,17 @@ class OrderRepo {
         callback:(response: ApiResponse<Order<User>>) -> Unit
     ){
         orderApiHelper.reorderByOrderId(orderId, token){
+            callback(it)
+        }
+    }
+
+    fun applyVoucherToOrder(
+        orderId: Int,
+        voucherCode: String,
+        token: String,
+        callback: (response: ApiResponse<Order<User>>) -> Unit
+    ){
+        orderApiHelper.applyVoucherToOrder(orderId, voucherCode, token){
             callback(it)
         }
     }

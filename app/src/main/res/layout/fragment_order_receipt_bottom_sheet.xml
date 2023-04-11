@@ -68,6 +68,27 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/order_receipt_bottom_sheet_offer_description_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/order_receipt_bottom_sheet_offer_description_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:gravity="end|center"
+                android:textColor="@color/warning_red"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
