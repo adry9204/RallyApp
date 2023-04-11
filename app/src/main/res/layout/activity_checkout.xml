@@ -6,6 +6,8 @@
     android:layout_height="wrap_content"
     tools:context=".activities.CheckoutActivity">
 
+
+
     <ScrollView
         android:id="@+id/checkout_activity_scrollview"
         android:layout_width="match_parent"
@@ -142,6 +144,7 @@
                 app:layout_constraintTop_toBottomOf="@id/checkout_activity_method_selection">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="visible"
                     android:id="@+id/checkout_activity_method_address_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -239,6 +242,28 @@
                         app:layout_constraintTop_toTopOf="parent"
                         map:uiZoomControls="true"
                         tools:context=".activities.CheckoutActivity" />
+
+                    <TextView
+                        app:layout_constraintTop_toBottomOf="@id/checkout_activity_maps_fragment"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/checkout_activity_map_duration_placeholder"
+                        android:textSize="22sp"
+                        android:layout_marginVertical="10sp"
+                        android:id="@+id/checkout_activity_direction_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        app:layout_constraintTop_toBottomOf="@id/checkout_activity_maps_fragment"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="15dp"
+                        android:text="@string/checkout_activity_map_distance"
+                        android:textSize="22sp"
+                        android:layout_marginVertical="10sp"
+                        android:id="@+id/checkout_activity_direction_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -403,6 +428,7 @@
                         android:textColor="@color/warning_red"
                         android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent" />
+
                 </LinearLayout>
 
 
@@ -497,6 +523,27 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/checkout_activity_loading_screen"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/transparent_black" >
+
+        <ProgressBar
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

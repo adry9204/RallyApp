@@ -60,7 +60,7 @@ class CheckoutActivityViewModel(application: Application): AndroidViewModel(appl
 
     fun makePaymentIntent(
         orderId: Int,
-        addressId: Int,
+        addressId: Int? = null,
         token: String
     ){
         orderRepo.makePaymentIntent(orderId, addressId, token){

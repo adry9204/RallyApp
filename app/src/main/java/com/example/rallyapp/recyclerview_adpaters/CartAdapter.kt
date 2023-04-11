@@ -21,7 +21,8 @@ import com.squareup.picasso.Picasso
 class CartAdapter(
     private var cartItems: MutableList<Cart>,
     private val viewModel: CartActivityViewModel,
-    private val context: Context
+    private val context: Context,
+    private val showLoading: () -> Unit,
 ) : RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
     private var lastDeletedPos: Int? = null
@@ -55,7 +56,8 @@ class CartAdapter(
         holder.deleteButton.setOnClickListener{
             val networkHelper = NetworkHelper(context)
             if(networkHelper.isConnectedToNetwork()){
-                lastDeletedPos = holder.adapterPosition
+                lastDeletedPos = holder.absoluteAdapterPosition
+                showLoading()
                 viewModel.removeCartItem(cartItems[position].id, UserCredentials.getToken()!!)
             }else {
                 actionRestrictedWithOutNetworkAlert()

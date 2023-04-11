@@ -38,5 +38,8 @@
     <string name="home_activity_claim_voucher_button_text">Claim Voucher</string>
     <string name="plate_detail_activity_add_to_cart">Add to Cart</string>
     <string name="new_address">new address</string>
+    <string name="status_placeholder">status : waiting for pickup</string>
+    <string name="checkout_activity_map_duration_placeholder">12min</string>
+    <string name="checkout_activity_map_distance">12Km</string>
 
 </resources>

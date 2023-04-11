@@ -17,4 +17,6 @@
     <color name="minimal_grey">#918e9b</color>
     <color name="minimal_light_grey">#D3D3D3</color>
     <color name="emerald_green">#50C878</color>
+
+    <color name="transparent_black">#99000000</color>
 </resources>

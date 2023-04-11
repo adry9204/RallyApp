@@ -34,7 +34,7 @@ class OrderRepo {
 
     fun makePaymentIntent(
         orderId: Int,
-        addressId: Int,
+        addressId: Int? = null,
         token: String,
         callback: (response: ApiResponse<StripePaymentDetails>) -> Unit
     ){

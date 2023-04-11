@@ -29,14 +29,16 @@ class OrdersAdapter (
     private val context: Context,
     private var orders: List<Order<User>>,
     private val viewModel: OrderActivityViewModel,
-    private val supportFragmentManager: FragmentManager
+    private val supportFragmentManager: FragmentManager,
+    private val showLoadingScreen: () -> Unit
 ) : RecyclerView.Adapter<OrdersAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val orderDate: TextView = itemView.findViewById(R.id.date_and_total_label)
         val orderSummary: TextView = itemView.findViewById(R.id.order_description_label)
         private val reorderButton: Button = itemView.findViewById(R.id.reorder_button)
-        private val viewReceiptButton: Button = itemView.findViewById(R.id.view_receipt_buttonn)
+        private val viewReceiptButton: Button = itemView.findViewById(R.id.view_receipt_button)
+        val orderStatus: TextView = itemView.findViewById(R.id.order_status_label)
 
         init {
             itemView.setOnClickListener{
@@ -55,6 +57,7 @@ class OrdersAdapter (
 
             reorderButton.setOnClickListener {
                 doIfConnectedToInternet {
+                    showLoadingScreen()
                     viewModel.reorderByOrderId(orders[absoluteAdapterPosition].id, UserCredentials.getToken()!!)
                 }
             }
@@ -71,10 +74,11 @@ class OrdersAdapter (
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         with(holder){
             with(orders[position]){
-                orderDate.text = makeDatePriceString(orderPlacedDate!!, totalPrice)
+                orderDate.text = makeDatePriceString(this)
                 CoroutineScope(Dispatchers.Default).launch{
                     makeDescriptionFromOrderDetails(orderDetails, orderSummary)
                 }
+                orderStatus.text = getOrderStatusString(this)
             }
         }
     }
@@ -124,13 +128,18 @@ class OrdersAdapter (
         }
     }
 
-    private fun makeDatePriceString(date: Date, price: String): String{
-        val dateString = formatDate(date)
+    private fun makeDatePriceString(order: Order<User>): String{
+        val dateString = formatDate(order.orderPlacedDate!!)
+        val price = if (order.afterOfferPrice != null) {order.afterOfferPrice} else {order.totalPrice}
         return "$dateString - $$price"
     }
 
     private fun formatDate(date: Date): String {
         val format = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         return format.format(date)
+    }
+
+    private fun getOrderStatusString(order: Order<User>): String{
+        return "status: ${order.status}"
     }
 }

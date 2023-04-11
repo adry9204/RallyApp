@@ -25,10 +25,6 @@ class PlateDetailActivity : AppCompatActivity() {
 
     companion object{
         const val TAG = "PlateDetailActivity"
-        const val PLATE_TITLE = "title"
-        const val PLATE_PRICE = "price"
-        const val PLATE_DESCRIPTION = "description"
-        const val PLATE_IMAGE = "image"
 
         const val MENU_ITEM_ID = "menu_item_id"
 
@@ -47,12 +43,12 @@ class PlateDetailActivity : AppCompatActivity() {
         val menuId = getMenuItemId()
         viewModel.getMenuItemById(menuId)
 
-        binding.plusButton.setOnClickListener(){
+        binding.plusButton.setOnClickListener{
             quantity++
             binding.quantityLabel.text = "Qty: " + quantity.toString()
         }
 
-        binding.minusButton.setOnClickListener(){
+        binding.minusButton.setOnClickListener{
             if (quantity > 1) {
                 quantity--
                 binding.quantityLabel.text = "Qty: " + quantity.toString()
@@ -60,6 +56,7 @@ class PlateDetailActivity : AppCompatActivity() {
         }
 
         binding.addToCartButton.setOnClickListener {
+            showLoadingScreen()
             viewModel.addItemToCart(
                 userId = UserCredentials.getUserId() ?: 0,
                 menuId = menu.id,
@@ -81,6 +78,7 @@ class PlateDetailActivity : AppCompatActivity() {
 
     private fun listenForAddToCartResponse(){
         viewModel.addCartResponseLiveData.observe(this){
+            hideLoading()
             if(it.success == 1){
                 makeSnackBar("Item added to cart Successfully", binding.addToCartButton)
             }else{
@@ -96,6 +94,7 @@ class PlateDetailActivity : AppCompatActivity() {
 
     private fun setObserverOnMenuData(){
         viewModel.menuListLiveData.observe(this){
+            hideLoading()
             Log.i(TAG, it.toString())
             if(it.isNotEmpty()){
                 binding.plateDescription.text = it[0].description.lowercase()
@@ -109,6 +108,7 @@ class PlateDetailActivity : AppCompatActivity() {
 
     private fun listenForAlertFromViewModel(){
         viewModel.showAlert.observe(this){
+            hideLoading()
             val alertHelper = AlertManager(this)
             alertHelper.showAlertWithOkButton(it)
         }
@@ -120,6 +120,14 @@ class PlateDetailActivity : AppCompatActivity() {
         } ?: 0
         Log.i(TAG, menuId.toString())
         return menuId
+    }
+
+    fun showLoadingScreen(){
+        binding.plateDetailActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoading(){
+        binding.plateDetailActivityLoadingScreen.visibility = View.GONE
     }
 
     fun goToOrders(v:View) {

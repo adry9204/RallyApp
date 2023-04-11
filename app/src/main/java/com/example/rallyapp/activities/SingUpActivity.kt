@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.RegisterRequest
@@ -31,15 +32,20 @@ class SingUpActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         userRepo = UserRepo(applicationContext)
 
-        binding.createUserButton.setOnClickListener(){
+        binding.createUserButton.setOnClickListener{
+
             val userName = binding.userName.text.toString()
             val userUsername = binding.userUsername.text.toString()
             val userEmail = binding.userEmail.text.toString()
             val userPassword = binding.userPassword.text.toString()
 
             val request = RegisterRequest(userName, userUsername, userEmail, userPassword)
+
+            showLoadingScreen()
             viewModel.registerUser(request)
+
             viewModel.userRegisterListLiveData.observe(this) {
+                hideLoadingScreen()
                 it.forEach { it ->
                     if(it.message == "Successfully added user to database"){
                         Log.i(TAG,"User registered")
@@ -58,5 +64,13 @@ class SingUpActivity : AppCompatActivity() {
             var intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    fun showLoadingScreen(){
+        binding.signupActivityLoadingScreen.visibility = View.VISIBLE
+    }
+
+    fun hideLoadingScreen(){
+        binding.signupActivityLoadingScreen.visibility = View.GONE
     }
 }
