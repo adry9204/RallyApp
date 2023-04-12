@@ -131,7 +131,7 @@ class OrdersAdapter (
 
     private fun makeDatePriceString(order: Order<User>): String{
         val dateString = formatDate(order.orderPlacedDate!!)
-        val price = if (order.afterOfferPrice != null) {order.afterOfferPrice} else {order.totalPrice}
+        val price = order.totalPrice
         return "$dateString - $$price"
     }
 
