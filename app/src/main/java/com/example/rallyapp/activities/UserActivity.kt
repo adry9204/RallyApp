@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 class UserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityUserBinding
+    private lateinit var headerFragment: HeaderFragment
 
     companion object {
         var userRepo: UserRepo? = null
@@ -84,6 +85,8 @@ class UserActivity : AppCompatActivity() {
             }
         }
 
+        updateUserCredentialsOnUpdate()
+
         //setting bottom nav listeners
         binding.newBottomNav.selectedItemId = R.id.user_menu_item
         binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
@@ -113,6 +116,18 @@ class UserActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+    }
+
+    private fun updateUserCredentialsOnUpdate(){
+        viewModel.userUpdatedSuccessfully.observe(this){
+            UserCredentials.setUserName(it)
+
+            var fragment: Fragment = HeaderFragment.newInstance("do you want to edit your profile?")
+            val manager = supportFragmentManager
+            val transaction = manager.beginTransaction()
+            transaction.replace(binding.fragmentContainer.id, fragment)
+            transaction.commit()
         }
     }
 
