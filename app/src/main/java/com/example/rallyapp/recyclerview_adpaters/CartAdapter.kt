@@ -103,6 +103,7 @@ class CartAdapter(
                 )
                 holder.quantityLabel.text = cartItems[position].quantity.toString()
                 holder.cardPrice.text = getTotalPrice(cartItems[position])
+                onQuantityUpdate(position, cartItems[position].quantity)
             }else{
                actionRestrictedWithOutNetworkAlert()
             }
