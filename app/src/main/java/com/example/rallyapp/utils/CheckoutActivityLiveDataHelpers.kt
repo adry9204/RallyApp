@@ -13,10 +13,7 @@ import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.viewModel.CheckoutActivityViewModel
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
 
@@ -45,7 +42,9 @@ fun CheckoutActivity.addLiveDataObservers(viewModel: CheckoutActivityViewModel){
 
     // directions
     viewModel.directionLiveData.observe(this){
-        mapsManager.showDirection(it)
+        CoroutineScope(Dispatchers.IO).launch(Dispatchers.IO) {
+            mapsManager.showDirection(it)
+        }
         binding.checkoutActivityDirectionDuration.text = it.routes[0].legs[0].duration.text
         binding.checkoutActivityDirectionDistance.text =  it.routes[0].legs[0].distance.text
     }

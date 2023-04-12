@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import kotlinx.coroutines.*
 
 class CheckoutActivityMapsManager(private val mMap: GoogleMap) {
 
@@ -46,25 +47,32 @@ class CheckoutActivityMapsManager(private val mMap: GoogleMap) {
         mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bound, 20))
     }
 
-    fun showDirection(direction: DirectionsApiResult){
+    suspend fun showDirection(direction: DirectionsApiResult){
         Log.i(CheckoutActivity.TAG, direction.toString())
         var path = mutableListOf<List<LatLng>>()
-        for (steps in direction.routes[0].legs[0].steps){
-            val point = steps.polyline.points
-            path.add(PolyLineUtil.decodePolyLines(point)!!)
+        withContext(Dispatchers.IO){
+            for (steps in direction.routes[0].legs[0].steps){
+                val point = steps.polyline.points
+                path.add(PolyLineUtil.decodePolyLines(point)!!)
+            }
+
+            for (points in path){
+                withContext(Dispatchers.Main){
+                    mMap.addPolyline(PolylineOptions().addAll(points).color(Color.RED))
+                }
+            }
+            val swBound = LatLng(
+                direction.routes[0].bounds.southwest.lat,
+                direction.routes[0].bounds.southwest.lng
+            )
+            val neBound = LatLng(
+                direction.routes[0].bounds.northeast.lat,
+                direction.routes[0].bounds.northeast.lng
+            )
+            withContext(Dispatchers.Main){
+                animateCameraToLocation(swBound, neBound)
+            }
         }
 
-        for (points in path){
-            mMap.addPolyline(PolylineOptions().addAll(points).color(Color.RED))
-        }
-        val swBound = LatLng(
-            direction.routes[0].bounds.southwest.lat,
-            direction.routes[0].bounds.southwest.lng
-        )
-        val neBound = LatLng(
-            direction.routes[0].bounds.northeast.lat,
-            direction.routes[0].bounds.northeast.lng
-        )
-        animateCameraToLocation(swBound, neBound)
     }
 }
