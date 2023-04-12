@@ -45,5 +45,6 @@
     <string name="notification_title_placeholder">PULLED PORK SA.. +3 items</string>
     <string name="notification_time_placeholder">12:30 AM 20th January</string>
     <string name="search_activity_no_results_label">No result(s) found.</string>
+    <string name="search_activity_search_text_box_placeholder">What would you like to eat?</string>
 
 </resources>

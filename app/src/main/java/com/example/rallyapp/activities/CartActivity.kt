@@ -169,8 +169,8 @@ class CartActivity : AppCompatActivity() {
             if(it.success == 1){
                 makeSnackBar("deleted cart item successfully", binding.shoppingCartRecyclerview)
                 adapter?.let { adapter ->
-                    adapter.onDeleteSuccess()
                     carts.removeAt(adapter.lastDeletedPos!!)
+                    adapter.onDeleteSuccess()
                 }
             }else{
                 adapter?.let { adapter ->

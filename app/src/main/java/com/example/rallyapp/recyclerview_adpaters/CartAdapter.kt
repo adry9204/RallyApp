@@ -75,7 +75,7 @@ class CartAdapter(
                 cartItems[position].quantity += 1
                 viewModel.updateUserCart(
                     cartId = cartItems[position].id,
-                    quantity =  Integer.parseInt(holder.quantityLabel.text.toString()),
+                    quantity = cartItems[position].quantity,
                     UserCredentials.getToken()!!
                 )
                 holder.quantityLabel.text = cartItems[position].quantity.toString()
