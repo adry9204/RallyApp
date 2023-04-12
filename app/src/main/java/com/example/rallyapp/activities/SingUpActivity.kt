@@ -59,8 +59,14 @@ class SingUpActivity : AppCompatActivity() {
                 it.forEach { it ->
                     if(it.message == "Successfully added user to database"){
                         Log.i(TAG,"User registered")
-                        var intent = Intent(this, LoginActivity::class.java)
-                        startActivity(intent)
+                        val alertManager = AlertManager(this)
+                        alertManager.showAlertWithOkButton(AlertData(
+                            title = "Registration Successful",
+                            message = "You can now log in to your account."
+                        )){
+                            var intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
                     } else {
                         val view = binding.root
                         Snackbar.make(view, it.message, Snackbar.LENGTH_LONG)
@@ -116,8 +122,8 @@ class SingUpActivity : AppCompatActivity() {
     fun makeMissingFieldAlert(fieldName: String){
         val alertManager = AlertManager(this)
         alertManager.showAlertWithOkButton(AlertData(
-            title = "Missing field",
-            message = "please enter a $fieldName"
+            title = "Missing information",
+            message = "Please enter a $fieldName"
         ))
     }
 
