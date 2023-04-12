@@ -46,5 +46,6 @@
     <string name="notification_time_placeholder">12:30 AM 20th January</string>
     <string name="search_activity_no_results_label">No result(s) found.</string>
     <string name="search_activity_search_text_box_placeholder">What would you like to eat?</string>
+    <string name="cart_activity_cart_is_empty_label">Cart is empty ☹️</string>
 
 </resources>

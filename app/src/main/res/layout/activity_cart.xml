@@ -14,6 +14,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/cart_activity_cart_empty_label"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container"
+        android:layout_marginTop="10dp"
+        android:text="@string/cart_activity_cart_is_empty_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/new_bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/minimal_grey"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/shopping_cart_recyclerview"
         android:layout_width="match_parent"
