@@ -124,8 +124,7 @@ class CartActivity : AppCompatActivity() {
 
     private fun onQuantityUpdate(position: Int, quantity: Int){
         carts[position].quantity = quantity
-        val totalPrice =  calculateTotalFromCart(carts.toList()).toString()
-        binding.totalAmountLabelCart.text = "$$totalPrice"
+        updateTotalPrice()
     }
 
     private fun setObserverOnMakeOrderFromCartResponse(){
@@ -155,8 +154,7 @@ class CartActivity : AppCompatActivity() {
         viewModel.cartLiveData.observe(this){
             hideLoading()
             carts = it.toMutableList()
-            val totalCartPrice = calculateTotalFromCart(it)
-            binding.totalAmountLabelCart.text = "$$totalCartPrice"
+            updateTotalPrice()
             adapter?.let { adapter->
                 adapter.setData(it.toMutableList())
                 adapter.notifyDataSetChanged()
@@ -171,6 +169,7 @@ class CartActivity : AppCompatActivity() {
                 makeSnackBar("deleted cart item successfully", binding.shoppingCartRecyclerview)
                 adapter?.let { adapter ->
                     carts.removeAt(adapter.lastDeletedPos!!)
+                    updateTotalPrice()
                     adapter.onDeleteSuccess()
                 }
             }else{
@@ -188,6 +187,11 @@ class CartActivity : AppCompatActivity() {
                 viewModel.getUserCart(UserCredentials.getUserId()!!, UserCredentials.getToken()!!)
             }
         }
+    }
+
+    private fun updateTotalPrice(){
+        val total = calculateTotalFromCart(carts)
+        binding.totalAmountLabelCart.text = "$$total"
     }
 
     private fun calculateTotalFromCart(cartItems: List<Cart>): Float {
