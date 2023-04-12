@@ -45,11 +45,14 @@ class CartAdapter(
         return ViewHolder(v)
     }
 
+    private fun getTotalPrice(cartItem: Cart): String{
+        return (cartItem.menu.price.toFloat() * cartItem.quantity).toString()
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Picasso.get().load(cartItems[position].menu.image).into(holder.cardImage)
         holder.cardTitle.text = cartItems[position].menu.name
-        holder.cardPrice.text =
-            (cartItems[position].menu.price.toFloat() * cartItems[position].quantity).toString()
+        holder.cardPrice.text = getTotalPrice(cartItems[position])
         holder.quantityLabel.text = "${cartItems[position].quantity}"
         if(cartItems[position].pending){
             holder.statusTextView.text = "PENDING \u26A0"
@@ -79,8 +82,7 @@ class CartAdapter(
                     UserCredentials.getToken()!!
                 )
                 holder.quantityLabel.text = cartItems[position].quantity.toString()
-                holder.cardPrice.text =
-                    (cartItems[position].price.toFloat() * cartItems[position].quantity).toString()
+                holder.cardPrice.text = getTotalPrice(cartItems[position])
                 onQuantityUpdate(position, cartItems[position].quantity)
             }else{
                 actionRestrictedWithOutNetworkAlert()
@@ -100,9 +102,7 @@ class CartAdapter(
                     UserCredentials.getToken()!!
                 )
                 holder.quantityLabel.text = cartItems[position].quantity.toString()
-                holder.cardPrice.text =
-                    (cartItems[position].price.toFloat() * cartItems[position].quantity).toString()
-                onQuantityUpdate(position, cartItems[position].quantity)
+                holder.cardPrice.text = getTotalPrice(cartItems[position])
             }else{
                actionRestrictedWithOutNetworkAlert()
             }
