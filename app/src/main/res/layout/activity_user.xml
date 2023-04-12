@@ -104,9 +104,9 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:paddingTop="16dp"
+            android:paddingTop="5dp"
             android:text="@string/user_activity_password_warning_text"
             android:textSize="12sp"
             android:textStyle="italic"
