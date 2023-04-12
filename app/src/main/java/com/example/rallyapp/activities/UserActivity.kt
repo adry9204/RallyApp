@@ -166,8 +166,18 @@ class UserActivity : AppCompatActivity() {
             return false
         }
 
-        if(binding.userEmail.editText!!.text.isEmpty()){
+        if(binding.userEmail.editText!!.text.isEmpty() ){
             showAlertForMissingField("email")
+            return false
+        }
+
+        if(!isValidEmail(binding.userEmail.editText!!.text.toString())){
+            val alertManager = AlertManager(this)
+            alertManager.showAlertWithOkButton(
+                AlertData(
+                title = "Invalid Information",
+                message = "the given email is invalid"
+            )){}
             return false
         }
 
@@ -178,6 +188,10 @@ class UserActivity : AppCompatActivity() {
         return true
     }
 
+    fun isValidEmail(email: String): Boolean {
+        val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,}$", RegexOption.IGNORE_CASE)
+        return emailRegex.matches(email)
+    }
 
     private fun updateUser(){
         if(!UserCredentials.isUserSet()){
