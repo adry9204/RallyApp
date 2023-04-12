@@ -29,7 +29,10 @@ class UserActivityViewModel(application: Application) : AndroidViewModel(applica
     val showAlert: LiveData<AlertData> = _showAlert
 
     private var _userLogoutListLiveData = MutableLiveData<List<LogoutResponse>>()
-    var userLogoutListLiveData: MutableLiveData<List<LogoutResponse>> = _userLogoutListLiveData
+    val userLogoutListLiveData: MutableLiveData<List<LogoutResponse>> = _userLogoutListLiveData
+
+    private var _userUpdatedSuccessfully = MutableLiveData<String>()
+    val userUpdatedSuccessfully: MutableLiveData<String> = _userUpdatedSuccessfully
 
     fun getUserById(userId: Int, token: String){
         CoroutineScope(Dispatchers.IO).launch{
@@ -50,6 +53,7 @@ class UserActivityViewModel(application: Application) : AndroidViewModel(applica
         CoroutineScope(Dispatchers.IO).launch {
             userRepo.updateUser(user, token){
                 val title : String = if(it.success == 1){
+                    _userUpdatedSuccessfully.value = user.userName
                     "Updated"
                 }else{
                     "Problem Updating"
