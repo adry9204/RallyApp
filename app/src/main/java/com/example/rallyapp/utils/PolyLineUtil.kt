@@ -1,12 +1,13 @@
 package com.example.rallyapp.utils
 
 import com.google.android.gms.maps.model.LatLng
-
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class PolyLineUtil {
-    companion object{
+
+    companion object {
         fun decodePolyLines(poly: String): List<LatLng>? {
             val len = poly.length
             var index = 0

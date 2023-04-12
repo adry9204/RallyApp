@@ -1,6 +1,7 @@
 package com.example.rallyapp.utils
 
 import android.content.Context
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 data class AlertData(
@@ -18,5 +19,9 @@ class AlertManager(val context: Context) {
         }
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
+    }
+
+    fun makeToast(message: String){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -100,7 +100,7 @@ class AddAddressBottomSheetFragment(private val viewModel: CheckoutActivityViewM
     }
 
     private fun showMissingFieldAlert(fieldName: String, needA: Boolean = true){
-        val alertManager = AlertManager(activity?.applicationContext!!)
+        val alertManager = AlertManager(requireContext())
         alertManager.showAlertWithOkButton(AlertData(
             title = "Missing field",
             message = "Please enter ${if(needA) "a" else ""} $fieldName"
