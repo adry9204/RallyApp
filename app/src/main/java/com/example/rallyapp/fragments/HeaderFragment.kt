@@ -44,9 +44,9 @@ class HeaderFragment : Fragment() {
 
         val greetingsText: String
         if(UserCredentials.isUserSet()){
-            greetingsText = "Hello ${UserCredentials.getUserName()!!}"
+            greetingsText = "Hello, ${UserCredentials.getUserName()!!}👋"
         }else{
-            greetingsText = "Hello User"
+            greetingsText = "Hello, User"
         }
         binding.greeting.text = greetingsText
         /* setting the text to tagLine */
