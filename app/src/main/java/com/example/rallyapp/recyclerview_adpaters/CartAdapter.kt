@@ -49,7 +49,7 @@ class CartAdapter(
         Picasso.get().load(cartItems[position].menu.image).into(holder.cardImage)
         holder.cardTitle.text = cartItems[position].menu.name
         holder.cardPrice.text =
-            (cartItems[position].price.toFloat() * cartItems[position].quantity).toString()
+            (cartItems[position].menu.price.toFloat() * cartItems[position].quantity).toString()
         holder.quantityLabel.text = "${cartItems[position].quantity}"
         if(cartItems[position].pending){
             holder.statusTextView.text = "PENDING \u26A0"
