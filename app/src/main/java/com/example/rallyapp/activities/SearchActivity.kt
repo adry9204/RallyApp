@@ -107,6 +107,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun setObserverForData(){
         viewModel.menuListLiveData.observe(this){
+            if(it.isEmpty()){
+                binding.searchActivityNoResultsLabel.visibility = View.VISIBLE
+            }else{
+                binding.searchActivityNoResultsLabel.visibility = View.GONE
+            }
             binding.searchMenuRecyclerview.layoutManager = GridLayoutManager(this, 2)
             adapter = GridViewItemAdapter(this, it)
             binding.searchMenuRecyclerview.adapter = adapter

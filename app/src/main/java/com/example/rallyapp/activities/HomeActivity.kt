@@ -208,6 +208,12 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setObserverForMenuData(){
         viewModel.menuLiveData.observe(this) {
+            if(it.isEmpty()){
+                binding.homeActivityNoResultsLabel.visibility = View.VISIBLE
+            }else{
+                binding.homeActivityNoResultsLabel.visibility = View.GONE
+            }
+
             adapter?.let{ adapter->
                 adapter.setMenuItems(it)
                 adapter.notifyDataSetChanged()
