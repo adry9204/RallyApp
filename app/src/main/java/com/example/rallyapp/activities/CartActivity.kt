@@ -124,7 +124,8 @@ class CartActivity : AppCompatActivity() {
 
     private fun onQuantityUpdate(position: Int, quantity: Int){
         carts[position].quantity = quantity
-        binding.totalAmountLabelCart.text = calculateTotalFromCart(carts.toList()).toString()
+        val totalPrice =  calculateTotalFromCart(carts.toList()).toString()
+        binding.totalAmountLabelCart.text = "$$totalPrice"
     }
 
     private fun setObserverOnMakeOrderFromCartResponse(){
@@ -189,7 +190,7 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
-    private fun calculateTotalFromCart(cartItems: List<Cart>): Float{
+    private fun calculateTotalFromCart(cartItems: List<Cart>): Float {
         var totalPrice = 0.0f
         for (cartItem in cartItems){
             totalPrice += (cartItem.menu.price.toFloat() * cartItem.quantity)
