@@ -35,6 +35,13 @@ object UserCredentials {
     fun setVoucher(voucher: Voucher){ claimedVoucher = voucher }
     fun getVoucher(): Voucher? { return claimedVoucher }
 
+    fun logOut(){
+        userName = null
+        token = null
+        claimedVoucher = null
+        userId = null
+    }
+
     fun setUserCredentials(
         context: Context,
         userId: Int,
