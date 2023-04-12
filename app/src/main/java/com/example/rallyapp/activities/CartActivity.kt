@@ -192,7 +192,7 @@ class CartActivity : AppCompatActivity() {
     private fun calculateTotalFromCart(cartItems: List<Cart>): Float{
         var totalPrice = 0.0f
         for (cartItem in cartItems){
-            totalPrice += (cartItem.price.toFloat() * cartItem.quantity)
+            totalPrice += (cartItem.menu.price.toFloat() * cartItem.quantity)
         }
         return totalPrice
     }
