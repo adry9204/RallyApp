@@ -44,5 +44,6 @@
     <string name="your_order_is_ready_for_pickup">Your order is ready for pickup</string>
     <string name="notification_title_placeholder">PULLED PORK SA.. +3 items</string>
     <string name="notification_time_placeholder">12:30 AM 20th January</string>
+    <string name="search_activity_no_results_label">No result(s) found.</string>
 
 </resources>
