@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
 
         }
 
-        binding.signupButton.setOnClickListener(){
+        binding.signupButton.setOnClickListener{
             val intent = Intent(this, SingUpActivity::class.java)
             startActivity(intent)
         }
@@ -91,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     val alertManager = AlertManager(this)
                     val alertData = AlertData(
-                        title = "Login Failed",
+                        title = "Unable to login",
                         message = it.message
                     )
                     alertManager.showAlertWithOkButton(alertData)
@@ -118,11 +118,11 @@ class LoginActivity : AppCompatActivity() {
         startService(cartService)
     }
 
-    fun showLoadingScreen(){
+    private fun showLoadingScreen(){
         binding.loginActivityLoadingScreen.visibility = View.VISIBLE
     }
 
-    fun hideLoadingScreen(){
+    private fun hideLoadingScreen(){
         binding.loginActivityLoadingScreen.visibility = View.GONE
     }
 

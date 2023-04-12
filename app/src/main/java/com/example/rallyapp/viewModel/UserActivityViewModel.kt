@@ -11,6 +11,7 @@ import com.example.rallyapp.api.dataModel.request_models.UpdateUserRequest
 import com.example.rallyapp.api.dataModel.response_models.Menu
 import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.repo.UserRepo
+import com.example.rallyapp.user.UserCredentials
 import com.example.rallyapp.utils.AlertData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +64,7 @@ class UserActivityViewModel(application: Application) : AndroidViewModel(applica
 
     fun logoutUser(token: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val data = UserActivity.userRepo?.logoutUser("Bearer " + token)
+            UserActivity.userRepo?.logoutUser(UserCredentials.getToken()!!)
         }
     }
 
