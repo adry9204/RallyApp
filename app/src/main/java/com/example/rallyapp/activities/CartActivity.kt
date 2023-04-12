@@ -1,6 +1,7 @@
 package com.example.rallyapp.activities
 
 import android.content.Intent
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -155,11 +156,28 @@ class CartActivity : AppCompatActivity() {
             hideLoading()
             carts = it.toMutableList()
             updateTotalPrice()
+            checkCartEmpty()
             adapter?.let { adapter->
                 adapter.setData(it.toMutableList())
                 adapter.notifyDataSetChanged()
             }
         }
+    }
+
+    private fun checkCartEmpty(){
+        if(carts.isEmpty()){
+            bottomControlsVisibility(View.GONE)
+            binding.cartActivityCartEmptyLabel.visibility = View.VISIBLE
+        }else{
+            bottomControlsVisibility(View.VISIBLE)
+            binding.cartActivityCartEmptyLabel.visibility = View.GONE
+        }
+    }
+
+    private fun bottomControlsVisibility(visibility: Int){
+        binding.checkoutButton.visibility = visibility
+        binding.totalAmountLabelCart.visibility = visibility
+        binding.totalLabelCart.visibility = visibility
     }
 
     private fun setObserverOnCartDeleteResponse() {
@@ -171,6 +189,7 @@ class CartActivity : AppCompatActivity() {
                     carts.removeAt(adapter.lastDeletedPos!!)
                     updateTotalPrice()
                     adapter.onDeleteSuccess()
+                    checkCartEmpty()
                 }
             }else{
                 adapter?.let { adapter ->
