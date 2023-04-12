@@ -74,7 +74,7 @@ class OrderMethodSelector(
     }
 
    private fun setViewSelected(tv: TextView){
-        tv.backgroundTintList = ContextCompat.getColorStateList(context, R.color.black)
+        tv.backgroundTintList = ContextCompat.getColorStateList(context, R.color.green)
         tv.setTextColor(ContextCompat.getColor(context, R.color.white))
     }
 

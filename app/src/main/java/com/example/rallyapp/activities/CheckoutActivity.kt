@@ -45,6 +45,8 @@ import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheetResult
 import kotlinx.coroutines.*
 import java.lang.Float
+import java.lang.Math.round
+import kotlin.math.roundToInt
 
 
 class CheckoutActivity : AppCompatActivity() {
@@ -287,7 +289,8 @@ class CheckoutActivity : AppCompatActivity() {
                 "$${order.beforeTaxPrice}"
             )
             val savings = Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice!!)
-            val discountLabel =  "${it.offerPercent}% off saved $${savings}"
+            val roundedSavings =(savings * 100).roundToInt() / 100.00f
+            val discountLabel =  "${it.offerPercent}% off saved $$roundedSavings"
             binding.orderActivityOrderSummaryDiscountLabel.text = discountLabel
         }
     }
