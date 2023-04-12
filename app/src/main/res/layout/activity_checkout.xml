@@ -214,6 +214,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
                             android:gravity="center"
                             android:text="@string/new_address"
                             android:textColor="@color/black"
@@ -501,7 +502,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/black"
+                android:backgroundTint="@color/green"
                 android:elevation="5dp"
                 android:text="@string/checkout_activity_proceed_to_pay_button_text"
                 android:textColor="@color/white"

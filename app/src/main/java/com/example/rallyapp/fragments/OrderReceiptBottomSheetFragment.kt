@@ -16,6 +16,7 @@ import com.example.rallyapp.api.dataModel.response_models.User
 import com.example.rallyapp.databinding.FragmentOrderReceiptBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.lang.Float
+import kotlin.math.roundToInt
 
 class OrderReceiptBottomSheetFragment(private val order: Order<User>): BottomSheetDialogFragment() {
 
@@ -53,10 +54,10 @@ class OrderReceiptBottomSheetFragment(private val order: Order<User>): BottomShe
                 "$${order.beforeTaxPrice} $${order.afterOfferPrice}",
                 "$${order.beforeTaxPrice}"
             )
-            binding.orderReceiptBottomSheetOfferDescriptionLabel.text =
-                "${it.offerPercent}% off saved $${
-                    Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice)
-                }"
+
+            val savings = Float.valueOf(order.beforeTaxPrice) - Float.valueOf(order.afterOfferPrice!!)
+            val roundedSavings =(savings * 100).roundToInt() / 100.00f
+            binding.orderReceiptBottomSheetOfferDescriptionLabel.text = "${it.offerPercent}% off saved $roundedSavings"
         }
     }
 
