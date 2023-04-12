@@ -107,16 +107,30 @@ class SingUpActivity : AppCompatActivity() {
             return false
         }
 
+        if(!isValidEmail(userEmail)){
+            val alertManager = AlertManager(this)
+            alertManager.showAlertWithOkButton(AlertData(
+                title = "Invalid Information",
+                message = "the given email is invalid"
+            )){}
+            return false
+        }
+
         if(userEmail.isEmpty()){
             makeMissingFieldAlert("email")
             return false
         }
 
         if(userPassword.isEmpty()){
-            makeMissingFieldAlert("email")
+            makeMissingFieldAlert("password")
             return false
         }
         return true
+    }
+
+    private fun isValidEmail(email: String): Boolean {
+        val emailRegex = Regex("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,}$", RegexOption.IGNORE_CASE)
+        return emailRegex.matches(email)
     }
 
     fun makeMissingFieldAlert(fieldName: String){
