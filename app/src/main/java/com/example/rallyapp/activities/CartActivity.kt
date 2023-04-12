@@ -26,6 +26,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private var adapter: CartAdapter? = null
     private lateinit var viewModel: CartActivityViewModel
+    private var carts = mutableListOf<Cart>()
 
     companion object {
         const val TAG = "CartActivity"
@@ -85,7 +86,7 @@ class CartActivity : AppCompatActivity() {
         }
 
         binding.shoppingCartRecyclerview.layoutManager = GridLayoutManager(this, 1)
-        adapter = CartAdapter(mutableListOf(), viewModel, this, ::showLoading)
+        adapter = CartAdapter(mutableListOf(), viewModel, this, ::showLoading, ::onQuantityUpdate)
         binding.shoppingCartRecyclerview.adapter = adapter
         binding.shoppingCartRecyclerview.itemAnimator = DefaultItemAnimator()
 
@@ -121,6 +122,11 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
+    private fun onQuantityUpdate(position: Int, quantity: Int){
+        carts[position].quantity = quantity
+        binding.totalAmountLabelCart.text = calculateTotalFromCart(carts.toList()).toString()
+    }
+
     private fun setObserverOnMakeOrderFromCartResponse(){
         viewModel.makeOrderFromCartResponse.observe(this){
             if(it.success == 1){
@@ -147,12 +153,13 @@ class CartActivity : AppCompatActivity() {
     private fun setObserverOnCartData(){
         viewModel.cartLiveData.observe(this){
             hideLoading()
+            carts = it.toMutableList()
+            val totalCartPrice = calculateTotalFromCart(it)
+            binding.totalAmountLabelCart.text = "$$totalCartPrice"
             adapter?.let { adapter->
                 adapter.setData(it.toMutableList())
                 adapter.notifyDataSetChanged()
             }
-            val totalCartPrice = calculateTotalFromCart(it)
-            binding.totalAmountLabelCart.text = "$$totalCartPrice"
         }
     }
 
@@ -163,6 +170,7 @@ class CartActivity : AppCompatActivity() {
                 makeSnackBar("deleted cart item successfully", binding.shoppingCartRecyclerview)
                 adapter?.let { adapter ->
                     adapter.onDeleteSuccess()
+                    carts.removeAt(adapter.lastDeletedPos!!)
                 }
             }else{
                 adapter?.let { adapter ->
@@ -184,7 +192,7 @@ class CartActivity : AppCompatActivity() {
     private fun calculateTotalFromCart(cartItems: List<Cart>): Float{
         var totalPrice = 0.0f
         for (cartItem in cartItems){
-            totalPrice += cartItem.price.toFloat()
+            totalPrice += (cartItem.price.toFloat() * cartItem.quantity)
         }
         return totalPrice
     }
@@ -218,5 +226,4 @@ class CartActivity : AppCompatActivity() {
     fun hideLoading(){
         binding.cartActivityActivityLoadingScreen.visibility = View.GONE
     }
-
 }

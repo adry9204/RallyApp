@@ -71,7 +71,7 @@ class PlateDetailActivity : AppCompatActivity() {
         setObserverOnMenuData()
 
         //setting bottom nav listeners
-        binding.newBottomNav.selectedItemId = R.id.carts_menu_item
+        binding.newBottomNav.selectedItemId
         binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.home_menu_item -> {
@@ -156,11 +156,11 @@ class PlateDetailActivity : AppCompatActivity() {
         return menuId
     }
 
-    fun showLoadingScreen(){
+    private fun showLoadingScreen(){
         binding.plateDetailActivityLoadingScreen.visibility = View.VISIBLE
     }
 
-    fun hideLoading(){
+    private fun hideLoading(){
         binding.plateDetailActivityLoadingScreen.visibility = View.GONE
     }
 
