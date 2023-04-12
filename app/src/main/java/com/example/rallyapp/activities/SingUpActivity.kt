@@ -10,6 +10,9 @@ import com.example.rallyapp.R
 import com.example.rallyapp.api.dataModel.RegisterRequest
 import com.example.rallyapp.databinding.ActivitySingUpBinding
 import com.example.rallyapp.repo.UserRepo
+import com.example.rallyapp.utils.AlertData
+import com.example.rallyapp.utils.AlertManager
+import com.example.rallyapp.utils.NetworkHelper
 import com.example.rallyapp.viewModel.MainActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -34,22 +37,29 @@ class SingUpActivity : AppCompatActivity() {
 
         binding.createUserButton.setOnClickListener{
 
-            val userName = binding.userName.text.toString()
-            val userUsername = binding.userUsername.text.toString()
-            val userEmail = binding.userEmail.text.toString()
-            val userPassword = binding.userPassword.text.toString()
 
-            val request = RegisterRequest(userName, userUsername, userEmail, userPassword)
+            val networkHelper = NetworkHelper(this)
+            if(networkHelper.isConnectedToNetwork()){
+                if(verifyInputs()){
+                    val request = makeRequest()
+                    showLoadingScreen()
+                    viewModel.registerUser(request)
+                }
+            }else{
+                val alertManager = AlertManager(this)
+                alertManager.showAlertWithOkButton(AlertData(
+                    title = "No internet connection",
+                    message = ""
+                ))
+            }
 
-            showLoadingScreen()
-            viewModel.registerUser(request)
 
             viewModel.userRegisterListLiveData.observe(this) {
                 hideLoadingScreen()
                 it.forEach { it ->
                     if(it.message == "Successfully added user to database"){
                         Log.i(TAG,"User registered")
-                        var intent = Intent(this, HomeActivity::class.java)
+                        var intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     } else {
                         val view = binding.root
@@ -65,6 +75,53 @@ class SingUpActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    private fun makeRequest(): RegisterRequest {
+        val name = binding.userName.text.toString()
+        val userUsername = binding.userUsername.text.toString()
+        val userEmail = binding.userEmail.text.toString()
+        val userPassword = binding.userPassword.text.toString()
+
+        return RegisterRequest(name, userUsername, userEmail, userPassword)
+    }
+
+    private fun verifyInputs(): Boolean{
+        val name = binding.userName.text.toString()
+        val userUsername = binding.userUsername.text.toString()
+        val userEmail = binding.userEmail.text.toString()
+        val userPassword = binding.userPassword.text.toString()
+
+        if(name.isEmpty()){
+            makeMissingFieldAlert("first name and a last name")
+            return false
+        }
+
+        if(userUsername.isEmpty()){
+            makeMissingFieldAlert("username")
+            return false
+        }
+
+        if(userEmail.isEmpty()){
+            makeMissingFieldAlert("email")
+            return false
+        }
+
+        if(userPassword.isEmpty()){
+            makeMissingFieldAlert("email")
+            return false
+        }
+        return true
+    }
+
+    fun makeMissingFieldAlert(fieldName: String){
+        val alertManager = AlertManager(this)
+        alertManager.showAlertWithOkButton(AlertData(
+            title = "Missing field",
+            message = "please enter a $fieldName"
+        ))
+    }
+
+
 
     fun showLoadingScreen(){
         binding.signupActivityLoadingScreen.visibility = View.VISIBLE
