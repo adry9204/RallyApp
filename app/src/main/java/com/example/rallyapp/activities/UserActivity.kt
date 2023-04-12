@@ -66,6 +66,7 @@ class UserActivity : AppCompatActivity() {
                 it.forEach { it ->
                     if (it.message == "Logged out successfully") {
                         Log.i(SingUpActivity.TAG, "User Logout successful")
+                        UserCredentials.logOut()
                         var intent = Intent(this, LoginActivity::class.java)
                         startActivity(intent)
                     } else {
