@@ -26,7 +26,7 @@ import com.example.rallyapp.viewModel.SingleOrderActivityViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SingleOrderActivity : AppCompatActivity() {
+class SingleOrderActivity : BaseActivity() {
     private lateinit var binding: ActivitySingleOrderBinding
     private lateinit var adapter: SingleOrderAdapter
     private lateinit var viewModel: SingleOrderActivityViewModel
@@ -64,33 +64,9 @@ class SingleOrderActivity : AppCompatActivity() {
         }
 
         //setting bottom nav listeners
-        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home_menu_item -> {
-                    var intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.search_menu_item -> {
-                    var intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.carts_menu_item -> {
-                    true
-                }
-                R.id.orders_menu_item ->{
-                    var intent = Intent(this, OrdersActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.user_menu_item -> {
-                    var intent = Intent(this, UserActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
+        binding.newBottomNav.selectedItemId = R.id.orders_menu_item
+        binding.newBottomNav.setOnNavigationItemSelectedListener {
+            setMenu(it.itemId)
         }
 
         setObserverOnReorderResponse()

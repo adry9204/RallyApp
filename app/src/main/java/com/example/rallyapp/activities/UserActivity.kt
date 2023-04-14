@@ -23,7 +23,7 @@ import com.example.rallyapp.viewModel.UserActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 
 
-class UserActivity : AppCompatActivity() {
+class UserActivity : BaseActivity() {
 
     private lateinit var binding: ActivityUserBinding
     private lateinit var headerFragment: HeaderFragment
@@ -90,33 +90,8 @@ class UserActivity : AppCompatActivity() {
 
         //setting bottom nav listeners
         binding.newBottomNav.selectedItemId = R.id.user_menu_item
-        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home_menu_item -> {
-                    var intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.search_menu_item -> {
-                    var intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.carts_menu_item -> {
-                    var intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.orders_menu_item -> {
-                    var intent = Intent(this, OrdersActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.user_menu_item -> {
-                    true
-                }
-                else -> false
-            }
+        binding.newBottomNav.setOnNavigationItemSelectedListener {
+            setMenu(it.itemId)
         }
     }
 

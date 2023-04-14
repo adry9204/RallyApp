@@ -17,7 +17,7 @@ import com.example.rallyapp.viewModel.PlateDetailActivityViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 
-class PlateDetailActivity : AppCompatActivity() {
+class PlateDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPlateDetailBinding
     private  var quantity: Int = 1
@@ -71,36 +71,9 @@ class PlateDetailActivity : AppCompatActivity() {
         setObserverOnMenuData()
 
         //setting bottom nav listeners
-        binding.newBottomNav.selectedItemId
-        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home_menu_item -> {
-                    var intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.search_menu_item -> {
-                    var intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.carts_menu_item -> {
-                    var intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.orders_menu_item -> {
-                    var intent = Intent(this, OrdersActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.user_menu_item -> {
-                    var intent = Intent(this, UserActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
+        binding.newBottomNav.selectedItemId = R.id.carts_menu_item
+        binding.newBottomNav.setOnNavigationItemSelectedListener {
+            setMenu(it.itemId)
         }
 
     }

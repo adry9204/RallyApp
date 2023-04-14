@@ -7,6 +7,7 @@ import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -30,7 +31,7 @@ import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.HomeActivityViewModel
 import kotlin.random.Random
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentBinding: FragmentHeaderBinding
@@ -86,42 +87,6 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getAllCategories()
         setObserversForCategoryData()
 
-
-        //setting bottom nav listeners
-        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home_menu_item -> {
-                    // Respond to navigation item 1 click
-                    true
-                }
-                R.id.search_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.carts_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.orders_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, OrdersActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.user_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, UserActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
-        }
-
         binding.searchButton.setOnClickListener{
 
             Log.i(TAG, binding.searchTextField.editText?.text.toString() )
@@ -157,6 +122,10 @@ class HomeActivity : AppCompatActivity() {
             }
         }
         setListenerOnVoucherList()
+
+        binding.newBottomNav.setOnNavigationItemSelectedListener {
+            setMenu(it.itemId)
+        }
     }
 
     private fun claimVoucher(){

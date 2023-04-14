@@ -21,7 +21,7 @@ import com.example.rallyapp.utils.AlertManager
 import com.example.rallyapp.viewModel.OrderActivityViewModel
 import java.util.TimerTask
 
-class OrdersActivity : AppCompatActivity() {
+class OrdersActivity : BaseActivity() {
     private lateinit var binding: ActivityOrdersBinding
     private lateinit var ordersAdapter: OrdersAdapter
 
@@ -49,33 +49,8 @@ class OrdersActivity : AppCompatActivity() {
 
         //setting bottom nav listeners
         binding.newBottomNav.selectedItemId = R.id.orders_menu_item
-        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home_menu_item -> {
-                    var intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.search_menu_item -> {
-                    var intent = Intent(this, SearchActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.carts_menu_item -> {
-                    var intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.orders_menu_item -> {
-                    true
-                }
-                R.id.user_menu_item -> {
-                    var intent = Intent(this, UserActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
+        binding.newBottomNav.setOnNavigationItemSelectedListener {
+            setMenu(it.itemId)
         }
     }
 

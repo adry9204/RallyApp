@@ -17,7 +17,7 @@ import com.example.rallyapp.databinding.ActivitySearchBinding
 import com.example.rallyapp.repo.MenuRepo
 import com.example.rallyapp.viewModel.SearchActivityViewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "SearchActivity"
@@ -65,36 +65,8 @@ class SearchActivity : AppCompatActivity() {
 
         //setting bottom nav listeners
         binding.newBottomNav.selectedItemId = R.id.search_menu_item
-        binding.newBottomNav.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.home_menu_item -> {
-                    var intent = Intent(this, HomeActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.search_menu_item -> {
-                    true
-                }
-                R.id.carts_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, CartActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.orders_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, OrdersActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.user_menu_item -> {
-                    // Respond to navigation item 2 click
-                    var intent = Intent(this, UserActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                else -> false
-            }
+        binding.newBottomNav.setOnNavigationItemSelectedListener {
+            setMenu(it.itemId)
         }
     }
 
